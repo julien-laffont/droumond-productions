@@ -1,16 +1,16 @@
-# Briefing: website da Droummond Productions
+# Briefing: website da Droumond Productions
 
-Documento de direção inicial. Última atualização: 2026-11-12. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
+Documento de direção inicial. Última atualização: 2026-11-13. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
 
 ## Contexto
 
-- Empresa: Droummond Productions, produtora audiovisual. Sócios: Julien e Carlos.
+- Empresa: Droumond Productions, produtora audiovisual. Sócios: Julien e Carlos.
 - A empresa ainda não tem site.
 - Série em desenvolvimento: *Efeito Placebo*, suspense, em português de Portugal, em fase de gravação.
 - YouTube: https://www.youtube.com/@DroumondProductions/videos (só existe um teaser).
 - Instagram: mini-série com cerca de 4 episódios, feita a aproveitar o interesse por Resident Evil.
 - Repositório: https://github.com/juliensl/droumond-productions.git (grafia "droumond", como no canal).
-- Nota: o canal usa a grafia "Droumond" e o logótipo "Droummond". Grafia correta por confirmar.
+- Grafia: "Droumond" (decidido pelo Julien a 2026-11-13). O logótipo diz "Droummond".
 
 ## Objetivo
 
@@ -23,7 +23,11 @@ Documento de direção inicial. Última atualização: 2026-11-12. Tudo o que es
 - O site é da empresa, não só da série.
 - Mostra o teaser de *Efeito Placebo*, incorporado do YouTube. Não aloja episódios.
 - Secções obrigatórias: Sobre, Equipa, Contacto.
+- Outros projetos: a mini-série de Resident Evil do Instagram, além de *Efeito Placebo*.
+- Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?").
+- Sem loja, apoio nem newsletter na v1.
 - Qualquer outra secção (portfólio, notícias, loja, newsletter) só entra se for pedida.
+- Email de contacto: por enquanto, o gmail do Carlos recebe os contactos e é o endereço mostrado no site (o endereço não fica neste documento porque o repo é público).
 
 ## Direção visual
 
@@ -40,16 +44,18 @@ Documento de direção inicial. Última atualização: 2026-11-12. Tudo o que es
 - Existem: fotografias, cartazes e o teaser.
 - Fornecedor: Carlos, sem data prevista.
 - Até chegarem, usar placeholders claramente marcados.
+- Equipa: no protótipo, os personagens do perfil do Instagram (https://www.instagram.com/droumond_productions). A equipa deu o consentimento de uso de imagem.
+- Textos (Sobre, Equipa): escrevem o Julien e o autor.
 
 ## Tecnologia e entrega
 
 - Mesma stack que a landing page do Julien (https://github.com/juliensl/julien-devops-lp): Astro 7, React 19 (ilhas), Tailwind CSS 4, TypeScript, Node 24 (`.nvmrc`), npm.
 - Qualidade na landing page: Playwright (testes), axe-core (acessibilidade), Lighthouse, Prettier, `astro check`. Script `npm run verify` corre tudo.
-- Alojamento: Infomaniak. O domínio já existe.
+- Alojamento: Infomaniak, no Hébergement Web (com PHP). Ainda não há domínio nem email do domínio.
 - CI/CD, como na landing page: workflow `Checks` em cada PR (testes em 4 jobs + Lighthouse para `main`) e workflow `Publish` a cada merge em `main`, que publica na Infomaniak e confirma que cada página responde com o commit publicado. Os segredos de publicação são criados pelo Julien.
 - Branches, como na landing page: o trabalho parte de `develop` e os PR vão para `develop`; `main` só recebe releases (PR de `develop`) e hotfixes, e cada merge em `main` publica o site.
 - Convenção da landing page: tudo no repo em inglês (código, comentários, docs), issues e PR em português de Portugal. Confirmar se se mantém aqui.
-- Quem atualiza o site depois de publicado: por decidir.
+- Quem atualiza o site depois de publicado: o Julien.
 
 ## Prazo
 
@@ -64,11 +70,13 @@ Documento de direção inicial. Última atualização: 2026-11-12. Tudo o que es
 
 ## Por decidir
 
-- Quem atualiza o site depois de publicado.
 - Versão do logótipo para fundo escuro.
-- Pessoas da equipa a mostrar, e que outros projetos mostrar.
-- Se haverá loja, apoio ou newsletter.
-- Grafia correta do nome.
+- Pessoas da equipa a mostrar depois do protótipo.
+- Quem é o cliente (o Julien adiou a decisão).
+- Domínio: qual, quem o regista e quando.
+- Dados legais da empresa (o Julien vai pedi-los).
+- Se a empresa presta serviços a particulares.
+- Quando fica feito o registo no Livro de Reclamações Eletrónico (obrigatório antes de publicar).
 - Número de rondas de revisão.
 
 ## Regras de trabalho
