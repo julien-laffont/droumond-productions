@@ -15,7 +15,7 @@ Documento de direção inicial. Última atualização: 2026-11-13. Tudo o que es
 ## Objetivo
 
 - Mostrar o trabalho da empresa e ganhar audiência.
-- Métrica de sucesso: contactos de clientes.
+- Métrica de sucesso: contactos de clientes. Conta toda a mensagem real (não spam) que chega pelo site, venha de quem vier; quem recebe os emails conta-os à mão, fora do site (ver issue #7).
 - Público: adultos, sobretudo em Portugal, e também pessoas de outras nacionalidades.
 - Idiomas do site: português de Portugal (principal) e inglês. As páginas em inglês só são publicadas quando os textos estiverem traduzidos. A confirmar com o Julien (ver issue #6).
 
@@ -28,7 +28,8 @@ Documento de direção inicial. Última atualização: 2026-11-13. Tudo o que es
 - Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?").
 - Sem loja, apoio nem newsletter na v1.
 - Qualquer outra secção (portfólio, notícias, loja, newsletter) só entra se for pedida.
-- Email de contacto: por enquanto, o gmail do Carlos recebe os contactos e é o endereço mostrado no site (o endereço não fica neste documento porque o repo é público).
+- Email de contacto: por enquanto, o gmail do Carlos recebe os contactos e é o endereço mostrado no site (o endereço não fica neste documento porque o repo é público). Carlos talvez crie um email novo.
+- Contacto só por email (`mailto:`), sem formulário. Só a página de filmagens pré-preenche o assunto. Ver issue #7.
 
 ## Direção visual
 
@@ -78,6 +79,7 @@ Documento de direção inicial. Última atualização: 2026-11-13. Tudo o que es
 - Dados legais da empresa (o Julien vai pedi-los).
 - Se a empresa presta serviços a particulares.
 - Quando fica feito o registo no Livro de Reclamações Eletrónico (obrigatório antes de publicar).
+- Prazo de conservação dos emails de contacto: proposta de 12 meses, a confirmar por Julien (ver issue #7).
 - Número de rondas de revisão.
 
 ## Regras de trabalho
