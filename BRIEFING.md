@@ -16,7 +16,8 @@ Documento de direção inicial. Última atualização: 2026-11-13. Tudo o que es
 
 - Mostrar o trabalho da empresa e ganhar audiência.
 - Métrica de sucesso: contactos de clientes.
-- Público: adultos, sobretudo em Portugal. Idioma do site: português de Portugal.
+- Público: adultos, sobretudo em Portugal, e também pessoas de outras nacionalidades.
+- Idiomas do site: português de Portugal (principal) e inglês. As páginas em inglês só são publicadas quando os textos estiverem traduzidos. A confirmar com o Julien (ver issue #6).
 
 ## Âmbito
 
