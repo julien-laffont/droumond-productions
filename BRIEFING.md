@@ -1,6 +1,6 @@
 # Briefing: website da Droumond Productions
 
-Documento de direção inicial. Última atualização: 2026-11-13. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
+Documento de direção inicial. Última atualização: 2026-11-16. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
 
 ## Contexto
 
@@ -33,13 +33,17 @@ Documento de direção inicial. Última atualização: 2026-11-13. Tudo o que es
 
 ## Direção visual
 
-- Estilo: cinematográfico e escuro.
-- Referência principal: The Mill (https://www.themill.com).
-- Elementos a aproveitar de Oats Studios (https://oatsstudios.com) e de Rodeo FX (https://rodeofx.com).
-- Outras referências: Blur, Territory Studio, Framestore, Imaginary Forces, Weta FX, DNEG, ILM, Critical Role.
-- O Carlos gostou de um vídeo do Imaginary Forces porque lembra o logótipo da empresa. A estética de tinta e pincelada é um fio condutor possível.
-- Logótipo: círculo desenhado a pincel (estilo enso) com um monograma caligráfico ao centro, a preto sobre fundo branco, com o nome por baixo (a confirmar). Ainda não foi enviado pelo Carlos.
-- Problema em aberto: logótipo escuro sobre branco num site escuro. Pode ser preciso uma versão a branco ou transparente.
+Provisória: escolhida pelo Nal a 2026-11-16 (issue #5); o Carlos valida na ronda de revisão (issue #8). Protótipo: https://claude.ai/artifact/7GfVFwmvAaQbBiRZ1Uyby6 (código em `prototype/` no branch `prototype/visual-direction`, que nunca entra em `develop` nem em `main`).
+
+- Estilo: cinematográfico e escuro, com a estética de tinta e pincelada como fio condutor (o Carlos gostou de um vídeo do Imaginary Forces porque lembra o logótipo).
+- Referências: The Mill (https://www.themill.com) para a grelha de Projetos; Rodeo FX (https://rodeofx.com) para a tipografia e o primeiro ecrã. Outras: Oats Studios, Blur, Territory Studio, Framestore, Imaginary Forces, Weta FX, DNEG, ILM, Critical Role.
+- Paleta: fundo `#0e0d10`, texto cor de tela `#dbcdc6`, cinzentos tirados da tela. O carmim `#79081b` é só decoração (no vídeo de fundo), nunca texto nem botões.
+- Zonas: o primeiro ecrã e o bloco Contacto em tela clara, o resto escuro, o cabeçalho sempre quase preto. A passagem do claro para o escuro é uma pincelada a fazer de borda.
+- Tipografia: só Archivo, de licença aberta e alojada no próprio site (sem Google Fonts, por causa do RGPD), em várias larguras. Letra grande só para nomes (empresa, projetos, pessoas); a descrição da empresa fica sempre pequena e em segundo plano. Sem pincelada por baixo dos títulos das secções.
+- Primeiro ecrã: vídeo de fundo gerado por código (pinceladas escuras e um traço carmim sobre tela, 8 s em ciclo). Ao centro, o símbolo do logótipo aparece por uma máscara que segue o pincel; por baixo, o nome e palavras que passam uma a uma (Séries, Suspense, Terror, Filmagens) até ficar "Produtora audiovisual", como na Rodeo FX.
+- Projetos: grelha assimétrica 2:1 com o título por baixo de cada imagem (16:9 para a série, 4:5 para a mini-série, que é vertical). Sobre: texto pequeno à esquerda, uma imagem larga à direita. Equipa: retratos 4:5 com nome e papel.
+- Logótipo: só o símbolo (círculo e monograma); o nome aparece em texto. Preto sobre a tela e claro sobre o escuro, a partir do mesmo ficheiro. Por agora, o JPEG do Carlos convertido para transparência; o SVG pede-se na #8.
+- Movimento: só CSS e JavaScript simples (revelação do logótipo, aparecimento discreto das secções, pincelada no hover dos links). Quem pediu menos movimento vê tudo parado.
 
 ## Materiais
 
@@ -48,6 +52,7 @@ Documento de direção inicial. Última atualização: 2026-11-13. Tudo o que es
 - Até chegarem, usar placeholders claramente marcados.
 - Equipa: no protótipo, os personagens do perfil do Instagram (https://www.instagram.com/droumond_productions). A equipa deu o consentimento de uso de imagem.
 - Textos (Sobre, Equipa): escrevem o Julien e o autor.
+- A pedir ao Carlos na #8: o símbolo do logótipo em SVG, uma foto de bastidores para a faixa de filmagens e um fotograma limpo do teaser (a miniatura do YouTube tem texto por cima).
 
 ## Tecnologia e entrega
 
@@ -72,7 +77,6 @@ Documento de direção inicial. Última atualização: 2026-11-13. Tudo o que es
 
 ## Por decidir
 
-- Versão do logótipo para fundo escuro.
 - Pessoas da equipa a mostrar depois do protótipo.
 - Quem é o cliente (o Julien adiou a decisão).
 - Domínio: qual, quem o regista e quando.
