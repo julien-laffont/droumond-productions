@@ -1,0 +1,459 @@
+<title>Protótipo Droumond Productions</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  PROTOTYPE (issue #5), throwaway: never merged into develop or main.
+  Home page of the Droumond Productions site: variant C (Archivo, light canvas first screen)
+  with the Projects grid of The Mill, then Sobre, Equipa, the filming strip, Contacto and the footer (issues #6, #7).
+  This file is published as a claude.ai Artifact, which wraps it in <html>/<head>/<body>: hence no doctype here.
+-->
+<style>
+/* Layout: a dark film reel opened (first screen) and closed (Contacto) by light canvas; brush strokes paint the seams.
+   Descriptive copy stays small and secondary; large type is for names only. */
+@font-face { font-family: "Archivo"; src: url("fonts/archivo.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; }
+
+:root {
+  --ink: #0e0d10;            /* page background, paint */
+  --ink-2: #18161a;          /* raised dark surface */
+  --canvas: #dbcdc6;         /* light zones, text on ink (12.5:1) */
+  --canvas-hi: #e7ddd8;
+  --canvas-lo: #c9b8b0;
+  --muted: #8d8481;          /* secondary text on ink (5.3:1) */
+  --muted-on-canvas: #5a5150;/* secondary text on canvas (5:1) */
+  --line: rgb(219 205 198 / 0.16);
+  --f-display: "Archivo", "Arial Narrow", sans-serif;
+  --f-body: "Archivo", Arial, sans-serif;
+  --header-h: 64px;
+  --edge-h: clamp(44px, 7vw, 104px);
+  --g: clamp(16px, 3vw, 40px);
+  --gap: clamp(12px, 1.4vw, 20px);
+  --section: clamp(48px, 6vw, 88px);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  color-scheme: dark;
+}
+html { scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top, 0px)); }
+body { background: var(--ink); color: var(--canvas); font-family: var(--f-body); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--ink); }
+.wrap { padding-left: max(var(--g), env(safe-area-inset-left, 0px)); padding-right: max(var(--g), env(safe-area-inset-right, 0px)); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+img { display: block; height: auto; }
+
+/* Prototype marks: deliberately outside the design */
+.proto-banner { background: #ffd400; color: #111; font: 600 12px/1.3 system-ui, sans-serif; text-align: center; padding-block: 6px; }
+.tag-ph { display: inline-block; font: 600 10px/1 system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 6px; border: 1px dashed currentColor; opacity: 0.8; }
+.ph { color: var(--muted); font: 500 12px/1.5 system-ui, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; border: 1px dashed rgb(219 205 198 / 0.28); background: repeating-linear-gradient(135deg, var(--ink-2) 0 14px, #1d1b20 14px 28px); }
+.proto-note { margin: 0; max-width: 640px; border: 1px dashed rgb(219 205 198 / 0.3); padding: 18px 20px; color: var(--muted); font: 500 13px/1.5 system-ui, sans-serif; }
+
+/* Header: always ink, like the bars of a letterboxed film */
+.site-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--ink); border-bottom: 1px solid var(--line); }
+.header-inner { height: var(--header-h); display: flex; align-items: center; gap: clamp(12px, 2.4vw, 32px); }
+.brand { display: block; width: 40px; height: 40px; flex: none; }
+.brand-mark { display: block; width: 100%; height: 100%; background: var(--canvas); -webkit-mask: url("assets/logo.png") center / contain no-repeat; mask: url("assets/logo.png") center / contain no-repeat; }
+.nav-main { margin-left: auto; }
+.nav-main ul { display: flex; gap: clamp(14px, 2.2vw, 30px); list-style: none; margin: 0; padding: 0; }
+.nav-main a, .btn-contact { font-size: 12px; font-stretch: 125%; letter-spacing: 0.12em; text-transform: uppercase; }
+.nav-main a { position: relative; text-decoration: none; }
+/* The brush stroke paints itself under links on hover */
+.brush-link { position: relative; text-decoration: none; }
+.nav-main a::after, .brush-link::after { content: ""; position: absolute; left: -6%; right: -6%; bottom: -7px; height: 7px; background: currentColor; -webkit-mask: url("assets/brush.svg") 0 0 / 100% 100% no-repeat; mask: url("assets/brush.svg") 0 0 / 100% 100% no-repeat; transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease); }
+.nav-main a:hover::after, .nav-main a:focus-visible::after, .brush-link:hover::after, .brush-link:focus-visible::after { transform: scaleX(1); }
+.lang { position: relative; }
+.lang summary { list-style: none; cursor: pointer; font-size: 12px; letter-spacing: 0.1em; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; }
+.lang summary::-webkit-details-marker { display: none; }
+.lang ul { position: absolute; right: 0; top: calc(100% + 8px); list-style: none; margin: 0; padding: 6px; min-width: 120px; background: var(--ink-2); border: 1px solid var(--line); }
+.lang ul a { display: block; padding: 8px 10px; text-decoration: none; }
+.btn-contact { flex: none; text-decoration: none; background: var(--canvas); color: var(--ink); padding: 9px 16px; border-radius: 999px; font-weight: 600; }
+.menu-mobile { display: none; }
+.menu-mobile summary { list-style: none; cursor: pointer; font-size: 14px; padding: 8px 2px; }
+.menu-mobile summary::-webkit-details-marker { display: none; }
+.menu-mobile nav { position: absolute; left: 0; right: 0; top: var(--header-h); background: var(--ink); border-bottom: 1px solid var(--line); }
+.menu-mobile ul { list-style: none; margin: 0; padding-block: 8px 20px; }
+.menu-mobile li a { display: block; padding: 12px 0; font-size: 20px; text-decoration: none; border-bottom: 1px solid var(--line); }
+@media (max-width: 880px) {
+  .nav-main { display: none; }
+  .lang { margin-left: auto; }
+  .menu-mobile { display: block; }
+  .btn-contact { padding: 8px 14px; }
+}
+
+/* Shared: section label, small caps meta, outlined button */
+.label { margin: 0 0 clamp(20px, 2.4vw, 32px); font-stretch: 125%; font-weight: 500; font-size: clamp(1rem, 1.5vw, 1.25rem); line-height: 1.2; letter-spacing: 0.14em; text-transform: uppercase; }
+.meta { margin: 0; font-stretch: 125%; font-weight: 300; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+.btn-line { display: inline-block; padding: 12px 18px; border: 1px solid currentColor; text-decoration: none; font-stretch: 125%; font-weight: 500; font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; transition: background-color 0.3s var(--ease), color 0.3s var(--ease); }
+.btn-line:hover { background: var(--canvas); color: var(--ink); }
+.dark-section { position: relative; z-index: 1; padding-block: var(--section); }
+
+/* Light canvas zones (first screen, Contacto) and the brush stroke that paints their seams with ink */
+.canvas-zone { position: relative; z-index: 2; isolation: isolate; color: var(--ink); background: linear-gradient(115deg, var(--canvas-hi) 0%, var(--canvas) 48%, var(--canvas-lo) 100%); }
+.zone-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.grain { position: absolute; inset: -60px; pointer-events: none; opacity: 0.35; mix-blend-mode: multiply; background-size: 180px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.grain-moving { animation: grain 0.5s steps(3) infinite; }
+@keyframes grain { 0% { transform: translate(0, 0); } 33% { transform: translate(-37px, 21px); } 66% { transform: translate(23px, -41px); } 100% { transform: translate(0, 0); } }
+.edge { position: absolute; left: 0; right: 0; height: var(--edge-h); z-index: 3; pointer-events: none; background: var(--edge-c, var(--ink)); -webkit-mask: url("assets/brush.svg") 0 0 / 100% 100% no-repeat; mask: url("assets/brush.svg") 0 0 / 100% 100% no-repeat; }
+.edge-down { bottom: 0; transform: translateY(50%); }
+.edge-up { top: 0; transform: translateY(-50%) scaleX(-1); }
+
+/* First screen: light canvas, dark strokes, the logo at the centre */
+.hero { min-height: calc(100vh - var(--header-h) - 28px); min-height: calc(100svh - var(--header-h) - 28px); }
+.hero-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: url("assets/bg-poster.jpg") center / cover; }
+.hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-veil { position: absolute; inset: 0; background: radial-gradient(ellipse 38% 44% at 50% 50%, rgb(219 205 198 / 0.78), rgb(219 205 198 / 0) 100%); }
+.hero-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 55%, rgb(14 13 16 / 0.28) 100%); }
+/* The logo sits at the exact centre of the first screen: the video keeps that ellipse free of paint */
+.hero-content { position: absolute; inset: 0; display: grid; grid-template-rows: 1fr auto 1fr; justify-items: center; text-align: center; }
+.hero-logo { grid-row: 2; position: relative; width: min(30vh, 64vw, 300px); aspect-ratio: 1; max-width: 100%; }
+.hero-text { grid-row: 3; align-self: stretch; display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.4vh, 16px); padding-block: clamp(10px, 2vh, 22px) calc(var(--edge-h) * 0.6 + 14px); }
+.logo-reveal { display: block; width: 100%; height: 100%; mix-blend-mode: multiply; }
+.hero-title { margin: 0; font-family: var(--f-display); font-stretch: 62%; font-weight: 800; text-transform: uppercase; font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: 0.88; letter-spacing: -0.005em; text-wrap: balance; }
+/* Under the name, words pass one at a time and the last one stays (after Rodeo FX) */
+.hero-roll { margin: 0; display: grid; justify-items: center; padding-left: 0.26em; font-stretch: 125%; font-weight: 500; text-transform: uppercase; font-size: clamp(0.8rem, 1.2vw, 1.05rem); letter-spacing: 0.26em; color: var(--ink); }
+.hero-roll > span { grid-area: 1 / 1; white-space: nowrap; }
+.roll-word { opacity: 0; animation: roll 0.8s var(--ease) both; }
+.roll-word:nth-child(1) { animation-delay: 2.5s; }
+.roll-word:nth-child(2) { animation-delay: 3.3s; }
+.roll-word:nth-child(3) { animation-delay: 4.1s; }
+.roll-word:nth-child(4) { animation-delay: 4.9s; }
+.roll-final { animation: rise 0.7s var(--ease) 5.7s both; }
+.hero-cue { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none; color: var(--muted-on-canvas); }
+.video-toggle { position: absolute; right: max(var(--g), env(safe-area-inset-right, 0px)); bottom: calc(var(--edge-h) * 0.6 + 14px); z-index: 2; font: 500 12px/1 var(--f-body); color: var(--ink); background: rgb(219 205 198 / 0.72); border: 1px solid rgb(14 13 16 / 0.25); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+
+/* Logo reveal: a mask follows the brush circle from the heavy start of the stroke, then the monogram spreads like ink */
+.m-ring { stroke-dasharray: 360 360; stroke-dashoffset: 360; animation: ring 1.6s cubic-bezier(0.6, 0.05, 0.35, 1) 0.25s forwards; }
+.m-core { transform-box: fill-box; transform-origin: center; transform: scale(0); animation: core 0.65s var(--ease) 1.7s forwards; }
+.hero-title { animation: rise 0.7s var(--ease) 2.05s both; }
+@keyframes ring { to { stroke-dashoffset: 0; } }
+@keyframes roll { 0% { opacity: 0; transform: translateY(8px); } 25%, 70% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-8px); } }
+@keyframes core { to { transform: scale(1); } }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+
+/* Projetos: label, then the 2:1 grid of The Mill, captions under the images */
+.projects { padding-top: calc(var(--edge-h) * 0.6 + clamp(56px, 8vw, 120px)); }
+.grid { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap); align-items: start; }
+.tile { min-width: 0; display: grid; gap: 14px; }
+.media { position: relative; display: block; overflow: hidden; max-width: 100%; background: var(--ink-2); text-decoration: none; }
+.tile-wide .media { aspect-ratio: 16 / 9; }
+.tile-tall .media { aspect-ratio: 4 / 5; } /* the mini-series was shot vertical, for Instagram */
+.media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--ease); }
+.media:hover img { transform: scale(1.025); }
+.media.ph { display: grid; place-items: center; padding: 16px; }
+.play { position: absolute; left: 16px; bottom: 16px; padding: 10px 14px; border: 1px solid var(--canvas); background: rgb(14 13 16 / 0.55); color: var(--canvas); font-stretch: 125%; font-weight: 500; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.caption { display: grid; gap: 8px; }
+.name { margin: 0; font-family: var(--f-display); font-stretch: 62%; font-weight: 800; text-transform: uppercase; line-height: 0.92; }
+.caption .name { font-size: clamp(1.7rem, 2.6vw, 2.4rem); }
+
+/* Sobre: small text on the left, a wide still on the right (the Projects grid in reverse) */
+.about { display: grid; grid-template-columns: 1fr 2fr; gap: var(--gap); align-items: start; }
+.about-body { min-width: 0; }
+.about-photo { width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--ink-2); }
+.about-text { min-width: 0; max-width: 62ch; display: grid; gap: 1em; font-size: clamp(1.02rem, 1.25vw, 1.15rem); line-height: 1.65; }
+.about-text p { margin: 0; }
+.about-text em { font-style: normal; font-stretch: 62%; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; }
+
+/* Equipa: portrait cards, photo + name + role, no biographies */
+.team-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin-bottom: clamp(20px, 2.4vw, 32px); }
+.team-head .label { margin: 0; }
+.team-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--gap); }
+.member { min-width: 0; display: grid; gap: 10px; align-content: start; }
+.portrait { width: 100%; max-width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--ink-2); }
+.member .name { font-size: clamp(1.2rem, 1.6vw, 1.5rem); margin-top: 4px; }
+
+/* Filming service strip: the one place that sells, on a raised band */
+.filming { position: relative; z-index: 1; background: var(--ink-2); padding-block: clamp(44px, 6vw, 80px) calc(var(--edge-h) * 0.5 + clamp(44px, 6vw, 80px)); }
+.filming-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(20px, 3vw, 48px); align-items: end; }
+.filming-title { margin: 10px 0 14px; max-width: 18ch; font-family: var(--f-display); font-stretch: 62%; font-weight: 800; text-transform: uppercase; font-size: clamp(1.9rem, 3.6vw, 3.1rem); line-height: 0.95; text-wrap: balance; }
+.filming-line { margin: 0; max-width: 52ch; color: var(--muted); }
+
+/* Contacto: the reel closes on still canvas; the address is the call to action */
+.contact { --edge-c: var(--ink-2); padding-block: calc(var(--edge-h) * 0.5 + clamp(56px, 8vw, 112px)) calc(var(--edge-h) * 0.5 + clamp(56px, 8vw, 112px)); }
+.contact .edge-down { --edge-c: var(--ink); }
+.contact-inner { position: relative; display: grid; gap: clamp(14px, 2vw, 22px); justify-items: start; }
+.contact .label { margin: 0; }
+.contact-line { margin: 0; max-width: 62ch; color: var(--muted-on-canvas); }
+.contact-email { max-width: 100%; font-family: var(--f-display); font-stretch: 62%; font-weight: 700; font-size: clamp(2rem, 7vw, 5.6rem); line-height: 1; letter-spacing: -0.005em; overflow-wrap: anywhere; user-select: all; }
+.contact-email::after { height: 0.14em; bottom: -0.12em; }
+.contact-privacy { margin: 0; font-size: 0.86rem; color: var(--muted-on-canvas); }
+.contact-privacy a { text-underline-offset: 3px; }
+
+/* Footer: legal identification, links, the complaints book */
+.site-footer { position: relative; z-index: 1; padding-block: calc(var(--edge-h) * 0.5 + clamp(40px, 5vw, 64px)) clamp(32px, 4vw, 48px); font-size: 0.84rem; color: var(--muted); }
+.footer-grid { display: grid; grid-template-columns: 1.1fr 1.6fr 1fr auto; gap: clamp(24px, 3vw, 48px); align-items: start; }
+.footer-brand { display: grid; gap: 12px; justify-items: start; color: var(--canvas); }
+.footer-brand .brand-mark { width: 56px; height: 56px; }
+.footer-brand p { margin: 0; font-stretch: 62%; font-weight: 800; font-size: 1.3rem; text-transform: uppercase; line-height: 1; }
+.legal { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; }
+.legal dt { color: var(--canvas); }
+.legal dd { margin: 0; min-width: 0; }
+.footer-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: var(--canvas); }
+.footer-links a { text-decoration: none; }
+.lre { display: grid; place-items: center; width: 150px; height: 62px; max-width: 100%; border: 1px dashed var(--canvas); color: var(--canvas); text-decoration: none; text-align: center; font: 600 11px/1.3 system-ui, sans-serif; letter-spacing: 0.04em; }
+.lre small { display: block; font-weight: 500; color: var(--muted); }
+.footer-note { margin-top: clamp(32px, 4vw, 48px); }
+
+@media (max-width: 960px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .team-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 28px; }
+  .about { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .grid { grid-template-columns: 1fr; }
+  .grid { gap: 40px; }
+  .tile-tall .media { aspect-ratio: 1; }
+  .filming-inner { grid-template-columns: 1fr; align-items: start; }
+}
+@media (max-width: 600px) {
+  /* Five portraits: a row that slides sideways, so none sits alone */
+  .team-grid { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 62%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+  .member { scroll-snap-align: start; }
+}
+@media (max-width: 520px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
+/* Discreet reveal while scrolling, from a visible resting state */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .reveal { transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+  html.js .reveal:not(.in) { opacity: 0.25; transform: translateY(20px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .m-ring, .m-core, .hero-title, .roll-final, .grain { animation: none; }
+  .roll-word { display: none; }
+  .m-ring { stroke-dashoffset: 0; }
+  .m-core { transform: none; }
+  .hero-video { display: none; }
+  .video-toggle { display: none; }
+  .nav-main a::after, .brush-link::after, .media img, .btn-line { transition: none; }
+}
+</style>
+<script>
+  document.documentElement.setAttribute("lang", "pt-PT");
+  document.documentElement.classList.add("js");
+</script>
+
+<div class="proto-banner wrap" role="note">Protótipo: textos e imagens provisórios</div>
+
+<header class="site-header">
+  <div class="header-inner wrap">
+    <a class="brand" href="#topo" aria-label="Droumond Productions, início"><span class="brand-mark" aria-hidden="true"></span></a>
+    <nav class="nav-main" aria-label="Principal">
+      <ul>
+        <li><a href="#projetos">Projetos</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#equipa">Equipa</a></li>
+        <li><a href="#filmagens">Filmagens</a></li>
+      </ul>
+    </nav>
+    <details class="lang">
+      <summary aria-label="Língua: Português">PT</summary>
+      <ul><li><a href="#topo" lang="en" hreflang="en">English</a></li></ul>
+    </details>
+    <a class="btn-contact" href="#contacto">Contacto</a>
+    <details class="menu-mobile">
+      <summary>Menu</summary>
+      <nav aria-label="Principal">
+        <ul class="wrap">
+          <li><a href="#projetos">Projetos</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#equipa">Equipa</a></li>
+          <li><a href="#filmagens">Filmagens</a></li>
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<main id="topo">
+  <section class="hero canvas-zone" aria-labelledby="hero-title">
+    <div class="hero-bg" aria-hidden="true">
+      <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/bg-poster.jpg">
+        <source src="assets/bg.mp4" type="video/mp4">
+      </video>
+      <div class="hero-veil"></div>
+      <div class="hero-vignette"></div>
+      <div class="grain grain-moving"></div>
+    </div>
+    <div class="hero-content wrap">
+      <div class="hero-logo">
+        <svg class="logo-reveal" viewBox="0 0 400 400" role="img" aria-labelledby="logo-t">
+          <title id="logo-t">Logótipo da Droumond Productions</title>
+          <defs>
+            <filter id="ink-edge" x="-20%" y="-20%" width="140%" height="140%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="2" result="n"/>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            <mask id="logo-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="400">
+              <g filter="url(#ink-edge)">
+                <!-- Starts at the heavy blob (about 8 o'clock) and runs counter-clockwise to the dry end, like the brush -->
+                <circle class="m-ring" cx="200" cy="200" r="150" fill="none" stroke="#fff" stroke-width="84" pathLength="360" transform="translate(200 200) rotate(165) scale(1 -1) translate(-200 -200)"/>
+                <circle class="m-core" cx="200" cy="200" r="128" fill="#fff"/>
+              </g>
+            </mask>
+          </defs>
+          <image href="assets/logo.png" x="30" y="30" width="340" height="340" mask="url(#logo-mask)"/>
+        </svg>
+      </div>
+      <div class="hero-text">
+        <h1 id="hero-title" class="hero-title">Droumond Productions</h1>
+        <p class="hero-roll">
+          <span class="roll-word" aria-hidden="true">Séries</span>
+          <span class="roll-word" aria-hidden="true">Suspense</span>
+          <span class="roll-word" aria-hidden="true">Terror</span>
+          <span class="roll-word" aria-hidden="true">Filmagens</span>
+          <span class="roll-final">Produtora audiovisual</span>
+        </p>
+        <a class="hero-cue" href="#projetos">Projetos <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+    <button class="video-toggle" type="button" aria-pressed="false" hidden>Pausar vídeo</button>
+    <div class="edge edge-down" aria-hidden="true"></div>
+  </section>
+
+  <section id="projetos" class="projects dark-section wrap" aria-labelledby="projetos-title">
+    <h2 id="projetos-title" class="label">Projetos</h2>
+    <div class="grid">
+      <article class="tile tile-wide reveal">
+        <a class="media" href="https://www.youtube.com/watch?v=Y785Re6Cyvk" target="_blank" rel="noopener">
+          <img src="assets/efeito-placebo.jpg" width="1080" height="500" alt="Três personagens de Efeito Placebo, vistas de baixo através de uma teia de cordas.">
+          <span class="play">▶ Ver o teaser</span>
+        </a>
+        <div class="caption">
+          <h3 class="name">Efeito Placebo</h3>
+          <p class="meta">Série · Suspense · Em gravação</p>
+        </div>
+      </article>
+      <article class="tile tile-tall reveal">
+        <a class="media" href="https://www.instagram.com/droumond_productions/" target="_blank" rel="noopener">
+          <img src="assets/mini-serie.jpg" width="900" height="1732" alt="Cartaz da mini-série: dois olhos brancos a brilhar no escuro, por cima de uma figura com uma lanterna.">
+          <span class="play">Ver no Instagram</span>
+        </a>
+        <div class="caption">
+          <h3 class="name">Mini-série do Instagram</h3>
+          <p class="meta">Mini-série · Terror · 4 episódios</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="sobre" class="about dark-section wrap" aria-labelledby="sobre-title">
+    <div class="about-body">
+      <h2 id="sobre-title" class="label">Sobre</h2>
+      <div class="about-text reveal">
+        <p>A Droumond Productions é uma produtora audiovisual portuguesa. Fazemos ficção para o ecrã e para as redes: <em>Efeito Placebo</em>, uma série de suspense, está em gravação, e a mini-série do Instagram contou uma história de terror em quatro episódios curtos.</p>
+        <p>Como temos o nosso próprio material de produção, também filmamos por encomenda.</p>
+      </div>
+    </div>
+    <img class="about-photo reveal" src="assets/sobre.jpg" width="1080" height="608" alt="Um homem de casaco escuro, sentado à porta de um prédio antigo, numa rua de calçada, ao lado de uma mota.">
+  </section>
+
+  <section id="equipa" class="dark-section wrap" aria-labelledby="equipa-title">
+    <div class="team-head">
+      <h2 id="equipa-title" class="label">Equipa</h2>
+      <span class="tag-ph">Protótipo: personagens no lugar da equipa</span>
+    </div>
+    <ul class="team-grid">
+      <li class="member reveal">
+        <img class="portrait" src="assets/equipa-1.jpg" width="640" height="800" alt="Raul de Valverde, de óculos e casaco de cabedal, encostado a uma parede de tijolo.">
+        <h3 class="name">Raul de Valverde</h3>
+        <p class="meta">Personagem · Efeito Placebo</p>
+      </li>
+      <li class="member reveal">
+        <img class="portrait" src="assets/equipa-2.jpg" width="640" height="800" alt="Miguel Figueredo, de fato, olha para o relógio com um copo de vinho na mão.">
+        <h3 class="name">Miguel Figueredo</h3>
+        <p class="meta">Personagem · Efeito Placebo</p>
+      </li>
+      <li class="member reveal">
+        <img class="portrait" src="assets/equipa-3.jpg" width="640" height="800" alt="Julien Laffont, de óculos escuros e casaco de cabedal.">
+        <h3 class="name">Julien Laffont</h3>
+        <p class="meta">Personagem · Efeito Placebo</p>
+      </li>
+      <li class="member reveal">
+        <img class="portrait" src="assets/equipa-4.jpg" width="640" height="800" alt="Bruno Moreira, de fato, segura uma fita da polícia.">
+        <h3 class="name">Bruno Moreira</h3>
+        <p class="meta">Personagem</p>
+      </li>
+      <li class="member reveal">
+        <img class="portrait" src="assets/equipa-5.jpg" width="640" height="800" alt="Uma personagem de guarda-chuva transparente olha para cima, à chuva.">
+        <h3 class="name">Nome por confirmar</h3>
+        <p class="meta">Personagem</p>
+      </li>
+    </ul>
+  </section>
+
+  <section id="filmagens" class="filming" aria-labelledby="filmagens-title">
+    <div class="filming-inner wrap">
+      <div>
+        <p class="meta">Serviço de filmagens</p>
+        <h2 id="filmagens-title" class="filming-title">Quer a Droumond Productions para gravação?</h2>
+        <p class="filming-line">Levamos a nossa equipa e o nosso material de produção às suas filmagens.</p>
+      </div>
+      <a class="btn-line" href="#filmagens">Ver o serviço</a>
+    </div>
+  </section>
+
+  <section id="contacto" class="contact canvas-zone" aria-labelledby="contacto-title">
+    <div class="edge edge-up" aria-hidden="true"></div>
+    <div class="zone-bg" aria-hidden="true"><div class="grain"></div></div>
+    <div class="contact-inner wrap">
+      <h2 id="contacto-title" class="label">Contacto</h2>
+      <p class="contact-line">Para um projeto, uma filmagem ou uma pergunta, escreva-nos.</p>
+      <a class="contact-email brush-link" href="mailto:contacto@example.com">contacto@example.com</a>
+      <span class="tag-ph">Endereço provisório</span>
+      <p class="contact-privacy">Os dados que nos enviar são tratados de acordo com a <a href="#politica-de-privacidade">Política de Privacidade</a>.</p>
+    </div>
+    <div class="edge edge-down" aria-hidden="true"></div>
+  </section>
+</main>
+
+<footer class="site-footer wrap">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <p>Droumond Productions</p>
+    </div>
+    <div>
+      <dl class="legal">
+        <dt>Firma</dt><dd>Por preencher</dd>
+        <dt>Tipo de sociedade</dt><dd>Por preencher</dd>
+        <dt>Sede</dt><dd>Por preencher</dd>
+        <dt>Conservatória e matrícula</dt><dd>Por preencher</dd>
+        <dt>NIPC</dt><dd>Por preencher</dd>
+        <dt>Capital social</dt><dd>Por preencher</dd>
+      </dl>
+    </div>
+    <ul class="footer-links">
+      <li><a class="brush-link" href="mailto:contacto@example.com">contacto@example.com</a></li>
+      <li><a class="brush-link" href="#politica-de-privacidade">Política de Privacidade</a></li>
+      <li><a class="brush-link" href="https://www.youtube.com/@DroumondProductions" target="_blank" rel="noopener">YouTube</a></li>
+      <li><a class="brush-link" href="https://www.instagram.com/droumond_productions/" target="_blank" rel="noopener">Instagram</a></li>
+    </ul>
+    <a class="lre" href="https://www.livroreclamacoes.pt/inicio" target="_blank" rel="noopener">Livro de Reclamações<small>ícone oficial (placeholder)</small></a>
+  </div>
+  <p class="proto-note footer-note">Ficam fora do protótipo: a página do serviço de filmagens, a Política de Privacidade, a versão inglesa e a página 404. Os dados legais e o email são provisórios, e a Equipa mostra personagens no lugar das pessoas reais.</p>
+</footer>
+
+<script>
+(function () {
+  // Background video: visible pause button; nothing moves for reduced motion
+  var video = document.querySelector(".hero-video");
+  var toggle = document.querySelector(".video-toggle");
+  if (video) {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reduce.matches) { video.removeAttribute("autoplay"); video.pause(); }
+    toggle.hidden = false;
+    toggle.addEventListener("click", function () {
+      if (video.paused) { video.play(); toggle.textContent = "Pausar vídeo"; toggle.setAttribute("aria-pressed", "false"); }
+      else { video.pause(); toggle.textContent = "Retomar vídeo"; toggle.setAttribute("aria-pressed", "true"); }
+    });
+  }
+
+  // Discreet reveal of elements below the fold
+  var items = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, { threshold: 0.15 });
+    items.forEach(function (el) { if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add("in"); else io.observe(el); });
+  } else {
+    items.forEach(function (el) { el.classList.add("in"); });
+  }
+})();
+</script>
