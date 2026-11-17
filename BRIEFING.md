@@ -6,7 +6,7 @@ Documento de direção inicial. Última atualização: 2026-11-16. Tudo o que es
 
 - Empresa: Droumond Productions, produtora audiovisual. Sócios: Julien e Carlos.
 - A empresa ainda não tem site.
-- Série em desenvolvimento: *Efeito Placebo*, suspense, em português de Portugal, em fase de gravação.
+- Série em desenvolvimento: _Efeito Placebo_, suspense, em português de Portugal, em fase de gravação.
 - YouTube: https://www.youtube.com/@DroumondProductions/videos (só existe um teaser).
 - Instagram: mini-série com cerca de 4 episódios, feita a aproveitar o interesse por Resident Evil.
 - Repositório: https://github.com/juliensl/droumond-productions.git (grafia "droumond", como no canal).
@@ -22,9 +22,9 @@ Documento de direção inicial. Última atualização: 2026-11-16. Tudo o que es
 ## Âmbito
 
 - O site é da empresa, não só da série.
-- Mostra o teaser de *Efeito Placebo*, incorporado do YouTube. Não aloja episódios.
+- Mostra o teaser de _Efeito Placebo_, incorporado do YouTube. Não aloja episódios.
 - Secções obrigatórias: Sobre, Equipa, Contacto.
-- Outros projetos: a mini-série de Resident Evil do Instagram, além de *Efeito Placebo*.
+- Outros projetos: a mini-série de Resident Evil do Instagram, além de _Efeito Placebo_.
 - Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?").
 - Sem loja, apoio nem newsletter na v1.
 - Qualquer outra secção (portfólio, notícias, loja, newsletter) só entra se for pedida.

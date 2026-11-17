@@ -1,0 +1,10 @@
+dist/
+.astro/
+.claude/
+playwright-report/
+test-results/
+lighthouse-report/
+package-lock.json
+# A symlink to CLAUDE.md, which Prettier already checks. Where git cannot make
+# symlinks (WSL on a Windows drive), it is a file holding the target's name.
+AGENTS.md

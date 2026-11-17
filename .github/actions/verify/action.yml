@@ -1,0 +1,63 @@
+# The blocking checks, shared by the workflows (Checks now, Publish with #11). Leaves the build done.
+# Each job runs one part of the Playwright suite (`part`) or the Lighthouse run,
+# so the parts run side by side; with neither, it only checks and builds.
+# Runs after checkout and setup-node, which stay in the workflows: Dependabot
+# only updates the actions it finds there.
+name: Verify
+description: Installs, checks types and formatting, builds, then runs one part of the Playwright suite or Lighthouse.
+
+inputs:
+  part:
+    description: 'The part of the Playwright suite this job runs: a browser and a shard of its tests, as "webkit 1/3". Empty: no suite.'
+    required: false
+    default: ''
+  lighthouse:
+    description: 'Runs Lighthouse in mobile mode on the build.'
+    required: false
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - run: npm ci
+      shell: bash
+
+    - name: Types
+      run: npm run check
+      shell: bash
+
+    - name: Formatting
+      run: npm run format:check
+      shell: bash
+
+    - name: Build
+      run: npm run build
+      shell: bash
+
+    # Only the part's browser; Lighthouse uses Chromium.
+    - name: Playwright browser
+      if: inputs.part != '' || inputs.lighthouse == 'true'
+      env:
+        PART: ${{ inputs.part }}
+      run: |
+        browser=${PART%% *}
+        npx playwright install --with-deps "${browser:-chromium}"
+      shell: bash
+
+    # The lighthouse project only tests the checker: it runs with Chromium.
+    - name: Playwright suite
+      if: inputs.part != ''
+      env:
+        PART: ${{ inputs.part }}
+      run: |
+        read -r browser shard <<<"$PART"
+        projects=(--project="$browser")
+        [[ $browser == chromium ]] && projects+=(--project=lighthouse)
+        npm test -- "${projects[@]}" --shard="$shard"
+      shell: bash
+
+    # SEO, sizes, fonts and requests block. Performance only warns, in the job summary.
+    - name: Lighthouse in mobile mode
+      if: inputs.lighthouse == 'true'
+      run: npm run lighthouse
+      shell: bash
