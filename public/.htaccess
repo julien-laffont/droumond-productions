@@ -1,0 +1,13 @@
+# Read only by the Infomaniak Apache: astro preview and the Playwright suite ignore it.
+# Only what answers addresses that do not exist (#17). HTTPS, cache and compression come with the
+# publication (#11, #19), where they can be tested on the host.
+
+RewriteEngine On
+
+# A folder without index.html (such as /_astro/) returns the 404 page, not a 403 or the file list.
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html !-f
+RewriteRule ^ - [R=404,L]
+
+# Any address that does not exist shows the 404 page (src/pages/404.astro), with the 404 status.
+ErrorDocument 404 /404.html

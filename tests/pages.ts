@@ -1,6 +1,6 @@
 // The two builds the suite checks, and the pages each one generated.
 import { existsSync, globSync } from 'node:fs';
-import { test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import type { Language } from '../src/config/site';
 
 // Ports 4341 and 4342, not 4331 or 4332, which Julien's landing page uses: with both projects
@@ -57,6 +57,12 @@ export function builtPages(): string[] {
 /** A page's language, from its address: English under /en/, Portuguese everywhere else. */
 export function languageOf(path: string): Language {
 	return path.startsWith('/en/') ? 'en' : 'pt';
+}
+
+/** Opens a page and fails if it does not exist: astro preview answers a missing one with its own 404 page. */
+export async function openExisting(page: Page, path: string) {
+	const response = await page.goto(path);
+	expect(response?.status(), `status of ${path}`).toBe(200);
 }
 
 /** Every HTML page of a folder, as if it were a build. */

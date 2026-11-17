@@ -44,14 +44,15 @@ The second command downloads the browsers the tests use. On a Linux machine that
 
 ## Where things live
 
-- `src/localized-pages/<language>/`: one thin file per page and language; `src/integrations/localized-pages.ts` gives each its address (`pt/index.astro` is `/`, `en/index.astro` is `/en/`), only for the published languages. `src/pages/` is for pages without a language (the 404, #17).
+- `src/localized-pages/<language>/`: one thin file per page and language; `src/integrations/localized-pages.ts` gives each its address (`pt/index.astro` is `/`, `en/index.astro` is `/en/`), only for the published languages. `src/pages/` is for pages without a language: the 404 (`404.astro`), which holds both.
 - `src/lib/paths.ts`: each page's address and each section's anchor in both languages. A new page goes there too.
 - `src/config/site.ts`: the contact email, the legal data, the profiles, the languages and which ones are published.
+- `src/content/privacy/`: the Privacy Policy in Markdown, one file per language. Placeholders such as `{email}` and `{legal.nipc}` take their values from `src/config/site.ts` (`src/lib/privacy.ts`); an unknown one fails the build.
 - `src/i18n/`: the interface texts, one dictionary per language (English provisional until #18).
 - `src/layouts/Base.astro`: the `<html>` and `<head>` shared by every page (language, hreflang, icons, font), with the header and the footer.
 - `src/components/`: the header (with the language button and the phone menu), the footer, and each page's content.
 - `src/styles/global.css`: the colours as Tailwind tokens (`bg-ink`, `text-canvas`…), the font, and what Tailwind does badly: the logo mask, the brush stroke under links, the brush-stroke seams (`.edge-down`, `.edge-up`), the grain of the light zones and the reveal of the sections (`.reveal`). Less motion stops all of it.
-- `src/assets/`: Archivo (with its OFL licence), the logo symbol, the brush stroke and the official Livro de Reclamações icon. `public/`: the site icons.
+- `src/assets/`: Archivo (with its OFL licence), the logo symbol, the brush stroke and the official Livro de Reclamações icon. `public/`: the site icons and `.htaccess`, read only by the host's Apache (the 404 page for unknown addresses).
 - `tests/`: the Playwright suite, over both builds. `all-pages.spec.ts` runs axe (WCAG A and AA) on every page found in `dist/` and `dist-en/`, so a new page is checked without touching the tests.
 - `tests/lighthouse/`: Lighthouse in mobile mode, over every page of `dist/`. SEO, page weight (400 KB), JS weight (75 KB), fonts (at most 2, in woff2) and requests to other domains block. Performance, LCP and TBT only warn; CLS, accessibility and best practices only show in the summary. The HTML reports go to `lighthouse-report/`. `check.spec.ts` tests the checker itself on pages made to fail each target.
 - `.github/workflows/ci.yml`: the `Checks` workflow, on each PR. Into `main`: Chromium in 1 job, WebKit in 3, and Lighthouse. Into any other branch: Chromium in 4 jobs. The steps live in `.github/actions/verify/`.

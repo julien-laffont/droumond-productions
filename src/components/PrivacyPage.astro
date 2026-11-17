@@ -1,0 +1,39 @@
+---
+// The Privacy Policy in one language (/politica-de-privacidade/, /en/privacy-policy/), from its
+// Markdown in src/content/privacy/. Dark page; the title and the section headings in the label
+// style of the prototype, the text small. Links inside the text are underlined: they must not
+// rely on colour alone (WCAG 1.4.1); the brush stroke on hover is for standalone links.
+import { getEntry } from 'astro:content';
+import type { Language } from '../config/site';
+import Base from '../layouts/Base.astro';
+import { withValues } from '../lib/privacy';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const entry = await getEntry('privacy', language);
+if (!entry?.rendered) {
+	throw new Error(
+		`Missing src/content/privacy/${language}.md: the policy exists in every language.`,
+	);
+}
+---
+
+<Base
+	language={language}
+	page="privacy"
+	title={`${entry.data.title} · Droumond Productions`}
+	description={entry.data.description}
+>
+	<main class="px-gutter py-[clamp(48px,6vw,88px)]">
+		<article class="max-w-[68ch]">
+			<h1 class="type-label mb-[clamp(20px,2.4vw,32px)]">{entry.data.title}</h1>
+			<div
+				class="text-[0.95rem] leading-[1.65] [&_a]:underline [&_a]:underline-offset-3 [&_strong]:font-semibold [&>*+*]:mt-4 [&>blockquote]:border [&>blockquote]:border-dashed [&>blockquote]:border-canvas/30 [&>blockquote]:px-5 [&>blockquote]:py-4 [&>blockquote]:text-[0.84rem] [&>blockquote]:text-muted [&>h2]:mt-12 [&>h2]:text-xs/[1.55] [&>h2]:font-medium [&>h2]:tracking-[0.14em] [&>h2]:uppercase [&>h2]:font-stretch-125% [&>ul]:list-disc [&>ul]:space-y-1.5 [&>ul]:pl-5"
+				set:html={withValues(entry.rendered.html)}
+			/>
+		</article>
+	</main>
+</Base>

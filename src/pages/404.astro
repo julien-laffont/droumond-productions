@@ -1,0 +1,35 @@
+---
+// The 404 page (#17): one sentence in each language, each leading to the home page in its
+// language; while English is unpublished, both lead to /. Its texts live here, not in the
+// dictionaries, because the page holds both languages at once (English provisional, #18).
+// `astro preview` serves it for any unknown address with the 404 status; on the host,
+// public/.htaccess does the same. No language button: the page has no other version.
+import { PUBLISHED_LANGUAGES } from '../config/site';
+import Base from '../layouts/Base.astro';
+import { PAGES } from '../lib/paths';
+
+const englishHome = PUBLISHED_LANGUAGES.includes('en') ? PAGES.home.en : PAGES.home.pt;
+const link =
+	'brush-link mt-3 inline-block text-xs/[1.55] tracking-[0.12em] uppercase font-stretch-125%';
+---
+
+<Base
+	language="pt"
+	title="Página não encontrada · Droumond Productions"
+	description="Esta página não existe no site da Droumond Productions."
+>
+	<main class="grid gap-[clamp(32px,5vw,56px)] px-gutter py-[clamp(64px,10vw,140px)]">
+		<div>
+			<h1 class="type-label">Esta página não existe.</h1>
+			<a href={PAGES.home.pt} class={link}>
+				Voltar à página inicial
+			</a>
+		</div>
+		<div lang="en">
+			<p class="type-label">This page does not exist.</p>
+			<a href={englishHome} class={link}>
+				Go back to the home page
+			</a>
+		</div>
+	</main>
+</Base>

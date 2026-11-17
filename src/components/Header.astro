@@ -9,8 +9,8 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
 
 interface Props {
 	language: Language;
-	/** The current page, for the language button. */
-	page: PageId;
+	/** The current page, for the language button. Without one (the 404), there is no button. */
+	page?: PageId;
 }
 
 const { language, page } = Astro.props;
@@ -43,7 +43,7 @@ const links = [
 			</ul>
 		</nav>
 		<div class="flex items-center gap-[clamp(12px,2.4vw,32px)] max-[880px]:ml-auto">
-			<LanguageSwitcher language={language} page={page} />
+			{page && <LanguageSwitcher language={language} page={page} />}
 			<a
 				href={sectionPath('contact', language)}
 				class="flex-none rounded-full bg-canvas px-4 py-[9px] text-xs/[1.55] font-semibold tracking-[0.12em] text-ink uppercase font-stretch-125% max-[880px]:px-3.5 max-[880px]:py-2"
