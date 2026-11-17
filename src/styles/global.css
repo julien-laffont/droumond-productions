@@ -1,0 +1,3 @@
+/* Tailwind: its reset (Preflight) and the utility classes used in the pages (`p-6`, `text-3xl`…).
+   The site's colours and font come as `@theme` tokens in #12. */
+@import 'tailwindcss';
