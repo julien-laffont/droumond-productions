@@ -1,0 +1,56 @@
+// The site's settings in one place: the contact email, the company's legal data and social
+// profiles, the address, the languages and which of them this build publishes.
+
+/**
+ * The contact email: the footer, the Contacto block and the Privacy Policy all read it here, so
+ * changing this line changes it on the whole site. For now Carlos's gmail (#4, #7); the Privacy
+ * Policy's entry on received emails names Google as recipient while it is a gmail.
+ */
+export const CONTACT_EMAIL = 'carlosdroumondwen@gmail.com';
+
+/**
+ * The company's legal identification, shown in the footer (CSC, art. 171.º; #3). Only the labels
+ * are translated. Placeholders until Julien sends the data (#18).
+ */
+export const LEGAL = {
+	firm: 'Por preencher',
+	companyType: 'Por preencher',
+	registeredOffice: 'Por preencher',
+	registry: 'Por preencher',
+	nipc: 'Por preencher',
+	shareCapital: 'Por preencher',
+};
+
+/** The company's profiles: links only, never embeds (#3). */
+export const SOCIAL = {
+	youtube: 'https://www.youtube.com/@DroumondProductions',
+	instagram: 'https://www.instagram.com/droumond_productions',
+};
+
+/**
+ * The site's address, without a final slash. PROVISIONAL: there is no domain yet, it comes with
+ * the publication (#19). Only the hreflang links use it, and only when English is published.
+ */
+export const SITE = 'https://example.com';
+
+export const LANGUAGES = ['pt', 'en'] as const;
+export type Language = (typeof LANGUAGES)[number];
+
+/** The start of each language's addresses. Portuguese, the default language, sits at `/`. */
+export const PREFIXES: Record<Language, string> = { pt: '/', en: '/en/' };
+
+/** The value of `<html lang>` in each language. */
+export const HTML_CODES: Record<Language, string> = { pt: 'pt-PT', en: 'en' };
+
+/** Each language's name, written in that language, as the language button shows it. */
+export const LANGUAGE_NAMES: Record<Language, string> = { pt: 'Português', en: 'English' };
+
+/** English is only published once its texts are translated (#18): then this becomes `true`. */
+const ENGLISH_PUBLISHED = false;
+
+/**
+ * The languages this build generates: only they get pages. The test build (`ENGLISH=1`, see
+ * `npm run build:english`) adds English, to check now what only exists with both languages.
+ */
+export const PUBLISHED_LANGUAGES: readonly Language[] =
+	ENGLISH_PUBLISHED || process.env.ENGLISH === '1' ? LANGUAGES : ['pt'];

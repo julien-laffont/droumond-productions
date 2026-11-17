@@ -34,6 +34,12 @@ runs:
       run: npm run build
       shell: bash
 
+    # The test build with English (dist-en/): only the suite checks it, Lighthouse does not.
+    - name: Build with English
+      if: inputs.part != ''
+      run: npm run build:english
+      shell: bash
+
     # Only the part's browser; Lighthouse uses Chromium.
     - name: Playwright browser
       if: inputs.part != '' || inputs.lighthouse == 'true'

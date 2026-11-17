@@ -1,25 +1,73 @@
 ---
 // The HTML shell shared by every page: <html>, <head> and the global styles.
-// Each page passes its title and description; its content goes into the <slot />.
+// Each page passes its language, its id in PAGES, its title and description; its content goes into the <slot />.
 import '../styles/global.css';
+import { Font } from 'astro:assets';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { HTML_CODES, PUBLISHED_LANGUAGES, SITE, type Language } from '../config/site';
+import { PAGES, type PageId } from '../lib/paths';
 
 interface Props {
+	language: Language;
+	page: PageId;
 	title: string;
 	description: string;
 }
 
-const { title, description } = Astro.props;
+const { language, page, title, description } = Astro.props;
+/** The languages of the hreflang links: every published one, only when there is more than one. */
+const hreflangLanguages = PUBLISHED_LANGUAGES.length > 1 ? PUBLISHED_LANGUAGES : [];
 ---
 
 <!doctype html>
-<html lang="pt-PT">
+<html lang={HTML_CODES[language]}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		{/* Marks that JavaScript runs, before the first paint: only then do .reveal sections start faded. */}
+		<script is:inline>
+			document.documentElement.classList.add('js');
+		</script>
+		{hreflangLanguages.map((l) => (
+			<link rel="alternate" hreflang={l} href={`${SITE}${PAGES[page][l]}`} />
+		))}
+		{/* The logo symbol, canvas on ink, made from src/assets/logo.png (16, 32 and 48 px; 180 px). */}
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		{/* The only font, preloaded: the names in large type use it from the first screen. */}
+		<Font cssVariable="--font-archivo" preload />
 	</head>
 	<body>
+		<Header language={language} page={page} />
 		<slot />
+		<Footer language={language} />
+		<script>
+			// The discreet reveal of the sections while scrolling (.reveal, in global.css): what is
+			// already on screen shows at once, the rest when it comes into view. Its tests come with the
+			// first section that uses it (#14).
+			const items = document.querySelectorAll('.reveal');
+			if ('IntersectionObserver' in window) {
+				const observer = new IntersectionObserver(
+					(entries) => {
+						for (const entry of entries) {
+							if (!entry.isIntersecting) continue;
+							entry.target.classList.add('in');
+							observer.unobserve(entry.target);
+						}
+					},
+					{ threshold: 0.15 },
+				);
+				for (const item of items) {
+					if (item.getBoundingClientRect().top < window.innerHeight) item.classList.add('in');
+					else observer.observe(item);
+				}
+			} else {
+				// An old browser: everything shows, as without JavaScript.
+				for (const item of items) item.classList.add('in');
+			}
+		</script>
 	</body>
 </html>

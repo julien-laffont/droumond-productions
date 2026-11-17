@@ -1,3 +1,177 @@
-/* Tailwind: its reset (Preflight) and the utility classes used in the pages (`p-6`, `text-3xl`…).
-   The site's colours and font come as `@theme` tokens in #12. */
 @import 'tailwindcss';
+
+/*
+ * The visual direction of the prototype (#5): dark and cinematic, opened and closed by light canvas,
+ * with brush strokes painting the seams. Only these colours exist: the Tailwind classes use them by
+ * name (bg-ink, text-canvas, text-muted…). The crimson #79081b only lives in the background video,
+ * never as text or buttons, so it has no token.
+ */
+@theme {
+	--color-*: initial;
+	/* Page background, and the paint of the brush strokes. */
+	--color-ink: #0e0d10;
+	/* Raised dark surface. */
+	--color-ink-2: #18161a;
+	/* Light zones, and text on ink (12.5:1). */
+	--color-canvas: #dbcdc6;
+	--color-canvas-hi: #e7ddd8;
+	--color-canvas-lo: #c9b8b0;
+	/* Secondary text on ink (5.3:1). */
+	--color-muted: #8d8481;
+	/* Secondary text on canvas (5:1). */
+	--color-muted-on-canvas: #5a5150;
+}
+
+/* Archivo only, in several widths (font-stretch-62% for names, font-stretch-125% for labels).
+   --font-archivo comes from the Astro fonts API (astro.config.mjs), with its fallback font. */
+@theme inline {
+	--font-sans: var(--font-archivo);
+	--default-font-family: var(--font-archivo);
+}
+
+/* The side margin of every block, wider than the phone's notch. */
+@utility px-gutter {
+	padding-left: max(clamp(16px, 3vw, 40px), env(safe-area-inset-left, 0px));
+	padding-right: max(clamp(16px, 3vw, 40px), env(safe-area-inset-right, 0px));
+}
+
+@layer base {
+	:root {
+		--header-height: 4rem;
+		/* The height of the brush-stroke seams (.edge); the blocks next to one leave room for half of it. */
+		--edge-height: clamp(44px, 7vw, 104px);
+		--ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	html {
+		color-scheme: dark;
+		/* The sticky header never covers an anchor target or the focused element. */
+		scroll-padding-top: var(--header-height);
+	}
+
+	body {
+		background: var(--color-ink);
+		color: var(--color-canvas);
+		line-height: 1.55;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 3px;
+	}
+}
+
+@layer components {
+	/* The logo symbol, in the text colour: dark on canvas, light on ink, from the same file.
+	   When the SVG arrives (#18), only the file changes. */
+	.logo-mark {
+		background: currentColor;
+		-webkit-mask: url('../assets/logo.png') center / contain no-repeat;
+		mask: url('../assets/logo.png') center / contain no-repeat;
+	}
+
+	/* The brush stroke paints itself under a link on hover and on keyboard focus. */
+	.brush-link {
+		position: relative;
+		text-decoration: none;
+	}
+	.brush-link::after {
+		content: '';
+		position: absolute;
+		left: -6%;
+		right: -6%;
+		bottom: -7px;
+		height: 7px;
+		background: currentColor;
+		-webkit-mask: url('../assets/brush.svg') 0 0 / 100% 100% no-repeat;
+		mask: url('../assets/brush.svg') 0 0 / 100% 100% no-repeat;
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.35s var(--ease);
+	}
+	.brush-link:hover::after,
+	.brush-link:focus-visible::after {
+		transform: scaleX(1);
+	}
+
+	/* The seam between a light zone and the dark: the same brush stroke, enlarged, in ink. Inside a
+	   light zone, .edge-down paints its bottom seam and .edge-up its top one. Half of the stroke
+	   overlaps the next block, so the zone needs `relative z-2 isolate` (above its neighbours), and
+	   the neighbour leaves room for half of --edge-height. --edge-color changes the paint when the
+	   neighbour is not ink (the Contacto block's top edge over the ink-2 filming strip, #16). */
+	.edge {
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: var(--edge-height);
+		z-index: 3;
+		pointer-events: none;
+		background: var(--edge-color, var(--color-ink));
+		-webkit-mask: url('../assets/brush.svg') 0 0 / 100% 100% no-repeat;
+		mask: url('../assets/brush.svg') 0 0 / 100% 100% no-repeat;
+	}
+	.edge-down {
+		bottom: 0;
+		transform: translateY(50%);
+	}
+	.edge-up {
+		top: 0;
+		transform: translateY(-50%) scaleX(-1);
+	}
+
+	/* Film grain on the light zones: SVG noise, multiplied. .grain-moving makes it flicker. It
+	   overflows by 60 px so its movement never shows an edge: put it in a clipping layer behind the
+	   content (`absolute inset-0 -z-1 overflow-hidden`), or the page scrolls sideways. */
+	.grain {
+		position: absolute;
+		inset: -60px;
+		pointer-events: none;
+		opacity: 0.35;
+		mix-blend-mode: multiply;
+		background-size: 180px;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+	}
+	.grain-moving {
+		animation: grain 0.5s steps(3) infinite;
+	}
+}
+
+@keyframes grain {
+	0% {
+		transform: translate(0, 0);
+	}
+	33% {
+		transform: translate(-37px, 21px);
+	}
+	66% {
+		transform: translate(23px, -41px);
+	}
+	100% {
+		transform: translate(0, 0);
+	}
+}
+
+/* Discreet reveal of the sections while scrolling, from a visible resting state: without
+   JavaScript (no .js on <html>), everything simply shows. The script is in Base.astro. */
+@media (prefers-reduced-motion: no-preference) {
+	html.js .reveal {
+		transition:
+			opacity 0.9s var(--ease),
+			transform 0.9s var(--ease);
+	}
+	html.js .reveal:not(.in) {
+		opacity: 0.25;
+		transform: translateY(20px);
+	}
+}
+
+/* Whoever asked for less motion sees everything still. */
+@media (prefers-reduced-motion: reduce) {
+	.brush-link::after {
+		transition: none;
+	}
+	.grain-moving {
+		animation: none;
+	}
+}

@@ -1,0 +1,100 @@
+---
+// The header, the same on every page and always near-black, like the bars of a letterboxed film:
+// the symbol (to the home page), the sections and the filming page, and Contacto, always visible.
+// Over 880 px the links sit in a row; below, they move into a menu.
+import type { Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import { PAGES, sectionPath, type PageId } from '../lib/paths';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+interface Props {
+	language: Language;
+	/** The current page, for the language button. */
+	page: PageId;
+}
+
+const { language, page } = Astro.props;
+const t = dictionaries[language].header;
+const links = [
+	{ text: t.projects, href: sectionPath('projects', language) },
+	{ text: t.about, href: sectionPath('about', language) },
+	{ text: t.team, href: sectionPath('team', language) },
+	{ text: t.filming, href: PAGES.filming[language] },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-canvas/16 bg-ink">
+	<div class="flex h-(--header-height) items-center gap-[clamp(12px,2.4vw,32px)] px-gutter">
+		<a href={PAGES.home[language]} aria-label={t.home} class="block size-10 flex-none">
+			<span class="logo-mark block size-full" aria-hidden="true"></span>
+		</a>
+		<nav aria-label={t.nav} class="ml-auto max-[880px]:hidden">
+			<ul class="flex gap-[clamp(14px,2.2vw,30px)]">
+				{links.map(({ text, href }) => (
+					<li>
+						<a
+							href={href}
+							class="brush-link text-xs/[1.55] tracking-[0.12em] uppercase font-stretch-125%"
+						>
+							{text}
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+		<div class="flex items-center gap-[clamp(12px,2.4vw,32px)] max-[880px]:ml-auto">
+			<LanguageSwitcher language={language} page={page} />
+			<a
+				href={sectionPath('contact', language)}
+				class="flex-none rounded-full bg-canvas px-4 py-[9px] text-xs/[1.55] font-semibold tracking-[0.12em] text-ink uppercase font-stretch-125% max-[880px]:px-3.5 max-[880px]:py-2"
+			>
+				{t.contact}
+			</a>
+			<details class="min-[880px]:hidden" data-menu>
+				<summary class="cursor-pointer list-none px-0.5 py-2 text-sm/[1.55] [&::-webkit-details-marker]:hidden">
+					{t.menu}
+				</summary>
+				<nav
+					aria-label={t.nav}
+					class="absolute inset-x-0 top-(--header-height) border-b border-canvas/16 bg-ink"
+				>
+					<ul class="px-gutter pt-2 pb-5">
+						{links.map(({ text, href }) => (
+							<li>
+								<a href={href} class="block border-b border-canvas/16 py-3 text-xl/[1.55]">
+									{text}
+								</a>
+							</li>
+						))}
+					</ul>
+				</nav>
+			</details>
+		</div>
+	</div>
+</header>
+
+<script>
+	// The menus (<details data-menu>) open and close without JavaScript. With it, they also close
+	// when one of their links is tapped (on the home page the link only scrolls, and the menu would
+	// stay over the content), when the other menu opens (they would cover each other), and with
+	// Escape, which gives the focus back to the menu's button if it was inside the menu.
+	const menus = document.querySelectorAll<HTMLDetailsElement>('details[data-menu]');
+	for (const menu of menus) {
+		menu.addEventListener('click', (event) => {
+			if (event.target instanceof Element && event.target.closest('a')) menu.open = false;
+		});
+		menu.addEventListener('toggle', () => {
+			if (!menu.open) return;
+			for (const other of menus) if (other !== menu) other.open = false;
+		});
+	}
+	document.addEventListener('keydown', (event) => {
+		if (event.key !== 'Escape') return;
+		for (const menu of menus) {
+			if (!menu.open) continue;
+			const hadFocus = menu.contains(document.activeElement);
+			menu.open = false;
+			if (hadFocus) menu.querySelector('summary')?.focus();
+		}
+	});
+</script>
