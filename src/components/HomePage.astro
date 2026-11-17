@@ -1,0 +1,20 @@
+---
+// The home page, in one language (/ and /en/). Minimal until the sections arrive (#13 to #16).
+import type { Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import Base from '../layouts/Base.astro';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const t = dictionaries[language].home;
+---
+
+<Base language={language} page="home" title={t.title} description={t.description}>
+	<main class="mx-auto max-w-2xl px-5 py-16">
+		<h1 class="text-3xl font-semibold">Droumond Productions</h1>
+		<p class="mt-4">{t.placeholder}</p>
+	</main>
+</Base>

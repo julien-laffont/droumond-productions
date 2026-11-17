@@ -1,0 +1,76 @@
+---
+// The footer, on every page: the company's legal identification (#3), the email, the Privacy
+// Policy, the profiles (links only, no embeds) and the official Livro de Reclamações icon. No
+// "legal information" page and no cookie banner (#3).
+import type { Language } from '../config/site';
+import { CONTACT_EMAIL, LEGAL, SOCIAL } from '../config/site';
+import { dictionaries } from '../i18n';
+import { PAGES } from '../lib/paths';
+// The official icon, from the platform's own "Imagens dos Logótipos" (livroreclamacoes.pt,
+// Informação de Apoio), untouched: "preto negativo", white circle and letters on black, which read
+// white on ink. The rules ask for an icon that contrasts with the background and links to the platform.
+import complaintsBook from '../assets/livro-reclamacoes.png';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const t = dictionaries[language].footer;
+const legal = (Object.keys(LEGAL) as (keyof typeof LEGAL)[]).map((key) => ({
+	label: t.legal[key],
+	value: LEGAL[key],
+}));
+const links = [
+	{ text: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
+	{ text: t.privacy, href: PAGES.privacy[language] },
+	{ text: 'YouTube', href: SOCIAL.youtube, external: true },
+	{ text: 'Instagram', href: SOCIAL.instagram, external: true },
+];
+---
+
+<footer class="relative z-1 px-gutter pt-[calc(var(--edge-height)*0.5+clamp(40px,5vw,64px))] pb-[clamp(32px,4vw,48px)] text-[0.84rem] text-muted">
+	<div class="grid grid-cols-[1.1fr_1.6fr_1fr_auto] items-start gap-[clamp(24px,3vw,48px)] max-[960px]:grid-cols-2 max-[520px]:grid-cols-1">
+		<div class="grid justify-items-start gap-3 text-canvas">
+			<span class="logo-mark block size-14" aria-hidden="true"></span>
+			<p class="text-[1.3rem] leading-none font-extrabold uppercase font-stretch-62%">
+				Droumond Productions
+			</p>
+		</div>
+		<dl class="grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-1">
+			{legal.map(({ label, value }) => (
+				<>
+					<dt class="text-canvas">{label}</dt>
+					<dd class="min-w-0">{value}</dd>
+				</>
+			))}
+		</dl>
+		<ul class="grid gap-2 text-canvas">
+			{links.map(({ text, href, external }) => (
+				<li>
+					<a
+						href={href}
+						class="brush-link [overflow-wrap:anywhere]"
+						{...(external && { target: '_blank', rel: 'noopener' })}
+					>
+						{text}
+					</a>
+				</li>
+			))}
+		</ul>
+		<a
+			href="https://www.livroreclamacoes.pt/inicio"
+			target="_blank"
+			rel="noopener"
+			lang="pt-PT"
+			class="block w-fit"
+		>
+			<img
+				src={complaintsBook.src}
+				width={complaintsBook.width}
+				height={complaintsBook.height}
+				alt="Livro de Reclamações"
+			/>
+		</a>
+	</div>
+</footer>

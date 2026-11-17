@@ -1,4 +1,5 @@
 dist/
+dist-en/
 .astro/
 .claude/
 playwright-report/

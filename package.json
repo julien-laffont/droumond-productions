@@ -9,13 +9,14 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build",
+		"build:english": "ENGLISH=1 astro build --outDir dist-en",
 		"preview": "astro preview",
 		"check": "astro check",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"test": "playwright test",
 		"lighthouse": "node tests/lighthouse/run.ts",
-		"verify": "npm run check && npm run format:check && npm run build && npm test && npm run lighthouse",
+		"verify": "npm run check && npm run format:check && npm run build && npm run build:english && npm test && npm run lighthouse",
 		"astro": "astro"
 	},
 	"allowScripts": {
