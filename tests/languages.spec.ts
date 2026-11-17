@@ -1,27 +1,27 @@
 // The two languages: European Portuguese at /, English at /en/ only once it is published.
 import { expect, test, type Page } from '@playwright/test';
 import { SITE } from '../src/config/site';
-import { inEachBuild, languageOf, pagesOf } from './pages';
+import { inEachBuild, languageOf, openExisting, pagesOf } from './pages';
 
-/** Opens a page and fails if it does not exist: astro preview answers a missing one with its own 404 page. */
-async function openExisting(page: Page, path: string) {
-	const response = await page.goto(path);
-	expect(response?.status(), `status of ${path}`).toBe(200);
-}
+/** Each page in both languages: the language button and the hreflang links pair them. */
+const PAIRS = [
+	{ pt: '/', en: '/en/' },
+	{ pt: '/politica-de-privacidade/', en: '/en/privacy-policy/' },
+];
 
 /** The language button on each page: the current language, then the link to the other one. */
-const SWITCHER = [
+const SWITCHER = PAIRS.flatMap(({ pt, en }) => [
 	{
-		path: '/',
+		path: pt,
 		name: 'PT, língua: Português',
-		other: { text: 'English', href: '/en/', lang: 'en', hreflang: 'en' },
+		other: { text: 'English', href: en, lang: 'en', hreflang: 'en' },
 	},
 	{
-		path: '/en/',
+		path: en,
 		name: 'EN, language: English',
-		other: { text: 'Português', href: '/', lang: 'pt-PT', hreflang: 'pt' },
+		other: { text: 'Português', href: pt, lang: 'pt-PT', hreflang: 'pt' },
 	},
-];
+]);
 
 inEachBuild((build) => {
 	test('the home page at / is in European Portuguese', async ({ page }) => {
@@ -35,11 +35,13 @@ inEachBuild((build) => {
 			await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 		});
 
-		for (const path of ['/', '/en/']) {
-			test(`${path} declares both versions with absolute addresses`, async ({ page }) => {
-				await openExisting(page, path);
-				expect(await alternates(page)).toEqual({ pt: `${SITE}/`, en: `${SITE}/en/` });
-			});
+		for (const { pt, en } of PAIRS) {
+			for (const path of [pt, en]) {
+				test(`${path} declares both versions with absolute addresses`, async ({ page }) => {
+					await openExisting(page, path);
+					expect(await alternates(page)).toEqual({ pt: `${SITE}${pt}`, en: `${SITE}${en}` });
+				});
+			}
 		}
 
 		for (const s of SWITCHER) {

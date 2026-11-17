@@ -19,7 +19,8 @@ inEachBuild((build) => {
 			expect(mailtos.map((href) => href.slice('mailto:'.length).split('?')[0])).toEqual(
 				mailtos.map(() => CONTACT_EMAIL),
 			);
-			const shown = (await page.locator('body').innerText()).match(/[\w.+-]+@[\w-]+\.[\w.-]+/g);
+			// An address ends with a letter, never with the full stop of the sentence around it.
+			const shown = (await page.locator('body').innerText()).match(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g);
 			expect(new Set(shown)).toEqual(new Set([CONTACT_EMAIL]));
 		});
 	}

@@ -1,6 +1,7 @@
 ---
 // The HTML shell shared by every page: <html>, <head> and the global styles.
 // Each page passes its language, its id in PAGES, its title and description; its content goes into the <slot />.
+// A page without an id (the 404, which holds both languages) has no hreflang and no language button.
 import '../styles/global.css';
 import { Font } from 'astro:assets';
 import Footer from '../components/Footer.astro';
@@ -10,7 +11,7 @@ import { PAGES, type PageId } from '../lib/paths';
 
 interface Props {
 	language: Language;
-	page: PageId;
+	page?: PageId;
 	title: string;
 	description: string;
 }
@@ -31,9 +32,10 @@ const hreflangLanguages = PUBLISHED_LANGUAGES.length > 1 ? PUBLISHED_LANGUAGES :
 		<script is:inline>
 			document.documentElement.classList.add('js');
 		</script>
-		{hreflangLanguages.map((l) => (
-			<link rel="alternate" hreflang={l} href={`${SITE}${PAGES[page][l]}`} />
-		))}
+		{page &&
+			hreflangLanguages.map((l) => (
+				<link rel="alternate" hreflang={l} href={`${SITE}${PAGES[page][l]}`} />
+			))}
 		{/* The logo symbol, canvas on ink, made from src/assets/logo.png (16, 32 and 48 px; 180 px). */}
 		<link rel="icon" href="/favicon.ico" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />

@@ -35,6 +35,17 @@
 	padding-right: max(clamp(16px, 3vw, 40px), env(safe-area-inset-right, 0px));
 }
 
+/* The label style of the prototype: section titles, the Privacy Policy's title, the 404's
+   sentences. Wide uppercase, never large display type, which is for names only. */
+@utility type-label {
+	font-size: clamp(1rem, 1.5vw, 1.25rem);
+	line-height: 1.2;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	font-stretch: 125%;
+}
+
 @layer base {
 	:root {
 		--header-height: 4rem;

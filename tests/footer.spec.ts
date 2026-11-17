@@ -43,6 +43,18 @@ inEachBuild((build) => {
 			await expect(legal.locator('dd')).toHaveText(Array(6).fill('Por preencher'));
 		});
 
+		test(`${path}: the footer's Privacy Policy link leads to the policy`, async ({ page }) => {
+			await page.goto(path);
+			await page
+				.getByRole('contentinfo')
+				.getByRole('link', { name: expected.privacy.name, exact: true })
+				.click();
+			await expect(page).toHaveURL(new RegExp(`${expected.privacy.href}$`));
+			await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toHaveText(
+				expected.privacy.name,
+			);
+		});
+
 		test(`${path}: the footer links to the email, the Privacy Policy, YouTube and Instagram`, async ({
 			page,
 		}) => {
