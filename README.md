@@ -38,7 +38,7 @@ The second command downloads the browsers the tests use. On a Linux machine that
 ## Branches
 
 - `main` only receives releases: each merge into it will publish the site (#11).
-- `develop` is where work lands. Start each branch from it and open the PR into it. Those PRs run no CI, to save CI minutes: run `npm run verify` locally before each push, and on a Dependabot PR's branch before merging it.
+- `develop` is where work lands. Start each branch from it and open the PR into it. Those PRs run the quick checks: Playwright on Chromium only, no Lighthouse run.
 - Release: a PR from `develop` into `main`, which runs every check. Merge it with a merge commit, never a squash, so both branches keep the same history.
 - Hotfix: a branch from `main`, a PR into `main`, then `main` merged into `develop`.
 
@@ -56,5 +56,5 @@ The second command downloads the browsers the tests use. On a Linux machine that
 - `src/assets/`: Archivo (with its OFL licence), the logo symbol, the brush stroke, the official Livro de Reclamações icon and the Projects' images (provisional until #18). `public/`: the site icons and `.htaccess`, read only by the host's Apache (the 404 page for unknown addresses).
 - `tests/`: the Playwright suite, over both builds. `all-pages.spec.ts` runs axe (WCAG A and AA) on every page found in `dist/` and `dist-en/`, so a new page is checked without touching the tests.
 - `tests/lighthouse/`: Lighthouse in mobile mode, over every page of `dist/`. SEO, page weight (400 KB), JS weight (75 KB), fonts (at most 2, in woff2) and requests to other domains block. Performance, LCP and TBT only warn; CLS, accessibility and best practices only show in the summary. The HTML reports go to `lighthouse-report/`. `check.spec.ts` tests the checker itself on pages made to fail each target.
-- `.github/workflows/ci.yml`: the `Checks` workflow, only on PRs into `main` (releases and hotfixes): Chromium in 1 job, WebKit in 3, and Lighthouse. The steps live in `.github/actions/verify/`.
+- `.github/workflows/ci.yml`: the `Checks` workflow, on each PR. Into `main`: Chromium in 1 job, WebKit in 3, and Lighthouse. Into any other branch: Chromium in 4 jobs. The steps live in `.github/actions/verify/`.
 - `.github/dependabot.yml`: once a month, a PR into `develop` for the actions and another for npm.
