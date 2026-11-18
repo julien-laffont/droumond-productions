@@ -29,7 +29,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # The Playwright suite on Chromium: it stops a merge that skipped the checks.
+  # The Playwright suite on Chromium, on the merge commit itself: the release PR's checks
+  # ran on a merge with the main of that moment, which may have changed since.
   tests:
     name: Tests chromium
     runs-on: ubuntu-latest
@@ -66,6 +67,17 @@ jobs:
       - uses: ./.github/actions/verify
         with:
           lighthouse: true
+
+      # As in Checks: the HTML reports are a help, and a full artifact quota does not turn the run red.
+      - name: Lighthouse reports
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lighthouse-report
+          path: lighthouse-report/
+          retention-days: 7
+          if-no-files-found: ignore
 
   # Starts only when every check above passed.
   publish:

@@ -26,7 +26,7 @@ The second command downloads the browsers the tests use. On a Linux machine that
 | `npm test`              | Playwright suite over `dist/` and `dist-en/`, which must already exist               |
 | `npm run lighthouse`    | Lighthouse in mobile mode over every page of `dist/` (see below)                     |
 | `npm run verify`        | Check, formatting, both builds, tests and Lighthouse, in that order                  |
-| `npm run confirm`       | Confirms that the published site is the one in `dist/`, from this commit             |
+| `npm run confirm`       | Checks that the published site serves each page of `dist/` with this commit          |
 
 `npm test` serves `dist/` itself on port 4341 and `dist-en/` on 4342 (not 4331 or 4332, which Julien's landing page uses). To run part of it: `npm test -- --project=chromium` or `npm test -- tests/header.spec.ts`.
 

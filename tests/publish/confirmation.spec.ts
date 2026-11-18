@@ -3,12 +3,11 @@
 import { expect, test } from '@playwright/test';
 import { LANGUAGES, PREFIXES, PUBLISHED_LANGUAGES } from '../../src/config/site';
 import { commit } from '../../src/lib/commit';
-import { builtPages } from '../pages';
+import { builtPages, openExisting } from '../pages';
 
 for (const path of builtPages()) {
 	test(`${path} answers 200 with this build's commit`, async ({ page }) => {
-		const response = await page.goto(path);
-		expect(response?.status()).toBe(200);
+		await openExisting(page, path);
 		await expect(page.locator('meta[name="commit"]')).toHaveAttribute('content', commit);
 	});
 }
