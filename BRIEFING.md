@@ -1,6 +1,6 @@
 # Briefing: website da Droumond Productions
 
-Documento de direção inicial. Última atualização: 2026-11-16. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
+Documento de direção inicial. Última atualização: 2026-11-18. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
 
 ## Contexto
 
@@ -9,7 +9,7 @@ Documento de direção inicial. Última atualização: 2026-11-16. Tudo o que es
 - Série em desenvolvimento: _Efeito Placebo_, suspense, em português de Portugal, em fase de gravação.
 - YouTube: https://www.youtube.com/@DroumondProductions/videos (só existe um teaser).
 - Instagram: mini-série com cerca de 4 episódios, feita a aproveitar o interesse por Resident Evil.
-- Repositório: https://github.com/juliensl/droumond-productions.git (grafia "droumond", como no canal).
+- Repositório: https://github.com/julien-laffont/droumond-productions.git (grafia "droumond", como no canal).
 - Grafia: "Droumond" (decidido pelo Julien a 2026-11-13). O logótipo diz "Droummond".
 
 ## Objetivo
@@ -56,7 +56,7 @@ Provisória: escolhida pelo Nal a 2026-11-16 (issue #5); o Carlos valida na rond
 
 ## Tecnologia e entrega
 
-- Mesma stack que a landing page do Julien (https://github.com/juliensl/julien-devops-lp): Astro 7, React 19 (ilhas), Tailwind CSS 4, TypeScript, Node 24 (`.nvmrc`), npm.
+- Mesma stack que a landing page do Julien (https://github.com/julien-laffont/julien-devops-lp): Astro 7, React 19 (ilhas), Tailwind CSS 4, TypeScript, Node 24 (`.nvmrc`), npm.
 - Qualidade na landing page: Playwright (testes), axe-core (acessibilidade), Lighthouse, Prettier, `astro check`. Script `npm run verify` corre tudo.
 - Alojamento: Infomaniak, no Hébergement Web (com PHP). Ainda não há domínio nem email do domínio.
 - CI/CD, como na landing page: workflow `Checks` em cada PR (testes em 4 jobs + Lighthouse para `main`) e workflow `Publish` a cada merge em `main`, que publica na Infomaniak e confirma que cada página responde com o commit publicado. Os segredos de publicação são criados pelo Julien.
