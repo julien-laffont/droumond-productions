@@ -28,10 +28,6 @@ const hreflangLanguages = PUBLISHED_LANGUAGES.length > 1 ? PUBLISHED_LANGUAGES :
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		{/* Marks that JavaScript runs, before the first paint: only then do .reveal sections start faded. */}
-		<script is:inline>
-			document.documentElement.classList.add('js');
-		</script>
 		{page &&
 			hreflangLanguages.map((l) => (
 				<link rel="alternate" hreflang={l} href={`${SITE}${PAGES[page][l]}`} />
@@ -48,27 +44,28 @@ const hreflangLanguages = PUBLISHED_LANGUAGES.length > 1 ? PUBLISHED_LANGUAGES :
 		<Footer language={language} />
 		<script>
 			// The discreet reveal of the sections while scrolling (.reveal, in global.css): what is
-			// already on screen shows at once, the rest when it comes into view. Its tests come with the
-			// first section that uses it (#14).
-			const items = document.querySelectorAll('.reveal');
+			// already on screen is never touched; the rest waits faded (.reveal-later) until it comes
+			// into view. In an old browser without IntersectionObserver, everything simply shows.
+			// The observer's first report on each item decides: it comes once the page is laid out
+			// with its styles, which WebKit may not have applied yet when this script runs.
 			if ('IntersectionObserver' in window) {
+				const decided = new WeakSet<Element>();
 				const observer = new IntersectionObserver(
 					(entries) => {
-						for (const entry of entries) {
-							if (!entry.isIntersecting) continue;
-							entry.target.classList.add('in');
-							observer.unobserve(entry.target);
+						for (const { target, isIntersecting, boundingClientRect } of entries) {
+							if (!decided.has(target)) {
+								decided.add(target);
+								if (boundingClientRect.top < window.innerHeight) observer.unobserve(target);
+								else target.classList.add('reveal-later');
+							} else if (isIntersecting) {
+								target.classList.remove('reveal-later');
+								observer.unobserve(target);
+							}
 						}
 					},
 					{ threshold: 0.15 },
 				);
-				for (const item of items) {
-					if (item.getBoundingClientRect().top < window.innerHeight) item.classList.add('in');
-					else observer.observe(item);
-				}
-			} else {
-				// An old browser: everything shows, as without JavaScript.
-				for (const item of items) item.classList.add('in');
+				for (const item of document.querySelectorAll('.reveal')) observer.observe(item);
 			}
 		</script>
 	</body>

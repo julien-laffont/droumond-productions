@@ -24,6 +24,14 @@ export const en: Dictionary = {
 		},
 		privacy: 'Privacy Policy',
 	},
+	projects: {
+		title: 'Projects',
+		watchTeaser: 'Watch the teaser',
+		notice:
+			'When you click, the video loads from YouTube: Google receives your IP address and may store data on your device.',
+		privacy: 'Privacy Policy',
+		player: 'teaser on YouTube',
+	},
 	home: {
 		title: 'Droumond Productions',
 		description:

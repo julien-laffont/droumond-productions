@@ -5,7 +5,7 @@ description: How Droumond Productions handles the data of people who visit its s
 
 > Provisional text, to be reviewed before publication.
 
-Last updated: 17 November 2026.
+Last updated: 18 November 2026.
 
 ## Who we are
 
@@ -40,7 +40,7 @@ When you write to {email}, we handle your email address, the name you give and t
 
 ## The YouTube teaser
 
-The teaser of _Efeito Placebo_ first appears as an image hosted on the site itself, with a notice. Only when you click to watch it is the player loaded from youtube-nocookie.com, by Google: your browser sends Google your IP address and technical data, and the player may store data on your device and show non-personalised advertising. We are responsible, jointly with Google, for that transmission; what Google does with the data afterwards is its own responsibility.
+The teaser of _Efeito Placebo_ first appears as an image hosted on the site itself, with a notice. Only when you click to watch it is the player loaded from youtube-nocookie.com, by Google: your browser sends Google your IP address and technical data, and the player may store data on your device and show non-personalised advertising. We are responsible, jointly with Google, for that transmission; what Google does with the data afterwards is its own responsibility. If JavaScript is off, the click opens the teaser on YouTube's own site, in a new tab.
 
 - **Purpose:** to show you the teaser you asked to watch.
 - **Legal basis:** your consent, given by clicking after the notice (GDPR, art. 6(1)(a)).

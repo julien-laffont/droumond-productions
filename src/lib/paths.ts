@@ -23,10 +23,25 @@ const SECTIONS = {
 
 export type SectionId = keyof typeof SECTIONS;
 
+/** A home page section's anchor, its `id`: `projetos`, `projects`. */
+export function sectionAnchor(section: SectionId, language: Language): string {
+	return SECTIONS[section][language];
+}
+
 /**
  * A home page section, from any page: `/#projetos`, `/en/#projects`. On the home page itself the
  * browser only scrolls, without reloading.
  */
 export function sectionPath(section: SectionId, language: Language): string {
-	return `${PAGES.home[language]}#${SECTIONS[section][language]}`;
+	return `${PAGES.home[language]}#${sectionAnchor(section, language)}`;
+}
+
+/**
+ * The Privacy Policy's section on the YouTube teaser, which the notice under the teaser links to.
+ * Its anchor comes from the heading in src/content/privacy/<language>.md: renaming the heading
+ * changes it.
+ */
+export function teaserPrivacyPath(language: Language): string {
+	const anchor = { pt: 'teaser-do-youtube', en: 'the-youtube-teaser' }[language];
+	return `${PAGES.privacy[language]}#${anchor}`;
 }

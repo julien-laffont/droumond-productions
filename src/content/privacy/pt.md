@@ -5,7 +5,7 @@ description: Como a Droumond Productions trata os dados de quem visita o site ou
 
 > Texto provisório, a rever antes da publicação.
 
-Última atualização: 17 de novembro de 2026.
+Última atualização: 18 de novembro de 2026.
 
 ## Quem somos
 
@@ -40,7 +40,7 @@ Quando nos escreve para {email}, tratamos o seu endereço de email, o nome que i
 
 ## Teaser do YouTube
 
-O teaser de _Efeito Placebo_ aparece primeiro como uma imagem alojada no próprio site, com um aviso. Só quando clica para o ver é que o leitor é carregado a partir de youtube-nocookie.com, da Google: o seu browser envia à Google o seu endereço IP e dados técnicos, e o leitor pode guardar dados no seu dispositivo e mostrar publicidade não personalizada. Somos responsáveis, com a Google, por esse envio; o que a Google faz depois com os dados é da responsabilidade dela.
+O teaser de _Efeito Placebo_ aparece primeiro como uma imagem alojada no próprio site, com um aviso. Só quando clica para o ver é que o leitor é carregado a partir de youtube-nocookie.com, da Google: o seu browser envia à Google o seu endereço IP e dados técnicos, e o leitor pode guardar dados no seu dispositivo e mostrar publicidade não personalizada. Somos responsáveis, com a Google, por esse envio; o que a Google faz depois com os dados é da responsabilidade dela. Se o JavaScript estiver desligado, o clique abre o teaser no site do YouTube, num separador novo.
 
 - **Finalidade:** mostrar-lhe o teaser que pediu para ver.
 - **Fundamento:** o seu consentimento, dado ao clicar depois do aviso (RGPD, art. 6.º, n.º 1, alínea a)).

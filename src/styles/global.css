@@ -46,6 +46,24 @@
 	font-stretch: 125%;
 }
 
+/* Names in large type (Projects, people): narrow, heavy, uppercase. Each use sets the size. */
+@utility type-name {
+	font-weight: 800;
+	line-height: 0.92;
+	text-transform: uppercase;
+	font-stretch: 62%;
+}
+
+/* The small grey line under a name: a Project's type · genre · status, a person's role. */
+@utility type-meta {
+	font-size: 0.72rem;
+	font-weight: 300;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	font-stretch: 125%;
+	color: var(--color-muted);
+}
+
 @layer base {
 	:root {
 		--header-height: 4rem;
@@ -163,15 +181,17 @@
 	}
 }
 
-/* Discreet reveal of the sections while scrolling, from a visible resting state: without
-   JavaScript (no .js on <html>), everything simply shows. The script is in Base.astro. */
+/* Discreet reveal of the sections while scrolling, from a visible resting state. Only what is
+   below the screen when the page opens waits faded (.reveal-later, set by the script in
+   Base.astro), and fades in when it comes into view; what is already on screen, and everything
+   without JavaScript, simply shows. Waiting starts at once: only showing is animated. */
 @media (prefers-reduced-motion: no-preference) {
-	html.js .reveal {
+	.reveal:not(.reveal-later) {
 		transition:
 			opacity 0.9s var(--ease),
 			transform 0.9s var(--ease);
 	}
-	html.js .reveal:not(.in) {
+	.reveal-later {
 		opacity: 0.25;
 		transform: translateY(20px);
 	}
