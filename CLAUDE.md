@@ -6,7 +6,7 @@ Read `BRIEFING.md` first: it holds the context, goals, scope, visual direction a
 
 ### Issue tracker
 
-Issues and specs live in this repo's GitHub Issues (`juliensl/droumond-productions`), managed with the `gh` CLI. See `docs/agents/issue-tracker.md`.
+Issues and specs live in this repo's GitHub Issues (`julien-laffont/droumond-productions`), managed with the `gh` CLI. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
