@@ -15,10 +15,3 @@ The five default triage labels: `needs-triage`, `needs-info`, `ready-for-agent`,
 ### Domain docs
 
 Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root, created when needed. See `docs/agents/domain.md`.
-
-## Before each push
-
-To save the account's CI minutes, the `Checks` workflow only runs on PRs into `main` (releases and hotfixes). PRs into `develop` get no CI, so you are the CI:
-
-- Run `npm run verify` before every push, and push only when it passes.
-- Before merging a Dependabot PR into `develop`, check out its branch and run `npm run verify` there.
