@@ -28,10 +28,10 @@ export const SOCIAL = {
 };
 
 /**
- * The site's address, without a final slash. PROVISIONAL: there is no domain yet, it comes with
- * the publication (#19). Only the hreflang links use it, and only when English is published.
+ * The site's address, without a final slash. The hreflang links use it (only when English is
+ * published), and the Publishing confirmation (`npm run confirm`) checks the site there.
  */
-export const SITE = 'https://example.com';
+export const SITE = 'https://droumondproductions.com';
 
 export const LANGUAGES = ['pt', 'en'] as const;
 export type Language = (typeof LANGUAGES)[number];

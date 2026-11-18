@@ -1,4 +1,4 @@
-# The blocking checks, shared by the workflows (Checks now, Publish with #11). Leaves the build done.
+# The blocking checks, shared by the workflows (Checks and Publish). Leaves the build done.
 # Each job runs one part of the Playwright suite (`part`) or the Lighthouse run,
 # so the parts run side by side; with neither, it only checks and builds.
 # Runs after checkout and setup-node, which stay in the workflows: Dependabot

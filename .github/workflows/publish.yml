@@ -1,0 +1,142 @@
+# After each merge into main: repeats the blocking checks on Chromium (WebKit
+# already ran in the release PR's checks) and Lighthouse, does the Publishing
+# to Infomaniak and confirms that each published page answers with this commit.
+# Same shape as Julien's landing page. Documentation-only merges do not run this workflow.
+# If anything fails, the run turns red and GitHub emails whoever merged.
+#
+# Rolling back: a revert PR into main, the normal way. In an emergency, "Re-run all jobs"
+# on an older run publishes that commit again.
+name: Publish
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - 'BRIEFING.md'
+      - 'GLOSSARY.md'
+      - 'README.md'
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+
+permissions:
+  contents: read
+
+# One Publishing at a time, never cancelled halfway. If several arrive while
+# one runs, GitHub keeps only the most recent, which publishes everything.
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  # The Playwright suite on Chromium, on the merge commit itself: the release PR's checks
+  # ran on a merge with the main of that moment, which may have changed since.
+  tests:
+    name: Tests chromium
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - uses: ./.github/actions/verify
+        with:
+          part: chromium 1/1
+
+  # As in Checks: SEO, sizes, fonts and requests block; performance only warns.
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - uses: ./.github/actions/verify
+        with:
+          lighthouse: true
+
+      # As in Checks: the HTML reports are a help, and a full artifact quota does not turn the run red.
+      - name: Lighthouse reports
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lighthouse-report
+          path: lighthouse-report/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # Starts only when every check above passed.
+  publish:
+    name: Publish
+    needs: [tests, lighthouse]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # Checks and builds this commit again: the published folder is this job's dist/.
+      - uses: ./.github/actions/verify
+
+      # Without the secrets (a fork, or a repo where they were deleted), Publishing is
+      # skipped with a warning. Same Portuguese names (PUBLICACAO_*) as the landing page.
+      - name: Publishing secrets
+        id: secrets
+        env:
+          HAS_KEY: ${{ secrets.PUBLICACAO_CHAVE_SSH != '' }}
+          HAS_SERVER: ${{ secrets.PUBLICACAO_SERVIDOR != '' }}
+          HAS_USER: ${{ secrets.PUBLICACAO_UTILIZADOR != '' }}
+        run: |
+          missing=()
+          [[ $HAS_KEY == true ]] || missing+=(PUBLICACAO_CHAVE_SSH)
+          [[ $HAS_SERVER == true ]] || missing+=(PUBLICACAO_SERVIDOR)
+          [[ $HAS_USER == true ]] || missing+=(PUBLICACAO_UTILIZADOR)
+          if ((${#missing[@]} == 0)); then
+            echo 'publish=true' >>"$GITHUB_OUTPUT"
+            exit 0
+          fi
+          warning="Publishing skipped. Missing secrets: ${missing[*]} (see the README, Publishing)."
+          echo "::warning title=Publishing skipped::$warning"
+          echo "### ⚠️ $warning" >>"$GITHUB_STEP_SUMMARY"
+
+      - name: Install lftp
+        if: steps.secrets.outputs.publish == 'true'
+        timeout-minutes: 5
+        run: sudo apt-get update && sudo apt-get install --yes --no-install-recommends lftp
+
+      - name: Publishing
+        if: steps.secrets.outputs.publish == 'true'
+        timeout-minutes: 10
+        env:
+          PUBLISH_SSH_KEY: ${{ secrets.PUBLICACAO_CHAVE_SSH }}
+          PUBLISH_SERVER: ${{ secrets.PUBLICACAO_SERVIDOR }}
+          PUBLISH_USER: ${{ secrets.PUBLICACAO_UTILIZADOR }}
+        run: publish/publish.sh
+
+      - name: Chromium for the Confirmation
+        if: steps.secrets.outputs.publish == 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Confirmation
+        if: steps.secrets.outputs.publish == 'true'
+        run: npm run confirm

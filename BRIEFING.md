@@ -58,8 +58,8 @@ Provisória: escolhida pelo Nal a 2026-11-16 (issue #5); o Carlos valida na rond
 
 - Mesma stack que a landing page do Julien (https://github.com/julien-laffont/julien-devops-lp): Astro 7, React 19 (ilhas), Tailwind CSS 4, TypeScript, Node 24 (`.nvmrc`), npm.
 - Qualidade na landing page: Playwright (testes), axe-core (acessibilidade), Lighthouse, Prettier, `astro check`. Script `npm run verify` corre tudo.
-- Alojamento: Infomaniak, no Hébergement Web (com PHP). Ainda não há domínio nem email do domínio.
-- CI/CD, como na landing page: workflow `Checks` em cada PR (testes em 4 jobs + Lighthouse para `main`) e workflow `Publish` a cada merge em `main`, que publica na Infomaniak e confirma que cada página responde com o commit publicado. Os segredos de publicação são criados pelo Julien.
+- Alojamento: Infomaniak, no Hébergement Web (com PHP), o mesmo da landing page do Julien. Domínio: `droumondproductions.com`, registado na Infomaniak, com HTTPS (Let's Encrypt); escolhido para a publicação (#11), o Julien confirma-o antes da primeira release em `main`. Ainda não há email do domínio.
+- CI/CD, como na landing page: workflow `Checks` em cada PR (testes em 4 jobs + Lighthouse para `main`) e workflow `Publish` a cada merge em `main`, que publica na Infomaniak e confirma que cada página responde com o commit publicado. Os segredos de publicação existem desde 2026-11-18, com uma conta FTP + SSH só para a publicação.
 - Branches, como na landing page: o trabalho parte de `develop` e os PR vão para `develop`; `main` só recebe releases (PR de `develop`) e hotfixes, e cada merge em `main` publica o site.
 - Convenção da landing page: tudo no repo em inglês (código, comentários, docs), issues e PR em português de Portugal. Confirmar se se mantém aqui.
 - Quem atualiza o site depois de publicado: o Julien.
@@ -79,7 +79,6 @@ Provisória: escolhida pelo Nal a 2026-11-16 (issue #5); o Carlos valida na rond
 
 - Pessoas da equipa a mostrar depois do protótipo.
 - Quem é o cliente (o Julien adiou a decisão).
-- Domínio: qual, quem o regista e quando.
 - Dados legais da empresa (o Julien vai pedi-los).
 - Se a empresa presta serviços a particulares.
 - Quando fica feito o registo no Livro de Reclamações Eletrónico (obrigatório antes de publicar).
