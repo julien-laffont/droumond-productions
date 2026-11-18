@@ -16,5 +16,14 @@ inEachBuild((build) => {
 			);
 			expect(failures).toEqual([]);
 		});
+
+		// The Publishing confirmation (tests/publish/) compares it with the commit it published.
+		test(`${path}: names the commit it was built from`, async ({ page }) => {
+			await page.goto(path);
+			await expect(page.locator('meta[name="commit"]')).toHaveAttribute(
+				'content',
+				/^[0-9a-f]{40}$/,
+			);
+		});
 	}
 });

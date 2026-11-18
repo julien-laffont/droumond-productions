@@ -7,6 +7,7 @@ import { Font } from 'astro:assets';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { HTML_CODES, PUBLISHED_LANGUAGES, SITE, type Language } from '../config/site';
+import { commit } from '../lib/commit';
 import { PAGES, type PageId } from '../lib/paths';
 
 interface Props {
@@ -32,6 +33,8 @@ const hreflangLanguages = PUBLISHED_LANGUAGES.length > 1 ? PUBLISHED_LANGUAGES :
 			hreflangLanguages.map((l) => (
 				<link rel="alternate" hreflang={l} href={`${SITE}${PAGES[page][l]}`} />
 			))}
+		{/* The commit of this build: the Publishing confirmation checks the site serves it. */}
+		<meta name="commit" content={commit} />
 		{/* The logo symbol, canvas on ink, made from src/assets/logo.png (16, 32 and 48 px; 180 px). */}
 		<link rel="icon" href="/favicon.ico" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
