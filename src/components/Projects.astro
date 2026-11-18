@@ -1,0 +1,120 @@
+---
+// The Projects section of the home page (#14): the Projects of src/config/projects.ts, with the
+// title and the small line under each image, as on The Mill. A YouTube teaser first shows a local
+// image and a notice; the player only loads after a click (#3).
+import { Image } from 'astro:assets';
+import { PROJECTS } from '../config/projects';
+import type { Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import { sectionAnchor, teaserPrivacyPath } from '../lib/paths';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const t = dictionaries[language].projects;
+const anchor = sectionAnchor('projects', language);
+---
+
+<section
+	id={anchor}
+	aria-labelledby={`${anchor}-title`}
+	class="px-gutter pt-[calc(var(--edge-height)*0.6+clamp(56px,8vw,120px))] pb-[clamp(48px,6vw,88px)]"
+>
+	{/* Room above for the first screen's brush-stroke edge (#13), as in the prototype. */}
+	<h2 id={`${anchor}-title`} class="mb-[clamp(20px,2.4vw,32px)] type-label">
+		{t.title}
+	</h2>
+	<div class="grid grid-cols-[2fr_1fr] items-start gap-[clamp(12px,1.4vw,20px)] max-[760px]:grid-cols-1 max-[760px]:gap-10">
+		{PROJECTS.map((project, index) => {
+			const { link } = project;
+			const youtube = 'youtube' in link ? link.youtube : undefined;
+			const href = 'youtube' in link ? `https://www.youtube.com/watch?v=${link.youtube}` : link.url;
+			const label = 'youtube' in link ? t.watchTeaser : link.label[language];
+			const noticeId = `teaser-notice-${index}`;
+			return (
+				<article class="reveal grid min-w-0 gap-3.5">
+					{/* The image's box: after the click, the teaser's player takes the link's place. */}
+					<div
+						class:list={[
+							'bg-ink-2',
+							project.shape === 'wide' ? 'aspect-video' : 'aspect-[4/5] max-[760px]:aspect-square',
+						]}
+					>
+						{/* The link clips the zoom itself, so its focus ring stays visible around it. */}
+						<a
+							href={href}
+							target="_blank"
+							rel="noopener"
+							aria-describedby={youtube && noticeId}
+							data-teaser={youtube}
+							data-player={youtube && `${project.title[language]}, ${t.player}`}
+							class="group relative block size-full overflow-hidden"
+						>
+							<Image
+								src={project.image}
+								alt={project.alt[language]}
+								widths={project.shape === 'wide' ? [480, 720, 1080] : [312, 624]}
+								sizes={
+									project.shape === 'wide'
+										? '(max-width: 760px) 100vw, 66vw'
+										: '(max-width: 760px) 100vw, 33vw'
+								}
+								class="size-full object-cover motion-safe:transition-transform motion-safe:duration-900 motion-safe:ease-(--ease) motion-safe:group-hover:scale-[1.025]"
+							/>
+							<span class="absolute bottom-4 left-4 border border-canvas bg-ink/55 px-3.5 py-2.5 text-[0.72rem]/[1.55] font-medium tracking-[0.16em] uppercase font-stretch-125%">
+								{youtube && <span aria-hidden="true">▶ </span>}
+								{label}
+							</span>
+						</a>
+					</div>
+					{youtube && (
+						<p id={noticeId} class="text-[0.78rem]/[1.5] text-muted">
+							{t.notice}{' '}
+							<a href={teaserPrivacyPath(language)} class="underline underline-offset-3">
+								{t.privacy}
+							</a>
+						</p>
+					)}
+					<div class="grid gap-2">
+						<h3 class="text-[clamp(1.7rem,2.6vw,2.4rem)] type-name">{project.title[language]}</h3>
+						<p class="type-meta">
+							{[project.type, project.genre, project.status]
+								.map((text) => text[language])
+								.join(' · ')}
+						</p>
+						{project.sentence && (
+							<p class="max-w-[60ch] text-sm text-muted">{project.sentence[language]}</p>
+						)}
+					</div>
+				</article>
+			);
+		})}
+	</div>
+</section>
+
+<script>
+	// Click to load (#3): until the click, the page asks nothing of YouTube. A plain click (or Enter)
+	// swaps the image for the player from youtube-nocookie.com, playing at once; nothing is
+	// remembered, so the next visit starts with the image again. Without JavaScript, or with a
+	// modifier key (new tab, new window), the link simply opens the teaser on YouTube.
+	for (const link of document.querySelectorAll<HTMLAnchorElement>('a[data-teaser]')) {
+		link.addEventListener('click', (event) => {
+			if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+				return;
+			}
+			event.preventDefault();
+			const player = document.createElement('iframe');
+			player.src = `https://www.youtube-nocookie.com/embed/${link.dataset.teaser}?autoplay=1`;
+			player.title = link.dataset.player ?? '';
+			player.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+			player.allowFullscreen = true;
+			// YouTube refuses to play in a page that sends no referrer.
+			player.referrerPolicy = 'strict-origin-when-cross-origin';
+			player.className = 'size-full';
+			link.replaceWith(player);
+			player.focus();
+		});
+	}
+</script>

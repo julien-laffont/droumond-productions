@@ -26,6 +26,16 @@ export const pt = {
 		},
 		privacy: 'Política de Privacidade',
 	},
+	projects: {
+		title: 'Projetos',
+		watchTeaser: 'Ver o teaser',
+		/** Under the teaser's image, before the click (#3); the Privacy Policy link follows it. */
+		notice:
+			'Ao clicar, o vídeo é carregado do YouTube: a Google recebe o seu endereço IP e pode guardar dados no seu dispositivo.',
+		privacy: 'Política de Privacidade',
+		/** The player's name for screen readers, after the Project's title. */
+		player: 'teaser no YouTube',
+	},
 	home: {
 		title: 'Droumond Productions',
 		description: 'Droumond Productions, produtora audiovisual portuguesa. Site em construção.',
