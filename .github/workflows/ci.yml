@@ -4,18 +4,12 @@
 # PRs into main (releases and hotfixes) run every check: Chromium in 1 job,
 # WebKit (about 3 times slower) in 3, plus Lighthouse.
 # PRs into any other branch, develop included, run the quick checks: Chromium in 4 jobs.
-# Documentation-only PRs do not run this workflow.
+# Every PR runs it, documentation-only ones too: the branch rules require these checks,
+# and a PR whose required checks never start could not be merged.
 name: Checks
 
 on:
   pull_request:
-    paths-ignore:
-      - 'docs/**'
-      - 'AGENTS.md'
-      - 'BRIEFING.md'
-      - 'CLAUDE.md'
-      - 'GLOSSARY.md'
-      - 'README.md'
 
 permissions:
   contents: read
