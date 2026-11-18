@@ -1,5 +1,5 @@
 # The checks that block a PR: any failure turns it red. Same shape as Julien's landing page.
-# The steps live in .github/actions/verify, so that the Publish workflow (#11) can reuse them.
+# The steps live in .github/actions/verify, which the Publish workflow reuses.
 # The Playwright suite is split into 4 jobs that run side by side.
 # PRs into main (releases and hotfixes) run every check: Chromium in 1 job,
 # WebKit (about 3 times slower) in 3, plus Lighthouse.
