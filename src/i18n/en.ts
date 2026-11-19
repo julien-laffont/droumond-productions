@@ -18,11 +18,16 @@ export const en: Dictionary = {
 			firm: 'Company name',
 			companyType: 'Company type',
 			registeredOffice: 'Registered office',
-			registry: 'Registry office and number',
+			registry: 'Commercial registry',
 			nipc: 'Tax number (NIPC)',
 			shareCapital: 'Share capital',
 		},
 		privacy: 'Privacy Policy',
+		founded: 'Est. 2026',
+		disputes: {
+			before: 'In case of a consumer dispute, you may turn to',
+			more: 'More information on the',
+		},
 	},
 	projects: {
 		title: 'Projects',

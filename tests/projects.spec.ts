@@ -1,5 +1,5 @@
 // The Projects section of the home page (#14): the two Projects in a 2:1 grid, and the teaser of
-// Efeito Placebo, which only loads from YouTube after a click (#3).
+// Efecto Placebo, which only loads from YouTube after a click (#3).
 import { expect, test, type Page } from '@playwright/test';
 import { inEachBuild } from './pages';
 
@@ -10,8 +10,8 @@ const HOMES = [
 		english: false,
 		anchor: 'projetos',
 		heading: 'Projetos',
-		titles: ['Efeito Placebo', 'Mini-série do Instagram'],
-		lines: ['Série · Suspense · Em gravação', 'Mini-série · Terror · 4 episódios'],
+		titles: ['Efecto Placebo', 'Resident Evil'],
+		lines: ['Mini-série · Suspense · Em gravação', 'Mini-série · Terror · 5 episódios'],
 		teaser: 'Ver o teaser',
 		instagram: 'Ver no Instagram',
 		notice:
@@ -27,8 +27,8 @@ const HOMES = [
 		english: true,
 		anchor: 'projects',
 		heading: 'Projects',
-		titles: ['Efeito Placebo', 'Instagram mini-series'],
-		lines: ['Series · Thriller · In production', 'Mini-series · Horror · 4 episodes'],
+		titles: ['Efecto Placebo', 'Resident Evil'],
+		lines: ['Mini-series · Thriller · In production', 'Mini-series · Horror · 5 episodes'],
 		teaser: 'Watch the teaser',
 		instagram: 'See on Instagram',
 		notice:
@@ -70,13 +70,6 @@ inEachBuild((build) => {
 			await expect(section.getByRole('heading', { level: 2 })).toHaveText(home.heading);
 			await expect(section.getByRole('heading', { level: 3 })).toHaveText(home.titles);
 			for (const line of home.lines) await expect(section.getByText(line)).toBeVisible();
-		});
-
-		test(`${home.path}: the name "Resident Evil" appears nowhere until Julien confirms it`, async ({
-			page,
-		}) => {
-			await page.goto(home.path);
-			expect(await page.content()).not.toMatch(/resident\s*evil/i);
 		});
 
 		test(`${home.path}: the images come from the site itself, in several sizes`, async ({
@@ -162,7 +155,7 @@ inEachBuild((build) => {
 
 			const player = section.locator('iframe');
 			await expect(player).toHaveAttribute('src', TEASER_PLAYER);
-			await expect(player).toHaveAttribute('title', /^Efeito Placebo, /);
+			await expect(player).toHaveAttribute('title', /^Efecto Placebo, /);
 			await expect(player).toBeFocused();
 			await expect(teaser).toHaveCount(0);
 			expect(page.context().pages()).toHaveLength(1);

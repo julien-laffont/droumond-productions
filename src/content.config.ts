@@ -15,7 +15,7 @@ const privacy = defineCollection({
 });
 
 // The Sobre section of the home page (#15), one file per language: src/content/about/<language>.md.
-// The text is the Markdown's body (_Efeito Placebo_ in italics shows in the narrow heavy type);
+// The text is the Markdown's body (_Efecto Placebo_ in italics shows in the narrow heavy type);
 // the frontmatter holds the image and its alt text, which the build requires.
 const about = defineCollection({
 	loader: glob({ pattern: '*.md', base: './src/content/about' }),

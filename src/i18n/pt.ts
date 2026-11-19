@@ -20,11 +20,21 @@ export const pt = {
 			firm: 'Firma',
 			companyType: 'Tipo de sociedade',
 			registeredOffice: 'Sede',
-			registry: 'Conservatória e matrícula',
+			registry: 'Registo comercial',
 			nipc: 'NIPC',
 			shareCapital: 'Capital social',
 		},
 		privacy: 'Política de Privacidade',
+		/** Under the company's name: the year it was founded (26/02/2026, company card). */
+		founded: 'Desde 2026',
+		/**
+		 * The consumer arbitration line (Lei 144/2015, art. 18.º): the centre's name and site follow
+		 * `before`, the Portal do Consumidor and its site follow `more`.
+		 */
+		disputes: {
+			before: 'Em caso de litígio de consumo, pode recorrer ao',
+			more: 'Mais informações no',
+		},
 	},
 	projects: {
 		title: 'Projetos',
