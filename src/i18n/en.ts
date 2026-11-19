@@ -18,7 +18,7 @@ export const en: Dictionary = {
 			firm: 'Company name',
 			companyType: 'Company type',
 			registeredOffice: 'Registered office',
-			registry: 'Registry office and number',
+			registry: 'Commercial registry',
 			nipc: 'Tax number (NIPC)',
 			shareCapital: 'Share capital',
 		},

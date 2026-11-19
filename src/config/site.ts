@@ -11,20 +11,20 @@ export const CONTACT_EMAIL = 'carlosdroumondwen@gmail.com';
 /**
  * The company's legal identification, shown in the footer (CSC, art. 171.º; #3), from the company
  * card (#18). Only the labels are translated. The registry names no conservatória (Julien's
- * choice): the registration number is the NIPC.
+ * choice): the registration number in the commercial registry is the NIPC.
  */
 export const LEGAL = {
 	firm: 'Droumond & Laffont - Produções, Lda',
 	companyType: 'Sociedade por quotas',
 	registeredOffice: 'Rua António Campos, Lote 1, 1A, 2410-369 Leiria',
-	registry: 'Registo Comercial, matrícula n.º 519294700',
+	registry: 'Matrícula n.º 519294700',
 	nipc: '519294700',
 	shareCapital: '100 €',
 };
 
 /**
  * The consumer arbitration centre for the company's seat (CNIACC covers the whole Leiria district),
- * named in the footer because the company also works for consumers (Lei 144/2015, art. 18.º; #3).
+ * named in the footer because the company also works for consumers (Lei 144/2015, art. 18.º; #3, #18).
  * If the seat moves, check the centre again: https://www.cniacc.pt/pt/abrangencia-territorial
  */
 export const CONSUMER_ARBITRATION = {

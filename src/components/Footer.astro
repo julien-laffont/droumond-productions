@@ -1,7 +1,7 @@
 ---
 // The footer, on every page: the founding year, the company's legal identification (#3), the
 // email, the Privacy Policy, the profiles (links only, no embeds), the official Livro de
-// Reclamações icon and, below, the consumer arbitration centre (#18). No "legal information" page
+// Reclamações icon and, below, the consumer arbitration centre (#3, #18). No "legal information" page
 // and no cookie banner (#3).
 import type { Language } from '../config/site';
 import { CONSUMER_ARBITRATION, CONTACT_EMAIL, LEGAL, SOCIAL } from '../config/site';
@@ -31,7 +31,7 @@ const links = [
 // The national consumer portal, which the arbitration line points to for more information.
 const CONSUMER_PORTAL = { name: 'Portal do Consumidor', url: 'https://www.consumidor.gov.pt' };
 /** A site's address as the arbitration line shows it: `https://www.cniacc.pt` → `www.cniacc.pt`. */
-const shown = (url: string) => new URL(url).host;
+const hostOf = (url: string) => new URL(url).host;
 ---
 
 <footer class="relative z-1 px-gutter pt-[calc(var(--edge-height)*0.5+clamp(40px,5vw,64px))] pb-[clamp(32px,4vw,48px)] text-[0.84rem] text-muted">
@@ -94,7 +94,7 @@ const shown = (url: string) => new URL(url).host;
 			rel="noopener"
 			class="underline underline-offset-3"
 		>
-			{shown(CONSUMER_ARBITRATION.url)}
+			{hostOf(CONSUMER_ARBITRATION.url)}
 		</a>
 		). {t.disputes.more} <span lang="pt-PT">{CONSUMER_PORTAL.name}</span> (
 		<a
@@ -103,7 +103,7 @@ const shown = (url: string) => new URL(url).host;
 			rel="noopener"
 			class="underline underline-offset-3"
 		>
-			{shown(CONSUMER_PORTAL.url)}
+			{hostOf(CONSUMER_PORTAL.url)}
 		</a>
 		).
 	</p>

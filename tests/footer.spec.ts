@@ -7,14 +7,7 @@ import { inEachBuild, languageOf, pagesOf } from './pages';
 /** What the footer holds in each language. The English texts are provisional (#18). */
 const EXPECTED = {
 	pt: {
-		legal: [
-			'Firma',
-			'Tipo de sociedade',
-			'Sede',
-			'Conservatória e matrícula',
-			'NIPC',
-			'Capital social',
-		],
+		legal: ['Firma', 'Tipo de sociedade', 'Sede', 'Registo comercial', 'NIPC', 'Capital social'],
 		privacy: { name: 'Política de Privacidade', href: '/politica-de-privacidade/' },
 		founded: 'Desde 2026',
 		disputes:
@@ -25,7 +18,7 @@ const EXPECTED = {
 			'Company name',
 			'Company type',
 			'Registered office',
-			'Registry office and number',
+			'Commercial registry',
 			'Tax number (NIPC)',
 			'Share capital',
 		],
@@ -41,7 +34,7 @@ const LEGAL_VALUES = [
 	'Droumond & Laffont - Produções, Lda',
 	'Sociedade por quotas',
 	'Rua António Campos, Lote 1, 1A, 2410-369 Leiria',
-	'Registo Comercial, matrícula n.º 519294700',
+	'Matrícula n.º 519294700',
 	'519294700',
 	'100 €',
 ];

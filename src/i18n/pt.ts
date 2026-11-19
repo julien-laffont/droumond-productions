@@ -20,7 +20,7 @@ export const pt = {
 			firm: 'Firma',
 			companyType: 'Tipo de sociedade',
 			registeredOffice: 'Sede',
-			registry: 'Conservatória e matrícula',
+			registry: 'Registo comercial',
 			nipc: 'NIPC',
 			shareCapital: 'Capital social',
 		},

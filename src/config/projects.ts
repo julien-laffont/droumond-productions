@@ -49,7 +49,7 @@ export const PROJECTS: Project[] = [
 		title: { pt: 'Resident Evil', en: 'Resident Evil' },
 		type: { pt: 'Mini-série', en: 'Mini-series' },
 		genre: { pt: 'Terror', en: 'Horror' },
-		// Five episodes, the last one filmed but not released yet (Julien, 2026-11-19).
+		// Five episodes, the last one filmed but not released yet (Julien, #18).
 		status: { pt: '5 episódios', en: '5 episodes' },
 		image: miniSerie,
 		alt: {
