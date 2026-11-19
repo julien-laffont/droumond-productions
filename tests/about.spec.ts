@@ -44,8 +44,8 @@ inEachBuild((build) => {
 	}
 });
 
-/** The boxes of the Sobre text and image, on the Portuguese home page. */
-async function aboutBoxes(page: Page) {
+/** Opens the Portuguese home page and gives the boxes of the Sobre text and image. */
+async function openAboutBoxes(page: Page) {
 	await page.goto('/');
 	const section = page.locator('section#sobre');
 	const text = await section.locator('p').first().boundingBox();
@@ -62,7 +62,7 @@ inEachBuild(() => {
 		test('/: the text on the left, the image on the right in 16:9, two thirds of the row', async ({
 			page,
 		}) => {
-			const { text, image, width } = await aboutBoxes(page);
+			const { text, image, width } = await openAboutBoxes(page);
 			expect(image.x).toBeGreaterThan(text.x + text.width);
 			expect(image.width / image.height).toBeCloseTo(16 / 9, 1);
 			// 40 px margins and a 20 px gap: the image takes two thirds of the rest.
@@ -78,7 +78,7 @@ inEachBuild(() => {
 			test.use({ viewport: { width: screen.width, height: screen.height } });
 
 			test('/: one column, the text above the image, the image in 16:9', async ({ page }) => {
-				const { text, image } = await aboutBoxes(page);
+				const { text, image } = await openAboutBoxes(page);
 				expect(image.y).toBeGreaterThan(text.y + text.height);
 				expect(image.x).toBeCloseTo(text.x, 0);
 				expect(image.width / image.height).toBeCloseTo(16 / 9, 1);

@@ -1,14 +1,14 @@
 ---
 // The Equipa section of the home page (#15): a card per person of src/config/team.ts, with the
 // photo (4:5), the name and the role; no individual pages, no biographies. Up to 5 per row on a
-// desktop, up to 3 on a tablet (601 to 960 px), and on a phone one row that slides sideways, out
-// to the screen's edges, so nobody sits alone on a row there either.
+// desktop, up to 3 on a tablet (below 960 px, like Sobre's single column), and on a phone (below
+// 600 px) one row that slides sideways, out to the screen's edges, so nobody sits alone there.
 import { Image } from 'astro:assets';
 import type { Language } from '../config/site';
 import { TEAM, TEAM_IS_PROVISIONAL } from '../config/team';
 import { dictionaries } from '../i18n';
 import { sectionAnchor } from '../lib/paths';
-import { teamColumns } from '../lib/team-grid';
+import { teamGrid } from '../lib/team-grid';
 
 interface Props {
 	language: Language;
@@ -18,17 +18,15 @@ const { language } = Astro.props;
 const t = dictionaries[language].team;
 const anchor = sectionAnchor('team', language);
 
-// The grid is decided here, at build time, from the number of people: how many per row (never
-// one alone), and the slots a row is divided into, so a portrait keeps its size when a row holds
-// fewer people than the maximum. The CSS below only applies it.
-const PER_ROW = { desktop: 5, tablet: 3 };
-const desktop = teamColumns(TEAM.length, PER_ROW.desktop);
-const tablet = teamColumns(TEAM.length, PER_ROW.tablet);
+// The grid is decided here, at build time, from the number of people (src/lib/team-grid.ts):
+// how many per row, and the slots a row is divided into. The CSS below only applies it.
+const desktop = teamGrid(TEAM.length, 5);
+const tablet = teamGrid(TEAM.length, 3);
 const grid = {
-	'--columns-desktop': desktop,
-	'--slots-desktop': Math.max(desktop, PER_ROW.desktop),
-	'--columns-tablet': tablet,
-	'--slots-tablet': Math.max(tablet, PER_ROW.tablet),
+	'--columns-desktop': desktop.columns,
+	'--slots-desktop': desktop.slots,
+	'--columns-tablet': tablet.columns,
+	'--slots-tablet': tablet.slots,
 };
 ---
 
@@ -79,7 +77,7 @@ const grid = {
 			calc((100% - (var(--slots) - 1) * var(--gap)) / var(--slots))
 		);
 	}
-	@media (max-width: 960px) {
+	@media (width < 960px) {
 		.team-grid {
 			--columns: var(--columns-tablet);
 			--slots: var(--slots-tablet);
@@ -88,7 +86,7 @@ const grid = {
 	}
 	/* One row that slides sideways: it runs under the side margins to the screen's edges, and each
 	   portrait (62% of the width between the margins) snaps to the left margin. */
-	@media (max-width: 600px) {
+	@media (width < 600px) {
 		.team-grid {
 			--left: max(var(--gutter), env(safe-area-inset-left, 0px));
 			--right: max(var(--gutter), env(safe-area-inset-right, 0px));

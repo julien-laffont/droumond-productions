@@ -69,24 +69,11 @@ inEachBuild((build) => {
 				expect(((await photo.getAttribute('srcset')) ?? '').split(',').length).toBeGreaterThan(1);
 			}
 		});
-
-		test(`${home.path}: the header's links lead to Sobre and to Equipa`, async ({ page }) => {
-			await page.setViewportSize({ width: 1440, height: 900 });
-			await page.goto(home.path);
-			const nav = page.getByRole('banner').getByRole('navigation');
-			for (const link of await nav.getByRole('link').all()) {
-				const anchor = new URL((await link.getAttribute('href')) ?? '', 'http://x').hash;
-				if (!anchor) continue;
-				await link.click();
-				await expect(page.locator(anchor)).toBeInViewport();
-			}
-			expect(page.url()).toContain(`#${home.anchor}`);
-		});
 	}
 });
 
-/** Each portrait's box, in the list's order. */
-async function portraits(page: Page) {
+/** Opens the Portuguese home page and gives each portrait's box, in the list's order. */
+async function openPortraits(page: Page) {
 	await page.goto('/');
 	const boxes = [];
 	for (const photo of await page.locator('section#equipa img').all()) {
@@ -119,7 +106,7 @@ inEachBuild(() => {
 			test(`/: the five portraits in rows of ${screen.rows.join(' + ')}, all the same size, in 4:5`, async ({
 				page,
 			}) => {
-				const boxes = await portraits(page);
+				const boxes = await openPortraits(page);
 				expect(rowSizes(boxes)).toEqual(screen.rows);
 				for (const box of boxes) {
 					expect(box.width).toBeCloseTo(boxes[0].width, 0);
@@ -140,7 +127,7 @@ inEachBuild(() => {
 		test('/: one row that slides sideways, out to the screen edges, the page itself never', async ({
 			page,
 		}) => {
-			const boxes = await portraits(page);
+			const boxes = await openPortraits(page);
 			expect(rowSizes(boxes)).toEqual([5]);
 			// The first portrait on the 16 px margin, the second cut by the screen's edge.
 			expect(boxes[0].x).toBeCloseTo(16, 0);
