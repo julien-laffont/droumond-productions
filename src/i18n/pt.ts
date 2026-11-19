@@ -36,6 +36,16 @@ export const pt = {
 		/** The player's name for screen readers, after the Project's title. */
 		player: 'teaser no YouTube',
 	},
+	/** The Sobre section of the home page (#15); its text is in src/content/about/. */
+	about: {
+		title: 'Sobre',
+	},
+	/** The Equipa section of the home page (#15); the people are in src/config/team.ts. */
+	team: {
+		title: 'Equipa',
+		/** Next to the title while Characters stand in for the team (TEAM_IS_PROVISIONAL). */
+		provisional: 'Provisório: personagens no lugar da equipa',
+	},
 	/** The first screen of the home page (#13). */
 	hero: {
 		/** The symbol's name for screen readers. */
