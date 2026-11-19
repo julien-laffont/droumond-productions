@@ -3,10 +3,11 @@
 
 /**
  * The contact email: the footer, the Contacto block and the Privacy Policy all read it here, so
- * changing this line changes it on the whole site. For now Carlos's gmail (#4, #7); the Privacy
- * Policy's entry on received emails names Google as recipient while it is a gmail.
+ * changing this line changes it on the whole site. The domain's address since #18, maybe not the
+ * final one. Its mailbox is on Google Workspace (the domain's MX is Google), so the Privacy
+ * Policy's entry on received emails names Google as recipient: check it if the mailbox moves.
  */
-export const CONTACT_EMAIL = 'carlosdroumondwen@gmail.com';
+export const CONTACT_EMAIL = 'contact@droumondproductions.com';
 
 /**
  * The company's legal identification, shown in the footer (CSC, art. 171.º; #3), from the company

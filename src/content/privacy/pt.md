@@ -31,7 +31,7 @@ Quando nos escreve para {email}, tratamos o seu endereço de email, o nome que i
 
 - **Finalidade:** responder ao seu pedido e, se for o caso, preparar uma proposta.
 - **Fundamento:** as diligências pré-contratuais a seu pedido, quando nos pede um trabalho ou uma proposta (RGPD, art. 6.º, n.º 1, alínea b)); o nosso interesse legítimo em responder às restantes mensagens (alínea f)).
-- **Destinatário:** a caixa de correio é um Gmail, por isso a Google guarda as mensagens. A Google pode tratar os dados nos Estados Unidos; a Google LLC está certificada no Quadro de Privacidade de Dados UE-EUA, reconhecido pela decisão de adequação da Comissão Europeia de 10 de julho de 2023.
+- **Destinatário:** a caixa de correio está no Google Workspace, por isso a Google guarda as mensagens. A Google pode tratar os dados nos Estados Unidos; a Google LLC está certificada no Quadro de Privacidade de Dados UE-EUA, reconhecido pela decisão de adequação da Comissão Europeia de 10 de julho de 2023.
 - **Prazo de conservação:** 12 meses após o último contacto, se o pedido não der origem a um trabalho. Se der, a troca de emails passa a fazer parte dos documentos desse trabalho e é guardada pelos prazos legais que lhes correspondem.
 - Dar estes dados é voluntário, mas sem um endereço de email não lhe podemos responder.
 - Não há decisões automatizadas nem definição de perfis.

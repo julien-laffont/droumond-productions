@@ -31,7 +31,7 @@ When you write to {email}, we handle your email address, the name you give and t
 
 - **Purpose:** to answer your request and, where relevant, to prepare a proposal.
 - **Legal basis:** steps taken at your request before a contract, when you ask us for a job or a proposal (GDPR, art. 6(1)(b)); our legitimate interest in answering other messages (art. 6(1)(f)).
-- **Recipient:** the mailbox is a Gmail account, so Google stores the messages. Google may process the data in the United States; Google LLC is certified under the EU-US Data Privacy Framework, recognised by the European Commission's adequacy decision of 10 July 2023.
+- **Recipient:** the mailbox is on Google Workspace, so Google stores the messages. Google may process the data in the United States; Google LLC is certified under the EU-US Data Privacy Framework, recognised by the European Commission's adequacy decision of 10 July 2023.
 - **Retention:** 12 months after the last contact, if the request does not lead to a job. If it does, the emails become part of that job's records and are kept for the legal periods that apply to them.
 - Giving this data is voluntary, but without an email address we cannot answer you.
 - There is no automated decision-making and no profiling.
