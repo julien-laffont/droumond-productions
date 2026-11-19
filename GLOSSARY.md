@@ -5,7 +5,7 @@ The public website of Droumond Productions, a Portuguese audiovisual production 
 ## Language
 
 **Project**:
-An audiovisual work produced by Droumond Productions, such as the series _Efeito Placebo_ or the Instagram mini-series.
+An audiovisual work produced by Droumond Productions, such as the mini-series _Efecto Placebo_ or _Resident Evil_, on Instagram.
 _Avoid_: work, portfolio item, production
 
 **Filming service**:

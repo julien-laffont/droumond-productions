@@ -1,5 +1,5 @@
-// The footer, on every page: the legal identification, the email, the Privacy Policy, YouTube,
-// Instagram and the Livro de Reclamações (#3, #6).
+// The footer, on every page: the legal identification, the founding year, the email, the Privacy
+// Policy, YouTube, Instagram, the Livro de Reclamações and the consumer arbitration centre (#3, #6, #18).
 import { expect, test } from '@playwright/test';
 import { CONTACT_EMAIL } from '../src/config/site';
 import { inEachBuild, languageOf, pagesOf } from './pages';
@@ -16,6 +16,9 @@ const EXPECTED = {
 			'Capital social',
 		],
 		privacy: { name: 'Política de Privacidade', href: '/politica-de-privacidade/' },
+		founded: 'Desde 2026',
+		disputes:
+			'Em caso de litígio de consumo, pode recorrer ao CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (www.cniacc.pt). Mais informações no Portal do Consumidor (www.consumidor.gov.pt).',
 	},
 	en: {
 		legal: [
@@ -27,20 +30,79 @@ const EXPECTED = {
 			'Share capital',
 		],
 		privacy: { name: 'Privacy Policy', href: '/en/privacy-policy/' },
+		founded: 'Est. 2026',
+		disputes:
+			'In case of a consumer dispute, you may turn to CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (www.cniacc.pt). More information on the Portal do Consumidor (www.consumidor.gov.pt).',
 	},
 };
+
+/** The company's legal data, from the company card (#18): only the labels are translated. */
+const LEGAL_VALUES = [
+	'Droumond & Laffont - Produções, Lda',
+	'Sociedade por quotas',
+	'Rua António Campos, Lote 1, 1A, 2410-369 Leiria',
+	'Registo Comercial, matrícula n.º 519294700',
+	'519294700',
+	'100 €',
+];
 
 inEachBuild((build) => {
 	for (const path of pagesOf(build)) {
 		const expected = EXPECTED[languageOf(path)];
 
-		test(`${path}: the footer identifies the company, with placeholders until Julien sends the data`, async ({
+		test(`${path}: the footer identifies the company with its legal data, in Portuguese`, async ({
 			page,
 		}) => {
 			await page.goto(path);
 			const legal = page.getByRole('contentinfo').locator('dl');
 			await expect(legal.locator('dt')).toHaveText(expected.legal);
-			await expect(legal.locator('dd')).toHaveText(Array(6).fill('Por preencher'));
+			const values = legal.locator('dd');
+			await expect(values).toHaveText(LEGAL_VALUES);
+			for (const value of await values.all()) await expect(value).toHaveAttribute('lang', 'pt-PT');
+		});
+
+		test(`${path}: the founding year sits under the company's name`, async ({ page }) => {
+			await page.goto(path);
+			const footer = page.getByRole('contentinfo');
+			const name = footer.getByText('Droumond Productions', { exact: true });
+			const founded = footer.getByText(expected.founded, { exact: true });
+			await expect(founded).toBeVisible();
+			const [nameBox, foundedBox] = [await name.boundingBox(), await founded.boundingBox()];
+			expect(foundedBox!.y).toBeGreaterThan(nameBox!.y + nameBox!.height - 1);
+		});
+
+		test(`${path}: the footer names the consumer arbitration centre and its site, below the rest`, async ({
+			page,
+		}) => {
+			await page.goto(path);
+			const footer = page.getByRole('contentinfo');
+			const disputes = footer.getByText(expected.disputes, { exact: true });
+			await expect(disputes).toBeVisible();
+			// The Portuguese names keep their language for screen readers.
+			for (const name of [
+				'CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo',
+				'Portal do Consumidor',
+			]) {
+				await expect(disputes.getByText(name, { exact: true })).toHaveAttribute('lang', 'pt-PT');
+			}
+			for (const [name, href] of [
+				['www.cniacc.pt', 'https://www.cniacc.pt'],
+				['www.consumidor.gov.pt', 'https://www.consumidor.gov.pt'],
+			]) {
+				const link = disputes.getByRole('link', { name, exact: true });
+				await expect(link).toHaveAttribute('href', href);
+				await expect(link).toHaveAttribute('target', '_blank');
+			}
+			// A line of its own under the footer's columns.
+			const icon = footer.getByRole('img', { name: 'Livro de Reclamações' });
+			const [iconBox, legalBox, disputesBox] = [
+				await icon.boundingBox(),
+				await footer.locator('dl').boundingBox(),
+				await disputes.boundingBox(),
+			];
+			expect(disputesBox!.y).toBeGreaterThan(
+				Math.max(iconBox!.y + iconBox!.height, legalBox!.y + legalBox!.height),
+			);
 		});
 
 		test(`${path}: the footer's Privacy Policy link leads to the policy`, async ({ page }) => {

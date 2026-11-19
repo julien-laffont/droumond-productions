@@ -25,7 +25,7 @@ const HOMES = [
 
 inEachBuild((build) => {
 	for (const home of HOMES.filter((h) => build.english || !h.english)) {
-		test(`${home.path}: Sobre shows its title, the text with the series named, and the image`, async ({
+		test(`${home.path}: Sobre shows its title, the text with the Projects named, and the image`, async ({
 			page,
 			baseURL,
 		}) => {
@@ -33,7 +33,7 @@ inEachBuild((build) => {
 			const section = page.locator(`section#${home.anchor}`);
 			await expect(section.getByRole('heading', { level: 2 })).toHaveText(home.heading);
 			await expect(section.getByText(home.text)).toBeVisible();
-			await expect(section.locator('em')).toHaveText('Efeito Placebo');
+			await expect(section.locator('em')).toHaveText(['Efecto Placebo', 'Resident Evil']);
 
 			const image = section.getByRole('img', { name: home.alt, exact: true });
 			await expect(image).toBeVisible();

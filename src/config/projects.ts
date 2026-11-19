@@ -2,7 +2,7 @@
 // To add or change one, edit this list; its image goes in src/assets/projects/.
 // Every text has both languages; the English ones are provisional until #18.
 import type { ImageMetadata } from 'astro';
-import efeitoPlacebo from '../assets/projects/efeito-placebo.jpg';
+import efectoPlacebo from '../assets/projects/efecto-placebo.jpg';
 import miniSerie from '../assets/projects/mini-serie.jpg';
 import { SOCIAL, type Language } from './site';
 
@@ -30,30 +30,31 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
 	{
-		title: { pt: 'Efeito Placebo', en: 'Efeito Placebo' },
-		type: { pt: 'Série', en: 'Series' },
+		// Spelt as on the teaser's thumbnail, and a mini-series like it says (Julien, #18).
+		title: { pt: 'Efecto Placebo', en: 'Efecto Placebo' },
+		type: { pt: 'Mini-série', en: 'Mini-series' },
 		genre: { pt: 'Suspense', en: 'Thriller' },
 		status: { pt: 'Em gravação', en: 'In production' },
 		// PROVISIONAL: the YouTube thumbnail, cropped; a clean frame of the teaser comes in #18.
-		image: efeitoPlacebo,
+		image: efectoPlacebo,
 		alt: {
-			pt: 'Três personagens de Efeito Placebo, vistas de baixo através de uma teia de cordas.',
-			en: 'Three characters from Efeito Placebo, seen from below through a web of ropes.',
+			pt: 'Três personagens de Efecto Placebo, vistas de baixo através de uma teia de cordas.',
+			en: 'Three characters from Efecto Placebo, seen from below through a web of ropes.',
 		},
 		shape: 'wide',
 		link: { youtube: 'Y785Re6Cyvk' },
 	},
 	{
-		// PROVISIONAL title: the name "Resident Evil" waits for Julien (#18), so the image is
-		// cropped above the poster's title.
-		title: { pt: 'Mini-série do Instagram', en: 'Instagram mini-series' },
+		// The image is cropped above the poster's title, so no text sits over it.
+		title: { pt: 'Resident Evil', en: 'Resident Evil' },
 		type: { pt: 'Mini-série', en: 'Mini-series' },
 		genre: { pt: 'Terror', en: 'Horror' },
-		status: { pt: '4 episódios', en: '4 episodes' },
+		// Five episodes, the last one filmed but not released yet (Julien, 2026-11-19).
+		status: { pt: '5 episódios', en: '5 episodes' },
 		image: miniSerie,
 		alt: {
-			pt: 'Cartaz da mini-série: dois olhos brancos a brilhar no escuro.',
-			en: 'The mini-series poster: two white eyes glowing in the dark.',
+			pt: 'Cartaz de Resident Evil: dois olhos brancos a brilhar no escuro.',
+			en: 'The Resident Evil poster: two white eyes glowing in the dark.',
 		},
 		shape: 'tall',
 		link: { url: SOCIAL.instagram, label: { pt: 'Ver no Instagram', en: 'See on Instagram' } },

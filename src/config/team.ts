@@ -27,16 +27,16 @@ export interface TeamMember {
 /** Shows the tag "Provisório: personagens no lugar da equipa". `false` once the real team is in. */
 export const TEAM_IS_PROVISIONAL = true;
 
-const CHARACTER_OF_EFEITO_PLACEBO = {
-	pt: 'Personagem · Efeito Placebo',
-	en: 'Character · Efeito Placebo',
+const CHARACTER_OF_EFECTO_PLACEBO = {
+	pt: 'Personagem · Efecto Placebo',
+	en: 'Character · Efecto Placebo',
 };
 const CHARACTER = { pt: 'Personagem', en: 'Character' };
 
 export const TEAM: TeamMember[] = [
 	{
 		name: 'Raul de Valverde',
-		role: CHARACTER_OF_EFEITO_PLACEBO,
+		role: CHARACTER_OF_EFECTO_PLACEBO,
 		photo: equipa1,
 		alt: {
 			pt: 'Raul de Valverde, de óculos e casaco de cabedal, encostado a uma parede de tijolo.',
@@ -45,7 +45,7 @@ export const TEAM: TeamMember[] = [
 	},
 	{
 		name: 'Miguel Figueredo',
-		role: CHARACTER_OF_EFEITO_PLACEBO,
+		role: CHARACTER_OF_EFECTO_PLACEBO,
 		photo: equipa2,
 		alt: {
 			pt: 'Miguel Figueredo, de fato, olha para o relógio com um copo de vinho na mão.',
@@ -54,7 +54,7 @@ export const TEAM: TeamMember[] = [
 	},
 	{
 		name: 'Julien Laffont',
-		role: CHARACTER_OF_EFEITO_PLACEBO,
+		role: CHARACTER_OF_EFECTO_PLACEBO,
 		photo: equipa3,
 		alt: {
 			pt: 'Julien Laffont, de óculos escuros e casaco de cabedal.',

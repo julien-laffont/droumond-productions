@@ -23,6 +23,11 @@ export const en: Dictionary = {
 			shareCapital: 'Share capital',
 		},
 		privacy: 'Privacy Policy',
+		founded: 'Est. 2026',
+		disputes: {
+			before: 'In case of a consumer dispute, you may turn to',
+			more: 'More information on the',
+		},
 	},
 	projects: {
 		title: 'Projects',
