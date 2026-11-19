@@ -31,33 +31,35 @@ const FILMING = [
 inEachBuild((build) => {
 	const filming = FILMING.filter(({ home }) => build.english || languageOf(home) === 'pt');
 
-	for (const f of filming) {
-		test(`${f.home}: the filming band, right before Contacto, leads to the filming page`, async ({
+	for (const expected of filming) {
+		test(`${expected.home}: the filming band, right before Contacto, leads to the filming page`, async ({
 			page,
 		}) => {
-			await openExisting(page, f.home);
-			const band = page.getByRole('region', { name: f.title, exact: true });
-			await expect(band).toContainText(f.label);
-			await expect(band).toContainText(f.line);
-			await expect(band.getByRole('link', { name: f.button, exact: true })).toHaveAttribute(
+			await openExisting(page, expected.home);
+			const band = page.getByRole('region', { name: expected.title, exact: true });
+			await expect(band).toContainText(expected.label);
+			await expect(band).toContainText(expected.line);
+			await expect(band.getByRole('link', { name: expected.button, exact: true })).toHaveAttribute(
 				'href',
-				f.page,
+				expected.page,
 			);
-			expect(await band.evaluate((section) => section.nextElementSibling?.id)).toBe(f.contact);
-			await band.getByRole('link', { name: f.button, exact: true }).click();
-			await expect(page).toHaveURL((url) => url.pathname === f.page);
+			expect(await band.evaluate((section) => section.nextElementSibling?.id)).toBe(
+				expected.contact,
+			);
+			await band.getByRole('link', { name: expected.button, exact: true }).click();
+			await expect(page).toHaveURL((url) => url.pathname === expected.page);
 		});
 
-		test(`${f.page}: the label, Julien's sentence as the title, the short text, then Contacto`, async ({
+		test(`${expected.page}: the label, Julien's sentence as the title, the short text, then Contacto`, async ({
 			page,
 		}) => {
-			await openExisting(page, f.page);
-			await expect(page).toHaveTitle(f.pageTitle);
+			await openExisting(page, expected.page);
+			await expect(page).toHaveTitle(expected.pageTitle);
 			const main = page.getByRole('main');
-			await expect(main).toContainText(f.label);
-			await expect(main.getByRole('heading', { level: 1 })).toHaveText(f.title);
-			await expect(main).toContainText(f.text);
-			await expect(main.locator(':scope > :last-child')).toHaveAttribute('id', f.contact);
+			await expect(main).toContainText(expected.label);
+			await expect(main.getByRole('heading', { level: 1 })).toHaveText(expected.title);
+			await expect(main).toContainText(expected.text);
+			await expect(main.locator(':scope > :last-child')).toHaveAttribute('id', expected.contact);
 		});
 	}
 });

@@ -1,60 +1,45 @@
 // The Contacto block (#7, #16): the address in large type is the email link, with no separate
-// button, and the Privacy Policy line under it. Only the filming page's fills in a subject; the
-// footer's email always opens blank. The header's Contacto leads to the block of the page itself.
+// button, and the Privacy Policy line under it. Only the filming page's fills in a subject (the
+// footer's email, always blank, is checked in footer.spec.ts). The header's Contacto leads to the
+// block of the page itself.
 import { expect, test } from '@playwright/test';
 import { CONTACT_EMAIL } from '../src/config/site';
-import { inEachBuild, languageOf, openExisting, pagesOf } from './pages';
+import { inEachBuild, languageOf, openExisting } from './pages';
 
-/** The pages with a Contacto block, what the block holds and where its email link leads. */
-const BLOCKS = [
-	{
-		path: '/',
+/** What the Contacto block holds in each language. */
+const BLOCK = {
+	pt: {
 		anchor: 'contacto',
 		title: 'Contacto',
-		href: `mailto:${CONTACT_EMAIL}`,
 		privacy: {
 			line: 'Os dados que nos enviar são tratados de acordo com a Política de Privacidade.',
 			name: 'Política de Privacidade',
 			href: '/politica-de-privacidade/',
 		},
 	},
-	{
-		path: '/en/',
+	en: {
 		anchor: 'contact',
 		title: 'Contact',
-		href: `mailto:${CONTACT_EMAIL}`,
 		privacy: {
 			line: 'The data you send us is handled according to the Privacy Policy.',
 			name: 'Privacy Policy',
 			href: '/en/privacy-policy/',
 		},
 	},
-	{
-		path: '/filmagens/',
-		anchor: 'contacto',
-		title: 'Contacto',
-		href: `mailto:${CONTACT_EMAIL}?subject=Servi%C3%A7o%20de%20filmagens`,
-		privacy: {
-			line: 'Os dados que nos enviar são tratados de acordo com a Política de Privacidade.',
-			name: 'Política de Privacidade',
-			href: '/politica-de-privacidade/',
-		},
-	},
-	{
-		path: '/en/filming/',
-		anchor: 'contact',
-		title: 'Contact',
-		href: `mailto:${CONTACT_EMAIL}?subject=Filming%20service`,
-		privacy: {
-			line: 'The data you send us is handled according to the Privacy Policy.',
-			name: 'Privacy Policy',
-			href: '/en/privacy-policy/',
-		},
-	},
+};
+
+/** The pages with a Contacto block, and where its email link leads. */
+const PAGES_WITH_BLOCK = [
+	{ path: '/', href: `mailto:${CONTACT_EMAIL}` },
+	{ path: '/en/', href: `mailto:${CONTACT_EMAIL}` },
+	{ path: '/filmagens/', href: `mailto:${CONTACT_EMAIL}?subject=Servi%C3%A7o%20de%20filmagens` },
+	{ path: '/en/filming/', href: `mailto:${CONTACT_EMAIL}?subject=Filming%20service` },
 ];
 
 inEachBuild((build) => {
-	const blocks = BLOCKS.filter(({ path }) => build.english || languageOf(path) === 'pt');
+	const blocks = PAGES_WITH_BLOCK.filter(
+		({ path }) => build.english || languageOf(path) === 'pt',
+	).map((page) => ({ ...page, ...BLOCK[languageOf(page.path)] }));
 
 	for (const block of blocks) {
 		test(`${block.path}: the Contacto block shows the address as its email link, then the Privacy Policy line`, async ({
@@ -144,16 +129,6 @@ inEachBuild((build) => {
 					),
 				).toBe(0);
 			});
-		});
-	}
-
-	for (const path of pagesOf(build)) {
-		test(`${path}: the footer's email opens blank`, async ({ page }) => {
-			await page.goto(path);
-			await expect(page.getByRole('contentinfo').locator('a[href^="mailto:"]')).toHaveAttribute(
-				'href',
-				`mailto:${CONTACT_EMAIL}`,
-			);
 		});
 	}
 });

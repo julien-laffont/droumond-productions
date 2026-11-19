@@ -13,7 +13,7 @@ export const PAGES = {
 
 export type PageId = keyof typeof PAGES;
 
-/** The anchors of the home page's sections, in each language. */
+/** The anchors of the home page's sections, in each language. Contacto's is also the filming page's. */
 const SECTIONS = {
 	projects: { pt: 'projetos', en: 'projects' },
 	about: { pt: 'sobre', en: 'about' },
@@ -23,7 +23,7 @@ const SECTIONS = {
 
 export type SectionId = keyof typeof SECTIONS;
 
-/** A home page section's anchor, its `id`: `projetos`, `projects`. */
+/** A section's anchor, its `id`: `projetos`, `projects`. */
 export function sectionAnchor(section: SectionId, language: Language): string {
 	return SECTIONS[section][language];
 }
