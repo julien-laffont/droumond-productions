@@ -1,0 +1,31 @@
+---
+// The Filming service page in one language (/filmagens/, /en/filming/; #6, #16), in the style of
+// the home page's band: a small label, Julien's sentence as the title, a short text (what the
+// service is and who it is for), then the Contacto block, whose email fills in the subject. A list
+// of equipment, prices or examples only comes if Julien asks for them.
+import type { Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import Base from '../layouts/Base.astro';
+import Contact from './Contact.astro';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const t = dictionaries[language].filming;
+---
+
+<Base language={language} page="filming" title={t.pageTitle} description={t.description}>
+	<main>
+		{/* Room below for half of the Contacto block's brush stroke. */}
+		<div class="px-gutter pt-[clamp(48px,6vw,88px)] pb-[calc(var(--edge-height)*0.5+clamp(56px,8vw,112px))]">
+			<p class="type-meta">{t.label}</p>
+			<h1 class="mt-2.5 mb-[clamp(20px,2.4vw,32px)] max-w-[18ch] text-[clamp(2.2rem,5vw,4.4rem)] leading-[0.95] text-balance type-name">
+				{t.title}
+			</h1>
+			<p class="max-w-[62ch] text-[clamp(1.02rem,1.25vw,1.15rem)] leading-[1.65]">{t.text}</p>
+		</div>
+		<Contact language={language} subject={t.subject} />
+	</main>
+</Base>

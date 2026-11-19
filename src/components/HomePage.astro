@@ -1,9 +1,11 @@
 ---
-// The home page, in one language (/ and /en/): the first screen, then Projects. Sobre, Equipa
-// and Contacto arrive with #15 and #16.
+// The home page, in one language (/ and /en/): the first screen, Projects, the filming band, then
+// Contacto. Sobre and Equipa (#15) go between Projects and the band.
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import Base from '../layouts/Base.astro';
+import Contact from './Contact.astro';
+import FilmingBand from './FilmingBand.astro';
 import Hero from './Hero.astro';
 import Projects from './Projects.astro';
 
@@ -19,5 +21,7 @@ const t = dictionaries[language].home;
 	<main>
 		<Hero language={language} />
 		<Projects language={language} />
+		<FilmingBand language={language} />
+		<Contact language={language} above="ink-2" />
 	</main>
 </Base>

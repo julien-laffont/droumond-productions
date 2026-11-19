@@ -47,6 +47,31 @@ export const pt = {
 		/** The button that pauses the background video. Its name never changes: pressed means paused. */
 		pause: 'Pausar vídeo',
 	},
+	/** The Contacto block, on the home page and on the filming page (#7, #16). */
+	contact: {
+		title: 'Contacto',
+		line: 'Para um projeto, uma filmagem ou uma pergunta, escreva-nos.',
+		/** The line under the address: the Privacy Policy link and a full stop follow it. */
+		privacyBefore: 'Os dados que nos enviar são tratados de acordo com a',
+		privacy: 'Política de Privacidade',
+	},
+	/** The Filming service (#16): the home page's band and the filming page. Provisional until #18. */
+	filming: {
+		label: 'Serviço de filmagens',
+		/** Julien's sentence: the band's title and the filming page's heading. */
+		title: 'Quer a Droumond Productions para gravação?',
+		/** The band's sentence. */
+		line: 'Levamos a nossa equipa e o nosso material de produção às suas filmagens.',
+		/** The band's button, to the filming page. */
+		button: 'Ver o serviço',
+		/** The filming page's short text: what the service is and who it is for. */
+		text: 'Levamos a equipa e o material com que fazemos as nossas séries às suas filmagens. Diga-nos o que quer gravar, onde e quando, e respondemos com o que podemos fazer.',
+		/** The subject of the email written from the filming page (#7). */
+		subject: 'Serviço de filmagens',
+		/** The filming page's <title> and description. */
+		pageTitle: 'Serviço de filmagens · Droumond Productions',
+		description: 'Serviço de filmagens da Droumond Productions, produtora audiovisual portuguesa.',
+	},
 	home: {
 		title: 'Droumond Productions',
 		description: 'Droumond Productions, produtora audiovisual portuguesa. Site em construção.',

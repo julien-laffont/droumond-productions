@@ -5,7 +5,7 @@ import type { Language } from '../config/site';
 /** Each page's address in each language. The file in src/localized-pages/ must match. */
 export const PAGES = {
 	home: { pt: '/', en: '/en/' },
-	/** The filming service page, made in #16. */
+	/** The Filming service page (#16). */
 	filming: { pt: '/filmagens/', en: '/en/filming/' },
 	/** The Privacy Policy, made in #17. */
 	privacy: { pt: '/politica-de-privacidade/', en: '/en/privacy-policy/' },
@@ -34,6 +34,16 @@ export function sectionAnchor(section: SectionId, language: Language): string {
  */
 export function sectionPath(section: SectionId, language: Language): string {
 	return `${PAGES.home[language]}#${sectionAnchor(section, language)}`;
+}
+
+/**
+ * Where the header's Contacto leads: on the filming page, its own Contacto block (#7); everywhere
+ * else, the home page's.
+ */
+export function contactPath(page: PageId | undefined, language: Language): string {
+	return page === 'filming'
+		? `${PAGES.filming[language]}#${sectionAnchor('contact', language)}`
+		: sectionPath('contact', language);
 }
 
 /**
