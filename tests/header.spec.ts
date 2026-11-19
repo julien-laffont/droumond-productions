@@ -57,4 +57,17 @@ inEachBuild((build) => {
 			).toHaveAttribute('href', OWN_CONTACT[path] ?? expected.contact.href);
 		});
 	}
+
+	for (const path of pagesOf(build).filter((p) => p === '/' || p === '/en/')) {
+		const expected = EXPECTED[languageOf(path)];
+
+		test(`${path}: each section link of the header scrolls to its section`, async ({ page }) => {
+			await page.goto(path);
+			const nav = page.getByRole('banner').getByRole('navigation', { name: expected.nav });
+			for (const { name, href } of expected.links.filter((l) => l.href.includes('#'))) {
+				await nav.getByRole('link', { name, exact: true }).click();
+				await expect(page.locator(`#${href.split('#')[1]}`)).toBeInViewport();
+			}
+		});
+	}
 });
