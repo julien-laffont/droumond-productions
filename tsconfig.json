@@ -1,0 +1,12 @@
+{
+	"extends": "astro/tsconfigs/strict",
+	"include": [".astro/types.d.ts", "**/*"],
+	"exclude": [
+		"dist",
+		"dist-en",
+		"playwright-report",
+		"test-results",
+		"lighthouse-report",
+		".claude"
+	]
+}

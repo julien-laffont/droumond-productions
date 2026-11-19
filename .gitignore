@@ -1,0 +1,32 @@
+# build output: the published build and the test build with English
+dist/
+dist-en/
+
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# playwright
+playwright-report/
+test-results/
+
+# Lighthouse reports
+lighthouse-report/
+
+# agent plans and lessons (local only)
+tasks/

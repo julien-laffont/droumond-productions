@@ -1,0 +1,5 @@
+# The Infomaniak SFTP server key. Publishing only connects if the server has this key.
+# The same server as Julien's landing page (same hosting): ED25519
+# SHA256:TGNuzbdk4Nak309M0Z3l0x5TQ2cXmQgcWV3A7zJycdA, confirmed by Julien on 2026-10-28.
+# If Infomaniak changes the key, Publishing turns red: confirm the new one and replace this line.
+rl6jrr.ftp.infomaniak.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBaQykPdle+c115/xKu1vR7W6p1o1ZpNsJu4OJfDqP7r

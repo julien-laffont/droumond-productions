@@ -1,0 +1,23 @@
+---
+// The home page, in one language (/ and /en/): the first screen, then Projects. Sobre, Equipa
+// and Contacto arrive with #15 and #16.
+import type { Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import Projects from './Projects.astro';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const t = dictionaries[language].home;
+---
+
+<Base language={language} page="home" title={t.title} description={t.description}>
+	<main>
+		<Hero language={language} />
+		<Projects language={language} />
+	</main>
+</Base>

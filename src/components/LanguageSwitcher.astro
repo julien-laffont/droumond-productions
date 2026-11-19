@@ -1,0 +1,40 @@
+---
+// The language button: shows the current language ("PT"); a click opens a small menu with the
+// same page in the other language, written in that language ("English"). Screen readers hear
+// "PT, língua: Português": the name starts with what is shown (WCAG 2.5.3). It is an aria-label,
+// because a hidden span would add a space before the comma. Opens without JavaScript (<details>).
+// Only in a build with more than one language.
+import { HTML_CODES, LANGUAGE_NAMES, PUBLISHED_LANGUAGES, type Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import { PAGES, type PageId } from '../lib/paths';
+
+interface Props {
+	language: Language;
+	page: PageId;
+}
+
+const { language, page } = Astro.props;
+const t = dictionaries[language].header;
+const others = PUBLISHED_LANGUAGES.filter((l) => l !== language);
+const code = language.toUpperCase();
+---
+
+{others.length > 0 && (
+	<details class="relative" data-menu>
+		<summary
+			aria-label={`${code}, ${t.language}: ${LANGUAGE_NAMES[language]}`}
+			class="cursor-pointer list-none rounded-full border border-canvas/16 px-2.5 py-1.5 text-xs/[1.55] tracking-[0.1em] [&::-webkit-details-marker]:hidden"
+		>
+			{code}
+		</summary>
+		<ul class="absolute top-[calc(100%+8px)] right-0 min-w-30 border border-canvas/16 bg-ink-2 p-1.5">
+			{others.map((l) => (
+				<li>
+					<a href={PAGES[page][l]} lang={HTML_CODES[l]} hreflang={l} class="block px-2.5 py-2">
+						{LANGUAGE_NAMES[l]}
+					</a>
+				</li>
+			))}
+		</ul>
+	</details>
+)}

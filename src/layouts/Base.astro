@@ -1,0 +1,75 @@
+---
+// The HTML shell shared by every page: <html>, <head> and the global styles.
+// Each page passes its language, its id in PAGES, its title and description; its content goes into the <slot />.
+// A page without an id (the 404, which holds both languages) has no hreflang and no language button.
+import '../styles/global.css';
+import { Font } from 'astro:assets';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { HTML_CODES, PUBLISHED_LANGUAGES, SITE, type Language } from '../config/site';
+import { commit } from '../lib/commit';
+import { PAGES, type PageId } from '../lib/paths';
+
+interface Props {
+	language: Language;
+	page?: PageId;
+	title: string;
+	description: string;
+}
+
+const { language, page, title, description } = Astro.props;
+/** The languages of the hreflang links: every published one, only when there is more than one. */
+const hreflangLanguages = PUBLISHED_LANGUAGES.length > 1 ? PUBLISHED_LANGUAGES : [];
+---
+
+<!doctype html>
+<html lang={HTML_CODES[language]}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		{page &&
+			hreflangLanguages.map((l) => (
+				<link rel="alternate" hreflang={l} href={`${SITE}${PAGES[page][l]}`} />
+			))}
+		{/* The commit of this build: the Publishing confirmation checks the site serves it. */}
+		<meta name="commit" content={commit} />
+		{/* The logo symbol, canvas on ink, made from src/assets/logo.png (16, 32 and 48 px; 180 px). */}
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		{/* The only font, preloaded: the names in large type use it from the first screen. */}
+		<Font cssVariable="--font-archivo" preload />
+	</head>
+	<body>
+		<Header language={language} page={page} />
+		<slot />
+		<Footer language={language} />
+		<script>
+			// The discreet reveal of the sections while scrolling (.reveal, in global.css): what is
+			// already on screen is never touched; the rest waits faded (.reveal-later) until it comes
+			// into view. In an old browser without IntersectionObserver, everything simply shows.
+			// The observer's first report on each item decides: it comes once the page is laid out
+			// with its styles, which WebKit may not have applied yet when this script runs.
+			if ('IntersectionObserver' in window) {
+				const decided = new WeakSet<Element>();
+				const observer = new IntersectionObserver(
+					(entries) => {
+						for (const { target, isIntersecting, boundingClientRect } of entries) {
+							if (!decided.has(target)) {
+								decided.add(target);
+								if (boundingClientRect.top < window.innerHeight) observer.unobserve(target);
+								else target.classList.add('reveal-later');
+							} else if (isIntersecting) {
+								target.classList.remove('reveal-later');
+								observer.unobserve(target);
+							}
+						}
+					},
+					{ threshold: 0.15 },
+				);
+				for (const item of document.querySelectorAll('.reveal')) observer.observe(item);
+			}
+		</script>
+	</body>
+</html>
