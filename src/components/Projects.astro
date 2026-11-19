@@ -63,10 +63,9 @@ const anchor = sectionAnchor('projects', language);
 								}
 								class="size-full object-cover motion-safe:transition-transform motion-safe:duration-900 motion-safe:ease-(--ease) motion-safe:group-hover:scale-[1.025]"
 							/>
-							<span class="absolute bottom-4 left-4 border border-canvas bg-ink/55 px-3.5 py-2.5 text-[0.72rem]/[1.55] font-medium tracking-[0.16em] uppercase font-stretch-125%">
-								{youtube && <span aria-hidden="true">▶ </span>}
-								{label}
-							</span>
+							{/* Nothing drawn over the image, which is the link itself; screen readers still
+							    hear what it does. */}
+							<span class="sr-only">{label}</span>
 						</a>
 					</div>
 					{youtube && (

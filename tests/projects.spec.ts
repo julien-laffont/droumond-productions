@@ -105,6 +105,19 @@ inEachBuild((build) => {
 			await expect(link).toHaveAttribute('target', '_blank');
 		});
 
+		test(`${home.path}: no label is drawn over the images: the image itself is the link`, async ({
+			page,
+		}) => {
+			await page.goto(home.path);
+			const section = page.locator(`section#${home.anchor}`);
+			for (const name of [home.teaser, home.instagram]) {
+				// The link keeps saying what it does to screen readers, without showing it.
+				const label = section.getByRole('link', { name }).getByText(name);
+				const box = await label.boundingBox();
+				expect(box && box.width * box.height, name).toBeLessThanOrEqual(1);
+			}
+		});
+
 		test(`${home.path}: a notice under the teaser says what the click does and leads to the policy`, async ({
 			page,
 		}) => {
