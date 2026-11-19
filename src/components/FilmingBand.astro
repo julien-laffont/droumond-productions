@@ -1,0 +1,40 @@
+---
+// The Filming service band of the home page (#16), right before Contacto: the one place that
+// sells, on a raised dark band. A small label, Julien's sentence as the title, one sentence and a
+// button to the filming page.
+import type { Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import { PAGES } from '../lib/paths';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const t = dictionaries[language].filming;
+---
+
+{/* Room below for half of the Contacto block's brush stroke, which paints this band's colour. */}
+<section
+	aria-labelledby="filming-band-title"
+	class="relative z-1 bg-ink-2 px-gutter pt-[clamp(44px,6vw,80px)] pb-[calc(var(--edge-height)*0.5+clamp(44px,6vw,80px))]"
+>
+	<div class="reveal grid grid-cols-[minmax(0,1fr)_auto] items-end gap-[clamp(20px,3vw,48px)] max-[760px]:grid-cols-1">
+		<div>
+			<p class="type-meta">{t.label}</p>
+			<h2
+				id="filming-band-title"
+				class="mt-2.5 mb-3.5 max-w-[18ch] text-[clamp(1.9rem,3.6vw,3.1rem)] leading-[0.95] text-balance type-name"
+			>
+				{t.title}
+			</h2>
+			<p class="max-w-[52ch] text-muted">{t.line}</p>
+		</div>
+		<a
+			href={PAGES.filming[language]}
+			class="justify-self-start border border-current px-[18px] py-3 text-[0.74rem] font-medium tracking-[0.16em] uppercase font-stretch-125% hover:bg-canvas hover:text-ink motion-safe:transition-colors motion-safe:duration-300 motion-safe:ease-(--ease)"
+		>
+			{t.button}
+		</a>
+	</div>
+</section>
