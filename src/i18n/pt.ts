@@ -36,10 +36,20 @@ export const pt = {
 		/** The player's name for screen readers, after the Project's title. */
 		player: 'teaser no YouTube',
 	},
+	/** The first screen of the home page (#13). */
+	hero: {
+		/** The symbol's name for screen readers. */
+		logo: 'Logótipo da Droumond Productions',
+		/** The words that pass one at a time under the name, hidden from screen readers. */
+		words: ['Séries', 'Suspense', 'Terror', 'Filmagens'],
+		/** The line that stays under the name: the real text. */
+		line: 'Produtora audiovisual',
+		/** The button that pauses the background video. Its name never changes: pressed means paused. */
+		pause: 'Pausar vídeo',
+	},
 	home: {
 		title: 'Droumond Productions',
 		description: 'Droumond Productions, produtora audiovisual portuguesa. Site em construção.',
-		placeholder: 'Site em construção.',
 	},
 };
 

@@ -2,7 +2,7 @@
 // Runs the real Lighthouse, one run per page: if a Lighthouse update changes the
 // report and a target stops firing, these tests turn red.
 import { randomBytes } from 'node:crypto';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { expect, test } from '@playwright/test';
 import { pagesIn } from '../pages';
@@ -39,7 +39,7 @@ function testPage({ noindex = false, head = '', body = '' }: TestPageOptions = {
 }
 
 /** Writes the test site into the test's output folder and returns the folder. */
-function createSite(files: Record<string, string>) {
+function createSite(files: Record<string, string | Buffer>) {
 	const folder = test.info().outputPath('site');
 	for (const [path, content] of Object.entries(files)) {
 		mkdirSync(dirname(join(folder, path)), { recursive: true });
@@ -90,6 +90,23 @@ test('compressed page stays within 400 KB', async () => {
 	});
 	expect(await failuresByPage(folder)).toEqual({
 		'/heavy/': [expect.stringMatching(/^page weighs \d+\.\d KB, max 400\.0 KB$/)],
+	});
+});
+
+test('the background video weighs apart from the page, within 700 KB', async () => {
+	// The home page's real video (#13), about 600 KB: Chromium downloads all of it.
+	const video = readFileSync('src/assets/hero/background.mp4');
+	const player = (src: string) =>
+		`<video src="${src}" muted autoplay loop playsinline width="320" height="180"></video>`;
+	const folder = createSite({
+		'one-video/index.html': testPage({ body: player('/a.mp4') }),
+		'two-videos/index.html': testPage({ body: player('/a.mp4') + player('/b.mp4') }),
+		'a.mp4': video,
+		'b.mp4': video,
+	});
+	expect(await failuresByPage(folder)).toEqual({
+		'/one-video/': [],
+		'/two-videos/': [expect.stringMatching(/^video weighs \d+\.\d KB, max 700\.0 KB$/)],
 	});
 });
 

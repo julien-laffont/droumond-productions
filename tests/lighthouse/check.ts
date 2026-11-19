@@ -9,7 +9,10 @@ import lighthouse, { generateReport, type Result } from 'lighthouse';
 
 /** 1 KB = 1024 bytes, as in Lighthouse budgets. */
 const KB = 1024;
+/** The page without its videos, which have their own limit. */
 const MAX_PAGE_SIZE = 400 * KB;
+/** The videos of the page, such as the first screen's background video (#13). */
+const MAX_VIDEO_SIZE = 700 * KB;
 const MAX_JS_SIZE = 75 * KB;
 const MAX_FONTS = 2;
 
@@ -164,9 +167,14 @@ function failuresOf(lhr: Result): string[] {
 	}
 	const failures = seoFailures(lhr);
 	const allRequests = networkRequests(lhr);
-	const pageSize = totalSize(allRequests);
+	const isVideo = (r: NetworkRequest) => r.resourceType === 'Media';
+	const pageSize = totalSize(allRequests.filter((r) => !isVideo(r)));
 	if (pageSize > MAX_PAGE_SIZE) {
 		failures.push(`page weighs ${kb(pageSize)}, max ${kb(MAX_PAGE_SIZE)}`);
+	}
+	const videoSize = totalSize(allRequests.filter(isVideo));
+	if (videoSize > MAX_VIDEO_SIZE) {
+		failures.push(`video weighs ${kb(videoSize)}, max ${kb(MAX_VIDEO_SIZE)}`);
 	}
 	// Only counts JS from .js files. JS written inside the HTML only counts toward the page weight.
 	const js = totalSize(allRequests.filter((r) => r.resourceType === 'Script'));

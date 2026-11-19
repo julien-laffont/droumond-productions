@@ -29,10 +29,10 @@
 	--default-font-family: var(--font-archivo);
 }
 
-/* The side margin of every block, wider than the phone's notch. */
+/* The side margin of every block (--gutter), wider than the phone's notch. */
 @utility px-gutter {
-	padding-left: max(clamp(16px, 3vw, 40px), env(safe-area-inset-left, 0px));
-	padding-right: max(clamp(16px, 3vw, 40px), env(safe-area-inset-right, 0px));
+	padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+	padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
 }
 
 /* The label style of the prototype: section titles, the Privacy Policy's title, the 404's
@@ -67,6 +67,8 @@
 @layer base {
 	:root {
 		--header-height: 4rem;
+		/* The side margin of the blocks (px-gutter). */
+		--gutter: clamp(16px, 3vw, 40px);
 		/* The height of the brush-stroke seams (.edge); the blocks next to one leave room for half of it. */
 		--edge-height: clamp(44px, 7vw, 104px);
 		--ease: cubic-bezier(0.2, 0.7, 0.2, 1);

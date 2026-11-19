@@ -32,10 +32,15 @@ export const en: Dictionary = {
 		privacy: 'Privacy Policy',
 		player: 'teaser on YouTube',
 	},
+	hero: {
+		logo: 'Droumond Productions logo',
+		words: ['Series', 'Thriller', 'Horror', 'Filming'],
+		line: 'Audiovisual production company',
+		pause: 'Pause video',
+	},
 	home: {
 		title: 'Droumond Productions',
 		description:
 			'Droumond Productions, Portuguese audiovisual production company. Site in progress.',
-		placeholder: 'Site in progress.',
 	},
 };
