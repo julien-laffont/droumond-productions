@@ -23,7 +23,7 @@ export interface Project {
 	shape: 'wide' | 'tall';
 	/**
 	 * Where the image leads. A YouTube video only loads on click, from youtube-nocookie.com (#3);
-	 * any other link (never an embed) needs its label.
+	 * any other link (never an embed) needs its label, read only by screen readers.
 	 */
 	link: { youtube: string } | { url: string; label: Text };
 }

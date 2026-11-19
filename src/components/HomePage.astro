@@ -1,9 +1,10 @@
 ---
-// The home page, in one language (/ and /en/). The first screen, Sobre, Equipa and Contacto
-// arrive with #13, #15 and #16; until #13, a placeholder holds the page's h1.
+// The home page, in one language (/ and /en/): the first screen, then Projects. Sobre, Equipa
+// and Contacto arrive with #15 and #16.
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
 import Projects from './Projects.astro';
 
 interface Props {
@@ -16,10 +17,7 @@ const t = dictionaries[language].home;
 
 <Base language={language} page="home" title={t.title} description={t.description}>
 	<main>
-		<div class="mx-auto max-w-2xl px-5 py-16">
-			<h1 class="text-3xl font-semibold">Droumond Productions</h1>
-			<p class="mt-4">{t.placeholder}</p>
-		</div>
+		<Hero language={language} />
 		<Projects language={language} />
 	</main>
 </Base>

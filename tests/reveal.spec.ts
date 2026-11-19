@@ -31,15 +31,19 @@ inEachBuild(() => {
 			}) => {
 				await page.emulateMedia({ reducedMotion: 'no-preference' });
 				await page.goto('/');
-				for (const { item, onScreen } of await revealItems(page)) {
+				const items = await revealItems(page);
+				for (const { item, onScreen } of items) {
 					if (onScreen) {
 						expect(await item.evaluate(opacity)).toBe('1');
 						expect(await item.evaluate((element) => element.getAnimations().length)).toBe(0);
 					} else {
 						expect(Number(await item.evaluate(opacity))).toBeLessThan(1);
-						await item.scrollIntoViewIfNeeded();
-						await expect.poll(() => item.evaluate(opacity)).toBe('1');
 					}
+				}
+				// Only once each is checked: items side by side come into view together.
+				for (const { item } of items.filter(({ onScreen }) => !onScreen)) {
+					await item.scrollIntoViewIfNeeded();
+					await expect.poll(() => item.evaluate(opacity)).toBe('1');
 				}
 			});
 
