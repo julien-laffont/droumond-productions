@@ -1,0 +1,49 @@
+---
+// The Sobre section of the home page (#15): small text on the left, a wide image (16:9) on the
+// right, the Projects grid in reverse; one column below 960 px. Text, image and alt text come
+// from src/content/about/<language>.md, so Julien can change them without touching code.
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import type { Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import { sectionAnchor } from '../lib/paths';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const t = dictionaries[language].about;
+const anchor = sectionAnchor('about', language);
+const entry = await getEntry('about', language);
+if (!entry) {
+	throw new Error(`Missing src/content/about/${language}.md: Sobre exists in every language.`);
+}
+const { Content } = await render(entry);
+---
+
+<section
+	id={anchor}
+	aria-labelledby={`${anchor}-title`}
+	class="grid grid-cols-[1fr_2fr] items-start gap-[clamp(12px,1.4vw,20px)] px-gutter py-[clamp(48px,6vw,88px)] max-[960px]:grid-cols-1"
+>
+	<div class="min-w-0">
+		<h2 id={`${anchor}-title`} class="mb-[clamp(20px,2.4vw,32px)] type-label">
+			{t.title}
+		</h2>
+		{/* The series' name, in italics in the Markdown, shows in the narrow heavy type of names. */}
+		<div class="reveal grid max-w-[62ch] gap-[1em] text-[clamp(1.02rem,1.25vw,1.15rem)] leading-[1.65] [&_em]:font-bold [&_em]:tracking-[0.02em] [&_em]:uppercase [&_em]:not-italic [&_em]:font-stretch-62%">
+			<Content />
+		</div>
+	</div>
+	{/* Phones fetch it as the page opens, since it sits near the screen: the sizes match its real
+	    width (the screen minus the margins) and quality 70 keeps the page under its weight limit. */}
+	<Image
+		src={entry.data.image}
+		alt={entry.data.alt}
+		widths={[480, 720, 1080]}
+		sizes="(max-width: 960px) calc(100vw - 32px), 66vw"
+		quality={70}
+		class="reveal aspect-video w-full bg-ink-2 object-cover"
+	/>
+</section>

@@ -32,6 +32,13 @@ export const en: Dictionary = {
 		privacy: 'Privacy Policy',
 		player: 'teaser on YouTube',
 	},
+	about: {
+		title: 'About',
+	},
+	team: {
+		title: 'Team',
+		provisional: 'Provisional: characters in place of the team',
+	},
 	hero: {
 		logo: 'Droumond Productions logo',
 		words: ['Series', 'Thriller', 'Horror', 'Filming'],
