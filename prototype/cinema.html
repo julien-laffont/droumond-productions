@@ -1,0 +1,541 @@
+<title>Droumond Productions · Cinema</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  PROTOTYPE 2 of the visual direction ("Cinema"), throwaway: never merged into develop or main.
+  Made for Carlos's review on 2026-11-20, to compare with prototype 1 (index.html, issue #5).
+  Same home page and texts as the real site (first screen, Projetos, Sobre, Equipa, filming band,
+  Contacto, footer); only the visual approach changes: pure noir, full-screen pictures, a serif for names.
+  This file is published as a claude.ai Artifact, which wraps it in <html>/<head>/<body>: hence no doctype here.
+-->
+<style>
+@font-face { font-family: "Instrument Serif"; src: url("fonts/instrument-serif.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Instrument Serif"; src: url("fonts/instrument-serif-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Inter Tight"; src: url("fonts/inter-tight.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+
+/* Layout: a screening. The first screen opens between 2.39:1 letterbox bars, each project fills the
+   screen like a one-sheet, the team rolls like end credits. Names in a high-contrast serif; every
+   description small, in tracked sans. Black and bone only: pictures stay black and white until a
+   project is on screen. Single dark theme by choice. */
+:root {
+  --black: #0b0b0a;          /* page, letterbox bars */
+  --black-2: #141412;        /* raised band (viewfinder) */
+  --bone: #ebe6dc;           /* names, primary text (16:1 on black) */
+  --bone-2: #bdb8ae;         /* secondary text (10:1) */
+  --bone-3: #8d897f;         /* labels, quiet names (5.7:1) */
+  --shade: 11 11 10;         /* --black as an RGB triplet, for scrims */
+  --light: 235 230 220;      /* --bone as an RGB triplet, for hairlines */
+  --line: rgb(var(--light) / 0.14);
+  --f-name: "Instrument Serif", "Iowan Old Style", "Times New Roman", serif;
+  --f-text: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --header-h: 64px;
+  --g: clamp(16px, 3.2vw, 48px);
+  --section: clamp(80px, 10vw, 152px);
+  --ease: cubic-bezier(0.22, 0.7, 0.18, 1);
+  --ease-film: cubic-bezier(0.7, 0, 0.2, 1);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+html { scroll-snap-type: y proximity; scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top, 0px)); }
+body { background: var(--black); color: var(--bone); font-family: var(--f-text); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--black); }
+.wrap { padding-left: max(var(--g), env(safe-area-inset-left, 0px)); padding-right: max(var(--g), env(safe-area-inset-right, 0px)); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--bone); outline-offset: 4px; }
+img { display: block; height: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Shared small type: section labels and meta lines stay small, tracked, secondary */
+.label, .meta { margin: 0; font-family: var(--f-text); font-weight: 500; font-size: 0.7rem; line-height: 1.3; letter-spacing: 0.24em; text-transform: uppercase; color: var(--bone-2); }
+.meta { color: var(--bone-2); }
+.cta { display: inline-flex; align-items: center; gap: 12px; padding: 13px 20px; border: 1px solid rgb(var(--light) / 0.55); background: rgb(var(--shade) / 0.35); color: var(--bone); text-decoration: none; font-weight: 500; font-size: 0.7rem; line-height: 1; letter-spacing: 0.22em; text-transform: uppercase; transition: background-color 0.35s var(--ease), color 0.35s var(--ease), border-color 0.35s var(--ease); }
+.cta:hover, .cta:focus-visible { background: var(--bone); border-color: var(--bone); color: var(--black); }
+.play-glyph { width: 0; height: 0; border-left: 8px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+.grain { position: absolute; inset: -120px; z-index: -1; pointer-events: none; opacity: 0.2; mix-blend-mode: overlay; background: var(--grain) 0 0 / 200px; }
+
+/* Prototype marks: deliberately outside the design */
+.tag-ph { display: inline-block; font-weight: 500; font-size: 0.64rem; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; padding: 6px 8px; border: 1px dashed rgb(var(--light) / 0.45); color: var(--bone-2); }
+.proto-note { margin: 0; max-width: 64ch; border: 1px dashed rgb(var(--light) / 0.3); padding: 16px 20px; color: var(--bone-3); font-size: 0.8rem; line-height: 1.55; text-align: left; }
+
+/* Header: a black bar that continues the top letterbox bar of the first screen */
+.site-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--black); border-bottom: 1px solid transparent; transition: border-color 0.4s var(--ease); }
+.site-header.scrolled { border-bottom-color: var(--line); }
+.header-inner { height: var(--header-h); display: flex; align-items: center; gap: clamp(12px, 2.4vw, 36px); }
+.brand { display: block; width: 34px; height: 34px; flex: none; }
+.brand-mark { display: block; width: 100%; height: 100%; background: var(--bone); -webkit-mask: url("assets/logo.png") center / contain no-repeat; mask: url("assets/logo.png") center / contain no-repeat; }
+.nav-main { margin-left: auto; }
+.nav-main ul { display: flex; gap: clamp(16px, 2.4vw, 34px); list-style: none; margin: 0; padding: 0; }
+.nav-main a { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none; color: var(--bone-2); padding-block: 6px; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: color 0.3s var(--ease), background-size 0.4s var(--ease); }
+.nav-main a:hover, .nav-main a:focus-visible { color: var(--bone); background-size: 100% 1px; }
+.header-end { display: flex; align-items: center; gap: clamp(12px, 2vw, 28px); }
+.lang { position: relative; }
+.lang summary { list-style: none; cursor: pointer; font-size: 0.7rem; letter-spacing: 0.2em; color: var(--bone-2); padding: 6px 2px; }
+.lang summary::-webkit-details-marker { display: none; }
+.lang ul { position: absolute; right: 0; top: calc(100% + 10px); list-style: none; margin: 0; padding: 6px; min-width: 130px; background: var(--black-2); border: 1px solid var(--line); }
+.lang ul a { display: block; padding: 8px 10px; text-decoration: none; font-size: 0.9rem; }
+.btn-contact { flex: none; text-decoration: none; border: 1px solid rgb(var(--light) / 0.6); padding: 9px 16px; font-weight: 500; font-size: 0.68rem; line-height: 1.2; letter-spacing: 0.22em; text-transform: uppercase; transition: background-color 0.3s var(--ease), color 0.3s var(--ease); }
+.btn-contact:hover, .btn-contact:focus-visible { background: var(--bone); color: var(--black); }
+.menu-mobile { display: none; }
+.menu-mobile summary { list-style: none; cursor: pointer; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 8px 2px; }
+.menu-mobile summary::-webkit-details-marker { display: none; }
+.menu-mobile nav { position: absolute; left: 0; right: 0; top: var(--header-h); background: var(--black); border-bottom: 1px solid var(--line); }
+.menu-mobile ul { list-style: none; margin: 0; padding-block: 8px 24px; }
+.menu-mobile li a { display: block; padding: 14px 0; font-family: var(--f-name); font-size: 2rem; line-height: 1.1; text-decoration: none; border-bottom: 1px solid var(--line); }
+@media (max-width: 880px) {
+  .nav-main { display: none; }
+  .header-end { margin-left: auto; }
+  .menu-mobile { display: block; }
+  .btn-contact { padding: 8px 12px; }
+}
+
+/* First screen: a still of Efecto Placebo opens between letterbox bars, then the opening title */
+.hero { position: relative; isolation: isolate; overflow: hidden; min-height: 520px; height: calc(100vh - var(--header-h)); height: calc(100svh - var(--header-h)); background: var(--black); scroll-snap-align: start; }
+.hero-shot { position: absolute; inset: 0; z-index: -3; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1) brightness(0.6); transform: scale(1.04); animation: drift 32s ease-in-out infinite alternate; }
+.hero-vignette { position: absolute; inset: 0; z-index: -2; background: radial-gradient(ellipse 62% 58% at 50% 50%, rgb(var(--shade) / 0.2), rgb(var(--shade) / 0.8)); }
+.hero-content { position: absolute; inset: 0; z-index: 0; display: grid; place-content: center; justify-items: center; gap: clamp(14px, 2.4vh, 26px); text-align: center; }
+.hero-logo { width: clamp(52px, 6vw, 84px); aspect-ratio: 1; background: var(--bone); -webkit-mask: url("assets/logo.png") center / contain no-repeat; mask: url("assets/logo.png") center / contain no-repeat; animation: fade-in 1.2s var(--ease) 1.2s both; }
+.hero-title { margin: 0; max-width: 100%; font-family: var(--f-name); font-weight: 400; font-size: clamp(2.7rem, 8.4vw, 8rem); line-height: 0.92; letter-spacing: -0.012em; text-wrap: balance; animation: title-in 2s var(--ease) 1.45s both; }
+.hero-line { margin: 0; padding-left: 0.32em; font-weight: 500; font-size: 0.74rem; line-height: 1.2; letter-spacing: 0.32em; text-transform: uppercase; color: var(--bone-2); animation: fade-in 1s var(--ease) 2.5s both; }
+/* The bars: the picture area is 2.39:1 where the screen allows it, never less than 56% of the height */
+.bar { position: absolute; left: 0; right: 0; z-index: 1; overflow: hidden; height: max(0px, calc((100% - max(100vw / 2.39, 56%)) / 2)); background: var(--black); display: flex; align-items: center; animation: bar-in 1.9s var(--ease-film) 0.2s both; }
+.bar-top { top: 0; justify-content: center; }
+.bar-bottom { bottom: 0; }
+.bar-inner { width: 100%; animation: fade-in 0.9s var(--ease) 2.2s both; }
+.bar-top .bar-inner { display: flex; justify-content: center; }
+.bar-bottom .bar-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px 24px; }
+.billing { margin: 0; text-align: center; text-wrap: balance; font-weight: 500; font-size: 0.68rem; line-height: 1.5; letter-spacing: 0.22em; text-transform: uppercase; color: var(--bone-2); }
+.billing em { font-family: var(--f-name); font-style: italic; font-size: 1.55em; letter-spacing: 0.01em; text-transform: none; color: var(--bone); }
+.ratio { margin: 0; font-size: 0.66rem; letter-spacing: 0.2em; color: var(--bone-3); font-variant-numeric: tabular-nums; }
+.hero-cue { justify-self: end; font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none; color: var(--bone-2); }
+.hero-cue:hover { color: var(--bone); }
+
+/* Projetos: each project fills the screen, the name set like the title of a one-sheet */
+.projects { position: relative; }
+.projects-label { position: absolute; z-index: 2; top: clamp(20px, 3vw, 36px); left: max(var(--g), env(safe-area-inset-left, 0px)); }
+.panel { --gray: 1; position: relative; isolation: isolate; overflow: hidden; display: grid; align-items: end; min-height: 560px; height: calc(100vh - var(--header-h)); height: calc(100svh - var(--header-h)); background: var(--black); scroll-snap-align: start; }
+.panel.lit, .panel:focus-within { --gray: 0; }
+.panel-fill, .panel-shot { position: absolute; z-index: -3; max-width: none; }
+.panel-fill { inset: -80px; width: calc(100% + 160px); height: calc(100% + 160px); object-fit: cover; filter: grayscale(var(--gray)) blur(44px) brightness(0.42); transition: filter 1.4s var(--ease); }
+.panel-shot { object-fit: cover; filter: grayscale(var(--gray)) contrast(1.06) brightness(0.86); transition: filter 1.4s var(--ease), transform 1.4s var(--ease); }
+.panel:hover .panel-shot { transform: scale(1.025); }
+.panel-shade { position: absolute; inset: 0; z-index: -2; background: linear-gradient(to top, rgb(var(--shade) / 0.94) 0%, rgb(var(--shade) / 0.4) 42%, rgb(var(--shade) / 0) 68%), linear-gradient(to right, rgb(var(--shade) / 0.5), rgb(var(--shade) / 0) 55%); }
+.panel-count { position: absolute; z-index: 2; top: clamp(20px, 3vw, 36px); right: max(var(--g), env(safe-area-inset-right, 0px)); margin: 0; font-size: 0.7rem; letter-spacing: 0.24em; color: var(--bone-2); font-variant-numeric: tabular-nums; }
+.panel-body { display: grid; justify-items: start; gap: clamp(12px, 1.6vw, 18px); padding-block: clamp(32px, 6vw, 84px); min-width: 0; }
+.panel-name { margin: 0; max-width: 100%; font-family: var(--f-name); font-weight: 400; font-size: clamp(3.2rem, 11vw, 10.5rem); line-height: 0.88; letter-spacing: -0.012em; text-wrap: balance; }
+/* The whole panel is the link; the button is its visible label */
+.cta-stretch::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.panel-body .cta { margin-top: 6px; position: static; }
+/* Efecto Placebo: a wide still, full bleed */
+.panel-wide .panel-shot { inset: 0; width: 100%; height: 100%; }
+.panel-wide .panel-fill { display: none; }
+/* Resident Evil: a vertical poster, standing in its own blurred light */
+.panel-poster .panel-shot { top: 7%; height: 86%; width: auto; right: max(var(--g), 9vw); aspect-ratio: 900 / 1732; box-shadow: 0 40px 120px rgb(0 0 0 / 0.65); }
+
+/* Sobre: a 2.39:1 frame, then the text small, set like a subtitle under the picture */
+.about { padding-block: var(--section) 0; }
+.about-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; margin-bottom: clamp(20px, 2.6vw, 36px); }
+.about-frame { position: relative; margin: 0; aspect-ratio: 2.39 / 1; max-width: 100%; overflow: hidden; background: var(--black-2); }
+.about-frame img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.06) brightness(0.88); }
+.about-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--g); padding-top: clamp(28px, 4vw, 56px); }
+.about-text { grid-column: 2; min-width: 0; max-width: 58ch; display: grid; gap: 1em; font-size: 1rem; line-height: 1.7; color: var(--bone-2); }
+.about-text p { margin: 0; }
+.about-text em { font-family: var(--f-name); font-style: italic; font-size: 1.24em; line-height: 1; color: var(--bone); }
+
+/* Equipa: end credits. Role on the left, name on the right; the portrait of the name in focus */
+.team { padding-block: var(--section); }
+.team-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-bottom: clamp(32px, 5vw, 72px); }
+.credits { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(32px, 6vw, 112px); align-items: start; }
+.preview { position: sticky; top: calc(var(--header-h) + env(safe-area-inset-top, 0px) + 32px); aspect-ratio: 4 / 5; max-width: 100%; overflow: hidden; background: var(--black-2); }
+.preview img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.06); opacity: 0; transition: opacity 0.6s var(--ease); }
+.preview img.on { opacity: 1; }
+.credit-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.credit { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr); grid-template-areas: "role name"; column-gap: clamp(16px, 2.4vw, 40px); align-items: baseline; padding-block: clamp(14px, 2vw, 26px); outline-offset: 6px; }
+.credit-photo { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.credit-name { grid-area: name; margin: 0; font-family: var(--f-name); font-weight: 400; font-size: clamp(1.9rem, 3.6vw, 3.5rem); line-height: 1; color: var(--bone-3); transition: color 0.4s var(--ease); }
+.credit-role { grid-area: role; text-align: right; }
+.credit.active .credit-name { color: var(--bone); font-style: italic; }
+
+/* Filmagens: the question framed in a camera viewfinder */
+.filming { background: var(--black-2); padding-block: clamp(56px, 7vw, 104px); }
+.viewfinder { position: relative; display: grid; justify-items: center; gap: 18px; padding: clamp(80px, 9vw, 136px) clamp(8px, 6vw, 96px); text-align: center; }
+.viewfinder::before { content: ""; position: absolute; top: 0; bottom: 0; left: 33.333%; right: 33.333%; border-inline: 1px solid rgb(var(--light) / 0.07); pointer-events: none; }
+.viewfinder::after { content: ""; position: absolute; left: 0; right: 0; top: 33.333%; bottom: 33.333%; border-block: 1px solid rgb(var(--light) / 0.07); pointer-events: none; }
+.vf-corner { position: absolute; width: clamp(20px, 2.6vw, 34px); height: clamp(20px, 2.6vw, 34px); border: 0 solid var(--bone); }
+.vf-tl { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
+.vf-tr { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+.vf-bl { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
+.vf-br { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
+.vf-hud { position: absolute; display: flex; align-items: center; gap: 8px; font-size: 0.68rem; letter-spacing: 0.18em; color: var(--bone-2); font-variant-numeric: tabular-nums; }
+.vf-rec { top: clamp(18px, 2.4vw, 30px); left: clamp(30px, 3.6vw, 52px); color: var(--bone); }
+.vf-rec i { width: 8px; height: 8px; border-radius: 50%; background: var(--bone); animation: blink 1.2s steps(1) infinite; }
+.vf-tc { top: clamp(18px, 2.4vw, 30px); right: clamp(30px, 3.6vw, 52px); }
+.vf-place { bottom: clamp(18px, 2.4vw, 30px); left: clamp(30px, 3.6vw, 52px); }
+.vf-ratio { bottom: clamp(18px, 2.4vw, 30px); right: clamp(30px, 3.6vw, 52px); }
+.filming-title { position: relative; z-index: 1; margin: 0; max-width: 15ch; font-family: var(--f-name); font-weight: 400; font-size: clamp(2.1rem, 5vw, 4.6rem); line-height: 1; text-wrap: balance; }
+.filming-line { position: relative; z-index: 1; margin: 0; max-width: 46ch; color: var(--bone-2); }
+.filming .cta { position: relative; z-index: 1; margin-top: 8px; }
+
+/* Contacto: the address is the title of the last scene */
+.contact { padding-block: var(--section); display: grid; justify-items: center; gap: clamp(16px, 2vw, 24px); text-align: center; }
+.contact-line { margin: 0; max-width: 52ch; color: var(--bone-2); }
+.contact-email { max-width: 100%; font-family: var(--f-name); font-weight: 400; font-size: clamp(1.5rem, 6.4vw, 5.8rem); line-height: 1.08; text-decoration: none; overflow-wrap: anywhere; user-select: all; padding-bottom: 0.06em; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size 0.6s var(--ease); }
+.contact-email:hover, .contact-email:focus-visible { background-size: 100% 1px; }
+.copy-btn { font: inherit; font-weight: 500; font-size: 0.68rem; line-height: 1; letter-spacing: 0.22em; text-transform: uppercase; color: var(--bone-2); background: none; border: 1px solid var(--line); padding: 11px 16px; cursor: pointer; }
+.copy-btn:hover { color: var(--bone); border-color: rgb(var(--light) / 0.5); }
+.contact-privacy { margin: 0; font-size: 0.84rem; color: var(--bone-3); }
+.contact-privacy a { text-underline-offset: 3px; }
+
+/* Footer: the closing credits, centred and small */
+.site-footer { border-top: 1px solid var(--line); padding-block: clamp(56px, 7vw, 96px) clamp(36px, 4vw, 56px); display: grid; justify-items: center; gap: clamp(28px, 3.6vw, 44px); text-align: center; font-size: 0.84rem; color: var(--bone-3); }
+.footer-brand { display: grid; justify-items: center; gap: 12px; }
+.footer-brand .brand-mark { width: 44px; height: 44px; }
+.footer-name { margin: 0; font-family: var(--f-name); font-size: 1.9rem; line-height: 1; color: var(--bone); }
+.legal { margin: 0; width: 100%; max-width: 780px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 7px 22px; align-items: baseline; }
+.legal dt { text-align: right; font-size: 0.64rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bone-3); }
+.legal dd { margin: 0; min-width: 0; text-align: left; color: var(--bone-2); }
+.footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; color: var(--bone); }
+.footer-links a { text-decoration: none; overflow-wrap: anywhere; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size 0.4s var(--ease); }
+.footer-links a:hover, .footer-links a:focus-visible { background-size: 100% 1px; }
+.lre { display: grid; place-items: center; width: 150px; height: 62px; max-width: 100%; border: 1px dashed rgb(var(--light) / 0.5); color: var(--bone); text-decoration: none; font-size: 0.72rem; line-height: 1.3; letter-spacing: 0.04em; }
+.lre small { display: block; color: var(--bone-3); }
+.disputes { margin: 0; max-width: 76ch; }
+.disputes a { text-underline-offset: 3px; }
+
+@media (max-width: 820px) {
+  .credits { grid-template-columns: 1fr; }
+  .preview { display: none; }
+  .credit-list { gap: 22px; }
+  .credit { grid-template-columns: minmax(0, 34%) minmax(0, 1fr); grid-template-areas: "photo name" "photo role"; column-gap: 18px; row-gap: 8px; align-items: start; align-content: end; padding: 0; }
+  .credit-photo { position: static; grid-area: photo; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; clip: auto; overflow: visible; filter: grayscale(1) contrast(1.06); }
+  .credit-name { align-self: end; color: var(--bone); }
+  .credit-role { text-align: left; }
+  .credit.active .credit-name { font-style: normal; }
+}
+@media (max-width: 760px) {
+  .bar-bottom .bar-inner { grid-template-columns: 1fr; justify-items: center; gap: 10px; }
+  .ratio { display: none; }
+  .hero-cue { justify-self: center; }
+  /* Efecto Placebo on a phone: the still in a 4:3 window, the rest of the screen in its own blurred light */
+  .panel-wide .panel-fill { display: block; }
+  .panel-wide .panel-shot { inset: 20% 0 auto; height: auto; aspect-ratio: 4 / 3; }
+  /* Resident Evil on a phone: the same device, the poster standing in the middle of its own light */
+  .panel-poster .panel-shot { top: 11%; right: auto; left: 50%; height: 52%; translate: -50% 0; }
+  .about-frame { aspect-ratio: 16 / 10; }
+  .about-body { grid-template-columns: 1fr; }
+  .about-text { grid-column: 1; }
+}
+@media (max-width: 560px) {
+  .legal { grid-template-columns: 1fr; gap: 2px; }
+  .legal dt, .legal dd { text-align: center; }
+  .legal dt { margin-top: 10px; }
+}
+
+@keyframes bar-in { from { height: 50.5%; } }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes title-in { from { opacity: 0; transform: scale(1.06); filter: blur(10px); } }
+@keyframes drift { to { transform: scale(1.15) translate3d(-1.2%, -0.8%, 0); } }
+@keyframes grain { 0% { transform: translate(0, 0); } 25% { transform: translate(-41px, 23px); } 50% { transform: translate(29px, -37px); } 75% { transform: translate(-17px, -53px); } 100% { transform: translate(0, 0); } }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .grain { animation: grain 0.6s steps(4) infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+<script>
+  document.documentElement.setAttribute("lang", "pt-PT");
+  document.documentElement.classList.add("js");
+</script>
+
+<header class="site-header">
+  <div class="header-inner wrap">
+    <a class="brand" href="#topo" aria-label="Droumond Productions, início"><span class="brand-mark" aria-hidden="true"></span></a>
+    <nav class="nav-main" aria-label="Principal">
+      <ul>
+        <li><a href="#projetos">Projetos</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#equipa">Equipa</a></li>
+        <li><a href="#filmagens">Filmagens</a></li>
+      </ul>
+    </nav>
+    <div class="header-end">
+      <details class="lang" data-menu>
+        <summary aria-label="PT, língua: Português">PT</summary>
+        <ul><li><a href="#topo" lang="en" hreflang="en">English</a></li></ul>
+      </details>
+      <a class="btn-contact" href="#contacto">Contacto</a>
+      <details class="menu-mobile" data-menu>
+        <summary>Menu</summary>
+        <nav aria-label="Principal">
+          <ul class="wrap">
+            <li><a href="#projetos">Projetos</a></li>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#equipa">Equipa</a></li>
+            <li><a href="#filmagens">Filmagens</a></li>
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<main id="topo">
+  <section class="hero" aria-labelledby="hero-title">
+    <img class="hero-shot" src="assets/efeito-placebo.jpg" width="1080" height="500" alt="">
+    <div class="hero-vignette" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="hero-content wrap">
+      <span class="hero-logo" role="img" aria-label="Logótipo da Droumond Productions"></span>
+      <h1 id="hero-title" class="hero-title">Droumond Productions</h1>
+      <p class="hero-line">Produtora audiovisual</p>
+    </div>
+    <div class="bar bar-top">
+      <div class="bar-inner wrap"><span class="tag-ph">Protótipo 2 · Cinema: textos e imagens provisórios</span></div>
+    </div>
+    <div class="bar bar-bottom">
+      <div class="bar-inner wrap">
+        <p class="ratio" aria-hidden="true">2,39 : 1</p>
+        <p class="billing">Em gravação: <em>Efecto Placebo</em>, mini-série de suspense</p>
+        <a class="hero-cue" href="#projetos">Projetos <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="projetos" class="projects" aria-labelledby="projetos-title">
+    <h2 id="projetos-title" class="label projects-label">Projetos</h2>
+
+    <article class="panel panel-wide" aria-labelledby="p1-title">
+      <img class="panel-fill" src="assets/efeito-placebo.jpg" width="1080" height="500" alt="" aria-hidden="true">
+      <img class="panel-shot" src="assets/efeito-placebo.jpg" width="1080" height="500" alt="Três personagens de Efecto Placebo, vistas de baixo através de uma teia de cordas.">
+      <div class="panel-shade" aria-hidden="true"></div>
+      <div class="grain" aria-hidden="true"></div>
+      <p class="panel-count" aria-hidden="true">1 / 2</p>
+      <div class="panel-body wrap">
+        <p class="meta">Mini-série · Suspense · Em gravação</p>
+        <h3 id="p1-title" class="panel-name">Efecto Placebo</h3>
+        <a class="cta cta-stretch" href="https://www.youtube.com/watch?v=Y785Re6Cyvk" target="_blank" rel="noopener"><span class="play-glyph" aria-hidden="true"></span>Ver o teaser</a>
+      </div>
+    </article>
+
+    <article class="panel panel-poster" aria-labelledby="p2-title">
+      <img class="panel-fill" src="assets/mini-serie.jpg" width="900" height="1732" alt="" aria-hidden="true">
+      <img class="panel-shot" src="assets/mini-serie.jpg" width="900" height="1732" alt="Cartaz de Resident Evil: dois olhos brancos a brilhar no escuro.">
+      <div class="panel-shade" aria-hidden="true"></div>
+      <div class="grain" aria-hidden="true"></div>
+      <p class="panel-count" aria-hidden="true">2 / 2</p>
+      <div class="panel-body wrap">
+        <p class="meta">Mini-série · Terror · 5 episódios</p>
+        <h3 id="p2-title" class="panel-name">Resident Evil</h3>
+        <a class="cta cta-stretch" href="https://www.instagram.com/droumond_productions" target="_blank" rel="noopener">Ver no Instagram</a>
+      </div>
+    </article>
+  </section>
+
+  <section id="sobre" class="about" aria-labelledby="sobre-title">
+    <div class="about-head wrap">
+      <h2 id="sobre-title" class="label">Sobre</h2>
+      <p class="meta">Leiria, Portugal · Desde 2026</p>
+    </div>
+    <figure class="about-frame">
+      <img src="assets/sobre.jpg" width="1080" height="608" alt="Um homem de casaco escuro, sentado à porta de um prédio antigo, numa rua de calçada, ao lado de uma mota.">
+    </figure>
+    <div class="about-body wrap">
+      <div class="about-text">
+        <p>A Droumond Productions é uma produtora audiovisual portuguesa. Fazemos ficção para o ecrã e para as redes: <em>Efecto Placebo</em>, uma mini-série de suspense, está em gravação, e <em>Resident Evil</em>, a mini-série do Instagram, conta uma história de terror em cinco episódios curtos.</p>
+        <p>Como temos o nosso próprio material de produção, também filmamos por encomenda.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="equipa" class="team wrap" aria-labelledby="equipa-title">
+    <div class="team-head">
+      <h2 id="equipa-title" class="label">Equipa</h2>
+      <span class="tag-ph">Provisório: personagens no lugar da equipa</span>
+    </div>
+    <div class="credits">
+      <div class="preview" aria-hidden="true">
+        <img class="on" src="assets/equipa-1.jpg" width="640" height="800" alt="">
+        <img src="assets/equipa-2.jpg" width="640" height="800" alt="">
+        <img src="assets/equipa-3.jpg" width="640" height="800" alt="">
+        <img src="assets/equipa-4.jpg" width="640" height="800" alt="">
+        <img src="assets/equipa-5.jpg" width="640" height="800" alt="">
+      </div>
+      <ul class="credit-list">
+        <li class="credit active" tabindex="0">
+          <img class="credit-photo" src="assets/equipa-1.jpg" width="640" height="800" alt="Raul de Valverde, de óculos e casaco de cabedal, encostado a uma parede de tijolo.">
+          <h3 class="credit-name">Raul de Valverde</h3>
+          <p class="meta credit-role">Personagem · Efecto Placebo</p>
+        </li>
+        <li class="credit" tabindex="0">
+          <img class="credit-photo" src="assets/equipa-2.jpg" width="640" height="800" alt="Miguel Figueredo, de fato, olha para o relógio com um copo de vinho na mão.">
+          <h3 class="credit-name">Miguel Figueredo</h3>
+          <p class="meta credit-role">Personagem · Efecto Placebo</p>
+        </li>
+        <li class="credit" tabindex="0">
+          <img class="credit-photo" src="assets/equipa-3.jpg" width="640" height="800" alt="Julien Laffont, de óculos escuros e casaco de cabedal.">
+          <h3 class="credit-name">Julien Laffont</h3>
+          <p class="meta credit-role">Personagem · Efecto Placebo</p>
+        </li>
+        <li class="credit" tabindex="0">
+          <img class="credit-photo" src="assets/equipa-4.jpg" width="640" height="800" alt="Bruno Moreira, de fato, segura uma fita da polícia.">
+          <h3 class="credit-name">Bruno Moreira</h3>
+          <p class="meta credit-role">Personagem</p>
+        </li>
+        <li class="credit" tabindex="0">
+          <img class="credit-photo" src="assets/equipa-5.jpg" width="640" height="800" alt="Uma personagem de guarda-chuva transparente olha para cima, à chuva.">
+          <h3 class="credit-name">Nome por confirmar</h3>
+          <p class="meta credit-role">Personagem</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="filmagens" class="filming" aria-labelledby="filmagens-title">
+    <div class="wrap">
+      <div class="viewfinder">
+        <span class="vf-corner vf-tl" aria-hidden="true"></span>
+        <span class="vf-corner vf-tr" aria-hidden="true"></span>
+        <span class="vf-corner vf-bl" aria-hidden="true"></span>
+        <span class="vf-corner vf-br" aria-hidden="true"></span>
+        <span class="vf-hud vf-rec" aria-hidden="true"><i></i>REC</span>
+        <span class="vf-hud vf-tc" aria-hidden="true">01:00:00:00</span>
+        <span class="vf-hud vf-place" aria-hidden="true">Leiria</span>
+        <span class="vf-hud vf-ratio" aria-hidden="true">16:9</span>
+        <p class="meta">Serviço de filmagens</p>
+        <h2 id="filmagens-title" class="filming-title">Quer a Droumond Productions para gravação?</h2>
+        <p class="filming-line">Levamos a nossa equipa e o nosso material de produção às suas filmagens.</p>
+        <a class="cta" href="#contacto">Ver o serviço</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="contact wrap" aria-labelledby="contacto-title">
+    <h2 id="contacto-title" class="label">Contacto</h2>
+    <p class="contact-line">Para um projeto, uma filmagem ou uma pergunta, escreva-nos.</p>
+    <a class="contact-email" href="mailto:contact@droumondproductions.com">contact@droumondproductions.com</a>
+    <button class="copy-btn" type="button">Copiar endereço</button>
+    <span class="sr-only" role="status" aria-live="polite"></span>
+    <p class="contact-privacy">Os dados que nos enviar são tratados de acordo com a <a href="#">Política de Privacidade</a>.</p>
+  </section>
+</main>
+
+<footer class="site-footer wrap">
+  <div class="footer-brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <p class="footer-name">Droumond Productions</p>
+    <p class="meta">Desde 2026</p>
+  </div>
+  <dl class="legal">
+    <dt>Firma</dt><dd>Droumond &amp; Laffont - Produções, Lda</dd>
+    <dt>Tipo de sociedade</dt><dd>Sociedade por quotas</dd>
+    <dt>Sede</dt><dd>Rua António Campos, Lote 1, 1A, 2410-369 Leiria</dd>
+    <dt>Registo comercial</dt><dd>Matrícula n.º 519294700</dd>
+    <dt>NIPC</dt><dd>519294700</dd>
+    <dt>Capital social</dt><dd>100 €</dd>
+  </dl>
+  <ul class="footer-links">
+    <li><a href="mailto:contact@droumondproductions.com">contact@droumondproductions.com</a></li>
+    <li><a href="#">Política de Privacidade</a></li>
+    <li><a href="https://www.youtube.com/@DroumondProductions" target="_blank" rel="noopener">YouTube</a></li>
+    <li><a href="https://www.instagram.com/droumond_productions" target="_blank" rel="noopener">Instagram</a></li>
+  </ul>
+  <a class="lre" href="https://www.livroreclamacoes.pt/inicio" target="_blank" rel="noopener">Livro de Reclamações<small>ícone oficial (placeholder)</small></a>
+  <p class="disputes">Em caso de litígio de consumo, pode recorrer ao CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (<a href="https://www.cniacc.pt" target="_blank" rel="noopener">www.cniacc.pt</a>). Mais informações no Portal do Consumidor (<a href="https://www.consumidor.gov.pt" target="_blank" rel="noopener">www.consumidor.gov.pt</a>).</p>
+  <p class="proto-note">Protótipo 2 (Cinema), para comparar com o protótipo atual. Ficam fora: a página do serviço de filmagens, a Política de Privacidade, a versão inglesa e a página 404. As imagens são provisórias, e a Equipa mostra personagens no lugar das pessoas reais.</p>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  // Header: a hairline appears once the page leaves the first screen's top bar
+  var header = document.querySelector(".site-header");
+  function onScroll() { header.classList.toggle("scrolled", window.scrollY > 8); }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // Menus close on a link tap, when the other one opens, and with Escape
+  var menus = document.querySelectorAll("details[data-menu]");
+  menus.forEach(function (menu) {
+    menu.addEventListener("click", function (e) { if (e.target.closest("a")) menu.open = false; });
+    menu.addEventListener("toggle", function () {
+      if (!menu.open) return;
+      menus.forEach(function (other) { if (other !== menu) other.open = false; });
+    });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    menus.forEach(function (menu) {
+      if (!menu.open) return;
+      var hadFocus = menu.contains(document.activeElement);
+      menu.open = false;
+      if (hadFocus) menu.querySelector("summary").focus();
+    });
+  });
+
+  // Projetos: a project's picture takes its colour back while it fills the screen
+  var panels = document.querySelectorAll(".panel");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { en.target.classList.toggle("lit", en.intersectionRatio >= 0.5); });
+    }, { threshold: [0, 0.5, 1] });
+    panels.forEach(function (p) { io.observe(p); });
+  } else {
+    panels.forEach(function (p) { p.classList.add("lit"); });
+  }
+
+  // Equipa: hovering or focusing a credit shows that person's portrait beside the list
+  var credits = document.querySelectorAll(".credit");
+  var shots = document.querySelectorAll(".preview img");
+  function show(i) {
+    credits.forEach(function (c, j) { c.classList.toggle("active", i === j); });
+    shots.forEach(function (s, j) { s.classList.toggle("on", i === j); });
+  }
+  credits.forEach(function (c, i) {
+    c.addEventListener("mouseenter", function () { show(i); });
+    c.addEventListener("focus", function () { show(i); });
+  });
+
+  // Filmagens: the viewfinder's timecode runs at 25 frames per second while the band is on screen
+  var tc = document.querySelector(".vf-tc");
+  var frame = 90000; // 01:00:00:00, where a programme's timecode starts
+  var timer = null;
+  function pad(n) { return n < 10 ? "0" + n : String(n); }
+  function paint() {
+    tc.textContent = pad(Math.floor(frame / 90000)) + ":" + pad(Math.floor(frame / 1500) % 60) + ":" + pad(Math.floor(frame / 25) % 60) + ":" + pad(frame % 25);
+  }
+  if (!reduce.matches && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      var on = entries[0].isIntersecting;
+      if (on && !timer) timer = setInterval(function () { frame += 1; paint(); }, 40);
+      if (!on && timer) { clearInterval(timer); timer = null; }
+    }).observe(document.querySelector(".filming"));
+  }
+
+  // Contacto: copy the address; where the clipboard is refused, select it instead
+  var email = document.querySelector(".contact-email");
+  var copy = document.querySelector(".copy-btn");
+  var status = document.querySelector(".contact [role=status]");
+  copy.addEventListener("click", function () {
+    var text = email.textContent.trim();
+    function selectIt() {
+      var r = document.createRange();
+      r.selectNodeContents(email);
+      var s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(r);
+      copy.textContent = "Endereço selecionado";
+      status.textContent = "Endereço selecionado: copie-o com o teclado.";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        copy.textContent = "Copiado";
+        status.textContent = "Endereço copiado.";
+      }, selectIt);
+    } else {
+      selectIt();
+    }
+  });
+})();
+</script>

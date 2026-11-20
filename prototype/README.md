@@ -11,14 +11,22 @@ The whole home page (first screen, Projetos, Sobre, Equipa, filming strip, Conta
 
 Variants A (Editorial, after The Mill) and B (List, after Oats Studios) were dropped.
 
+## Alternative directions (2026-11-20)
+
+Two more home pages, made so that Carlos's review is not limited to the direction already chosen. Same content and images, same sections in the same order; everything but the logo symbol may change (palette, type, layout, motion). Nal chose both directions on 2026-11-20.
+
+- `cinema.html`, **Cinema**: full-screen and noir. Black and bone white only, names in Instrument Serif, small text in Inter Tight. The first screen is a still framed by 2.39:1 letterbox bars; each Project fills the screen like a poster; Equipa reads like end credits; the filming band sits in a camera viewfinder.
+- `pelicula.html`, **Película**: a 35 mm film strip. Black film base with amber frame numbers and edge codes (Space Mono), names in Big Shoulders Display, a red grease pencil for hand marks. A strip runs across the first screen like a projector; in Projetos the vertical scroll pulls the film sideways; Equipa is a contact sheet; the filming band is a clapperboard.
+
 ## How to view it
 
-It is published as a claude.ai Artifact (link on issue #5). `index.html` has no doctype on purpose: the Artifact wraps it in its own `<html>`/`<head>`/`<body>`. Opening it straight from disk works, but in quirks mode.
+Each page is published as its own claude.ai Artifact (`index.html` link on issue #5). The pages have no doctype on purpose: the Artifact wraps them in its own `<html>`/`<head>`/`<body>`. Opening them straight from disk works, but in quirks mode and, in Chromium, without the fonts (serve the folder over HTTP instead).
 
 ## Files
 
 - `index.html`: the page, with its CSS and JS inline.
-- `fonts/`: Archivo, open-license (SIL OFL 1.1, license next to it), latin subset, from Fontsource.
+- `cinema.html`, `pelicula.html`: the alternative directions, in the same format, sharing `assets/` and `fonts/`.
+- `fonts/`: open-license fonts (SIL OFL 1.1, each license next to it), latin subset, from Fontsource: Archivo (`index.html`), Instrument Serif and Inter Tight (`cinema.html`), Big Shoulders Display and Space Mono (`pelicula.html`).
 - `assets/logo.png`: the logo symbol, converted from Carlos's JPEG (349 px, black on white) to ink with transparency. A vector file (SVG) from Carlos would be sharper.
 - `assets/efeito-placebo.jpg`: the teaser's YouTube thumbnail, letterbox cropped.
 - `assets/mini-serie.jpg`: the mini-series poster from Instagram.
