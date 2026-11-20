@@ -1,5 +1,5 @@
 // The Filming service (#16): the band on the home page, right before Contacto, and the page it
-// leads to. The texts are provisional until #18.
+// leads to. The texts are Julien's and Nal's (#18); the English ones are provisional.
 import { expect, test } from '@playwright/test';
 import { inEachBuild, languageOf, openExisting } from './pages';
 
@@ -10,10 +10,12 @@ const FILMING = [
 		contact: 'contacto',
 		label: 'Serviço de filmagens',
 		title: 'Quer a Droumond Productions para gravação?',
-		line: 'Levamos a nossa equipa e o nosso material de produção às suas filmagens.',
+		line: 'Publicidade, vídeos para marcas e videoclipes, filmados com a equipa e o material das nossas séries.',
 		button: 'Ver o serviço',
-		text: 'Levamos a equipa e o material com que fazemos as nossas séries às suas filmagens. Diga-nos o que quer gravar, onde e quando, e respondemos com o que podemos fazer.',
+		text: 'Filmamos publicidade, vídeos para marcas e videoclipes na região de Leiria, com a equipa e o material com que fazemos as nossas séries. Diga-nos o que quer gravar, onde e quando, e respondemos com o que podemos fazer.',
 		pageTitle: 'Serviço de filmagens · Droumond Productions',
+		description:
+			'Serviço de filmagens da Droumond Productions em Leiria: publicidade, vídeos para marcas e videoclipes.',
 	},
 	{
 		home: '/en/',
@@ -21,10 +23,12 @@ const FILMING = [
 		contact: 'contact',
 		label: 'Filming service',
 		title: 'Want Droumond Productions on your shoot?',
-		line: 'We bring our crew and our production equipment to your shoot.',
+		line: 'Advertising, brand videos and music videos, filmed with the crew and equipment of our series.',
 		button: 'See the service',
-		text: 'We bring the crew and the equipment we make our series with to your shoot. Tell us what you want to film, where and when, and we will reply with what we can do.',
+		text: 'We film advertising, brand videos and music videos in the Leiria region, with the crew and equipment we make our series with. Tell us what you want to film, where and when, and we will reply with what we can do.',
 		pageTitle: 'Filming service · Droumond Productions',
+		description:
+			'The filming service of Droumond Productions in Leiria: advertising, brand videos and music videos.',
 	},
 ];
 
@@ -55,6 +59,10 @@ inEachBuild((build) => {
 		}) => {
 			await openExisting(page, expected.page);
 			await expect(page).toHaveTitle(expected.pageTitle);
+			await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+				'content',
+				expected.description,
+			);
 			const main = page.getByRole('main');
 			await expect(main).toContainText(expected.label);
 			await expect(main.getByRole('heading', { level: 1 })).toHaveText(expected.title);
