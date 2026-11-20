@@ -75,7 +75,7 @@ export const pt = {
 		privacyBefore: 'Os dados que nos enviar são tratados de acordo com a',
 		privacy: 'Política de Privacidade',
 	},
-	/** The Filming service (#16): the home page's band and the filming page. Texts of #18. */
+	/** The Filming service (#16): the home page's band and the filming page. The texts are Julien's and Nal's (#18). */
 	filming: {
 		label: 'Serviço de filmagens',
 		/** Julien's sentence: the band's title and the filming page's heading. */

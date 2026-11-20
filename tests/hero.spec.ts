@@ -1,6 +1,7 @@
 // The first screen of the home page (#13): the background video, the logo symbol revealed by a
 // brush mask, the name and the words that pass under it until "Produtora audiovisual" stays.
 // Whoever asked for less motion sees it still: the still frame, the logo drawn, the final line.
+// Also the home page's description, for search engines (#18).
 import { expect, test, type Locator, type Page, type Request } from '@playwright/test';
 import { inEachBuild, pagesOf } from './pages';
 
@@ -13,7 +14,6 @@ const HOMES = [
 		words: ['Séries', 'Suspense', 'Terror', 'Filmagens'],
 		pause: 'Pausar vídeo',
 		cue: { name: 'Projetos', href: '#projetos' },
-		/** The home page's description, for search engines (#18). */
 		description:
 			'Droumond Productions, produtora audiovisual de Leiria: séries de ficção, publicidade, vídeos para marcas e videoclipes.',
 		snapshot: `

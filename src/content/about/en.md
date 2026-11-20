@@ -1,5 +1,5 @@
 ---
-# Provisional: a translation of the Portuguese text, until the English review (#18).
+# Provisional: a translation of the Portuguese text, until Julien and Nal review the English (#18).
 # The image is shared by both languages; its alt text is this language's.
 image: ../../assets/about/sobre.jpg
 alt: A man in a dark coat, sitting in the doorway of an old building on a cobbled street, next to a motorbike.
