@@ -45,7 +45,9 @@ const SCREENS = [
 	{ name: 'desktop', width: 1440, height: 900 },
 ];
 
-const firstScreen = (page: Page) => page.getByRole('region', { name: 'Droumond Productions' });
+// Exact: the filming band's title also holds the name ("Quer a Droumond Productions para gravação?").
+const firstScreen = (page: Page) =>
+	page.getByRole('region', { name: 'Droumond Productions', exact: true });
 
 /** The still frame behind the video: the first screen's only <img>. */
 const stillFrame = (page: Page) => firstScreen(page).locator('img');

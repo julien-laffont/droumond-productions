@@ -3,22 +3,34 @@
 
 /**
  * The contact email: the footer, the Contacto block and the Privacy Policy all read it here, so
- * changing this line changes it on the whole site. For now Carlos's gmail (#4, #7); the Privacy
- * Policy's entry on received emails names Google as recipient while it is a gmail.
+ * changing this line changes it on the whole site. The domain's address since #18, maybe not the
+ * final one. Its mailbox is on Google Workspace (the domain's MX is Google), so the Privacy
+ * Policy's entry on received emails names Google as recipient: check it if the mailbox moves.
  */
-export const CONTACT_EMAIL = 'carlosdroumondwen@gmail.com';
+export const CONTACT_EMAIL = 'contact@droumondproductions.com';
 
 /**
- * The company's legal identification, shown in the footer (CSC, art. 171.º; #3). Only the labels
- * are translated. Placeholders until Julien sends the data (#18).
+ * The company's legal identification, shown in the footer (CSC, art. 171.º; #3), from the company
+ * card (#18). Only the labels are translated. The registry names no conservatória (Julien's
+ * choice): the registration number in the commercial registry is the NIPC.
  */
 export const LEGAL = {
-	firm: 'Por preencher',
-	companyType: 'Por preencher',
-	registeredOffice: 'Por preencher',
-	registry: 'Por preencher',
-	nipc: 'Por preencher',
-	shareCapital: 'Por preencher',
+	firm: 'Droumond & Laffont - Produções, Lda',
+	companyType: 'Sociedade por quotas',
+	registeredOffice: 'Rua António Campos, Lote 1, 1A, 2410-369 Leiria',
+	registry: 'Matrícula n.º 519294700',
+	nipc: '519294700',
+	shareCapital: '100 €',
+};
+
+/**
+ * The consumer arbitration centre for the company's seat (CNIACC covers the whole Leiria district),
+ * named in the footer because the company also works for consumers (Lei 144/2015, art. 18.º; #3, #18).
+ * If the seat moves, check the centre again: https://www.cniacc.pt/pt/abrangencia-territorial
+ */
+export const CONSUMER_ARBITRATION = {
+	name: 'CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo',
+	url: 'https://www.cniacc.pt',
 };
 
 /** The company's profiles: links only, never embeds (#3). */

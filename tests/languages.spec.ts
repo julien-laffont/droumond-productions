@@ -6,6 +6,7 @@ import { inEachBuild, languageOf, openExisting, pagesOf } from './pages';
 /** Each page in both languages: the language button and the hreflang links pair them. */
 const PAIRS = [
 	{ pt: '/', en: '/en/' },
+	{ pt: '/filmagens/', en: '/en/filming/' },
 	{ pt: '/politica-de-privacidade/', en: '/en/privacy-policy/' },
 ];
 

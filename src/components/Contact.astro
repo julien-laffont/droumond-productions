@@ -1,0 +1,68 @@
+---
+// The Contacto block (#7, #16), on the home page and at the end of the filming page: still light
+// canvas between two brush strokes, a title, a sentence and the address in large type, which is
+// the email link itself (no separate button), then the Privacy Policy line. Only the filming page
+// passes a subject; everywhere else the email opens blank. No template in the body.
+import { CONTACT_EMAIL, type Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import { PAGES, sectionAnchor } from '../lib/paths';
+
+interface Props {
+	language: Language;
+	/** The email's subject, filled in for whoever writes (the filming page's). */
+	subject?: string;
+	/** The colour of the block above, which the top brush stroke paints: ink-2 under the filming band. */
+	above?: 'ink' | 'ink-2';
+}
+
+const { language, subject, above = 'ink' } = Astro.props;
+const t = dictionaries[language].contact;
+const anchor = sectionAnchor('contact', language);
+const href = subject
+	? `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`
+	: `mailto:${CONTACT_EMAIL}`;
+// On a narrow screen the long address breaks before the @ (<wbr>), not in the middle of a word.
+const atSign = CONTACT_EMAIL.indexOf('@');
+---
+
+{/* overflow-x-clip: the brush stroke under the focused address never scrolls a phone sideways;
+    the seams still overflow up and down. */}
+<section
+	id={anchor}
+	aria-labelledby={`${anchor}-title`}
+	class="relative z-2 isolate overflow-x-clip bg-linear-115/srgb from-canvas-hi via-canvas via-48% to-canvas-lo px-gutter py-[calc(var(--edge-height)*0.5+clamp(56px,8vw,112px))] text-ink"
+>
+	<div
+		class:list={['edge edge-up', above === 'ink-2' && '[--edge-color:var(--color-ink-2)]']}
+		aria-hidden="true"
+	></div>
+	{/* The canvas grain, still. */}
+	<div class="absolute inset-0 -z-1 overflow-hidden" aria-hidden="true">
+		<div class="grain"></div>
+	</div>
+	<div class="reveal grid justify-items-start gap-[clamp(14px,2vw,22px)]">
+		<h2 id={`${anchor}-title`} class="type-label">
+			{t.title}
+		</h2>
+		<p class="max-w-[62ch] text-muted-on-canvas">{t.line}</p>
+		{/* Whoever has no email program copies the address: a click or a drag over it selects all of
+		    it at once (select-all). */}
+		<a
+			href={href}
+			class="brush-link max-w-full text-[clamp(2rem,7vw,5.6rem)] leading-none font-bold tracking-[-0.005em] select-all font-stretch-62% [overflow-wrap:anywhere] after:-bottom-[0.12em] after:h-[0.14em]"
+		>
+			{CONTACT_EMAIL.slice(0, atSign)}
+			<wbr />
+			{CONTACT_EMAIL.slice(atSign)}
+		</a>
+		{/* The link is underlined: inside a sentence it must not rely on colour alone (WCAG 1.4.1). */}
+		<p class="text-[0.86rem] text-muted-on-canvas">
+			{t.privacyBefore}{' '}
+			<a href={PAGES.privacy[language]} class="underline underline-offset-3">
+				{t.privacy}
+			</a>
+			.
+		</p>
+	</div>
+	<div class="edge edge-down" aria-hidden="true"></div>
+</section>

@@ -18,11 +18,16 @@ export const en: Dictionary = {
 			firm: 'Company name',
 			companyType: 'Company type',
 			registeredOffice: 'Registered office',
-			registry: 'Registry office and number',
+			registry: 'Commercial registry',
 			nipc: 'Tax number (NIPC)',
 			shareCapital: 'Share capital',
 		},
 		privacy: 'Privacy Policy',
+		founded: 'Est. 2026',
+		disputes: {
+			before: 'In case of a consumer dispute, you may turn to',
+			more: 'More information on the',
+		},
 	},
 	projects: {
 		title: 'Projects',
@@ -32,11 +37,35 @@ export const en: Dictionary = {
 		privacy: 'Privacy Policy',
 		player: 'teaser on YouTube',
 	},
+	about: {
+		title: 'About',
+	},
+	team: {
+		title: 'Team',
+		provisional: 'Provisional: characters in place of the team',
+	},
 	hero: {
 		logo: 'Droumond Productions logo',
 		words: ['Series', 'Thriller', 'Horror', 'Filming'],
 		line: 'Audiovisual production company',
 		pause: 'Pause video',
+	},
+	contact: {
+		title: 'Contact',
+		line: 'For a project, a shoot or a question, write to us.',
+		privacyBefore: 'The data you send us is handled according to the',
+		privacy: 'Privacy Policy',
+	},
+	filming: {
+		label: 'Filming service',
+		title: 'Want Droumond Productions on your shoot?',
+		line: 'We bring our crew and our production equipment to your shoot.',
+		button: 'See the service',
+		text: 'We bring the crew and the equipment we make our series with to your shoot. Tell us what you want to film, where and when, and we will reply with what we can do.',
+		subject: 'Filming service',
+		pageTitle: 'Filming service · Droumond Productions',
+		description:
+			'Filming service of Droumond Productions, Portuguese audiovisual production company.',
 	},
 	home: {
 		title: 'Droumond Productions',

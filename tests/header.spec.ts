@@ -28,6 +28,12 @@ const EXPECTED = {
 	},
 };
 
+/** On the filming page, Contacto leads to the page's own block (#7). */
+const OWN_CONTACT: Record<string, string> = {
+	'/filmagens/': '/filmagens/#contacto',
+	'/en/filming/': '/en/filming/#contact',
+};
+
 inEachBuild((build) => {
 	for (const path of pagesOf(build)) {
 		const expected = EXPECTED[languageOf(path)];
@@ -48,7 +54,20 @@ inEachBuild((build) => {
 			}
 			await expect(
 				header.getByRole('link', { name: expected.contact.name, exact: true }),
-			).toHaveAttribute('href', expected.contact.href);
+			).toHaveAttribute('href', OWN_CONTACT[path] ?? expected.contact.href);
+		});
+	}
+
+	for (const path of pagesOf(build).filter((p) => p === '/' || p === '/en/')) {
+		const expected = EXPECTED[languageOf(path)];
+
+		test(`${path}: each section link of the header scrolls to its section`, async ({ page }) => {
+			await page.goto(path);
+			const nav = page.getByRole('banner').getByRole('navigation', { name: expected.nav });
+			for (const { name, href } of expected.links.filter((l) => l.href.includes('#'))) {
+				await nav.getByRole('link', { name, exact: true }).click();
+				await expect(page.locator(`#${href.split('#')[1]}`)).toBeInViewport();
+			}
 		});
 	}
 });

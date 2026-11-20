@@ -1,9 +1,10 @@
 ---
-// The footer, on every page: the company's legal identification (#3), the email, the Privacy
-// Policy, the profiles (links only, no embeds) and the official Livro de Reclamações icon. No
-// "legal information" page and no cookie banner (#3).
+// The footer, on every page: the founding year, the company's legal identification (#3), the
+// email, the Privacy Policy, the profiles (links only, no embeds), the official Livro de
+// Reclamações icon and, below, the consumer arbitration centre (#3, #18). No "legal information" page
+// and no cookie banner (#3).
 import type { Language } from '../config/site';
-import { CONTACT_EMAIL, LEGAL, SOCIAL } from '../config/site';
+import { CONSUMER_ARBITRATION, CONTACT_EMAIL, LEGAL, SOCIAL } from '../config/site';
 import { dictionaries } from '../i18n';
 import { PAGES } from '../lib/paths';
 // The official icon, from the platform's own "Imagens dos Logótipos" (livroreclamacoes.pt,
@@ -27,21 +28,31 @@ const links = [
 	{ text: 'YouTube', href: SOCIAL.youtube, external: true },
 	{ text: 'Instagram', href: SOCIAL.instagram, external: true },
 ];
+// The national consumer portal, which the arbitration line points to for more information.
+const CONSUMER_PORTAL = { name: 'Portal do Consumidor', url: 'https://www.consumidor.gov.pt' };
+/** A site's address as the arbitration line shows it: `https://www.cniacc.pt` → `www.cniacc.pt`. */
+const hostOf = (url: string) => new URL(url).host;
 ---
 
 <footer class="relative z-1 px-gutter pt-[calc(var(--edge-height)*0.5+clamp(40px,5vw,64px))] pb-[clamp(32px,4vw,48px)] text-[0.84rem] text-muted">
 	<div class="grid grid-cols-[1.1fr_1.6fr_1fr_auto] items-start gap-[clamp(24px,3vw,48px)] max-[960px]:grid-cols-2 max-[520px]:grid-cols-1">
 		<div class="grid justify-items-start gap-3 text-canvas">
 			<span class="logo-mark block size-14" aria-hidden="true"></span>
-			<p class="text-[1.3rem] leading-none font-extrabold uppercase font-stretch-62%">
-				Droumond Productions
-			</p>
+			<div>
+				<p class="text-[1.3rem] leading-none font-extrabold uppercase font-stretch-62%">
+					Droumond Productions
+				</p>
+				<p class="mt-2 type-meta">{t.founded}</p>
+			</div>
 		</div>
 		<dl class="grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-1">
 			{legal.map(({ label, value }) => (
 				<>
 					<dt class="text-canvas">{label}</dt>
-					<dd class="min-w-0">{value}</dd>
+					{/* The values stay in Portuguese in every language: only the labels are translated. */}
+					<dd lang="pt-PT" class="min-w-0">
+						{value}
+					</dd>
 				</>
 			))}
 		</dl>
@@ -73,4 +84,27 @@ const links = [
 			/>
 		</a>
 	</div>
+	{/* Required since the company also works for consumers (Lei 144/2015, art. 18.º). The links are
+	underlined: inside a sentence they must not rely on colour alone (WCAG 1.4.1). */}
+	<p class="mt-[clamp(28px,3.5vw,44px)] max-w-[88ch]">
+		{t.disputes.before} <span lang="pt-PT">{CONSUMER_ARBITRATION.name}</span> (
+		<a
+			href={CONSUMER_ARBITRATION.url}
+			target="_blank"
+			rel="noopener"
+			class="underline underline-offset-3"
+		>
+			{hostOf(CONSUMER_ARBITRATION.url)}
+		</a>
+		). {t.disputes.more} <span lang="pt-PT">{CONSUMER_PORTAL.name}</span> (
+		<a
+			href={CONSUMER_PORTAL.url}
+			target="_blank"
+			rel="noopener"
+			class="underline underline-offset-3"
+		>
+			{hostOf(CONSUMER_PORTAL.url)}
+		</a>
+		).
+	</p>
 </footer>

@@ -1,14 +1,15 @@
 # Briefing: website da Droumond Productions
 
-Documento de direção inicial. Última atualização: 2026-11-18. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
+Documento de direção inicial. Última atualização: 2026-11-19. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
 
 ## Contexto
 
 - Empresa: Droumond Productions, produtora audiovisual. Sócios: Julien e Carlos.
 - A empresa ainda não tem site.
-- Série em desenvolvimento: _Efeito Placebo_, suspense, em português de Portugal, em fase de gravação.
+- Firma: Droumond & Laffont - Produções, Lda, sociedade por quotas com sede em Leiria, constituída a 26/02/2026. Trabalha também para particulares, por isso o rodapé indica o centro de arbitragem de consumo (CNIACC). Dados legais em `src/config/site.ts`.
+- Mini-série em desenvolvimento: _Efecto Placebo_, suspense, em português de Portugal, em fase de gravação. Grafia da miniatura do teaser (decidido pelo Julien a 2026-11-19).
 - YouTube: https://www.youtube.com/@DroumondProductions/videos (só existe um teaser).
-- Instagram: mini-série com cerca de 4 episódios, feita a aproveitar o interesse por Resident Evil.
+- Instagram: a mini-série _Resident Evil_, com 5 episódios (o último ainda por estrear).
 - Repositório: https://github.com/julien-laffont/droumond-productions.git (grafia "droumond", como no canal).
 - Grafia: "Droumond" (decidido pelo Julien a 2026-11-13). O logótipo diz "Droummond".
 
@@ -22,13 +23,13 @@ Documento de direção inicial. Última atualização: 2026-11-18. Tudo o que es
 ## Âmbito
 
 - O site é da empresa, não só da série.
-- Mostra o teaser de _Efeito Placebo_, incorporado do YouTube. Não aloja episódios.
+- Mostra o teaser de _Efecto Placebo_, incorporado do YouTube. Não aloja episódios.
 - Secções obrigatórias: Sobre, Equipa, Contacto.
-- Outros projetos: a mini-série de Resident Evil do Instagram, além de _Efeito Placebo_.
+- Outros projetos: a mini-série _Resident Evil_ do Instagram, além de _Efecto Placebo_.
 - Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?").
 - Sem loja, apoio nem newsletter na v1.
 - Qualquer outra secção (portfólio, notícias, loja, newsletter) só entra se for pedida.
-- Email de contacto: por enquanto, o gmail do Carlos recebe os contactos e é o endereço mostrado no site (o endereço não fica neste documento porque o repo é público). Carlos talvez crie um email novo.
+- Email de contacto: contact@droumondproductions.com, desde 2026-11-19 (#18), com a caixa no Google Workspace. Pode ainda mudar.
 - Contacto só por email (`mailto:`), sem formulário. Só a página de filmagens pré-preenche o assunto. Ver issue #7.
 
 ## Direção visual
@@ -58,7 +59,7 @@ Provisória: escolhida pelo Nal a 2026-11-16 (issue #5); o Carlos valida na rond
 
 - Mesma stack que a landing page do Julien (https://github.com/julien-laffont/julien-devops-lp): Astro 7, React 19 (ilhas), Tailwind CSS 4, TypeScript, Node 24 (`.nvmrc`), npm.
 - Qualidade na landing page: Playwright (testes), axe-core (acessibilidade), Lighthouse, Prettier, `astro check`. Script `npm run verify` corre tudo.
-- Alojamento: Infomaniak, no Hébergement Web (com PHP), o mesmo da landing page do Julien. Domínio: `droumondproductions.com`, registado na Infomaniak, com HTTPS (Let's Encrypt); escolhido para a publicação (#11), o Julien confirma-o antes da primeira release em `main`. Ainda não há email do domínio.
+- Alojamento: Infomaniak, no Hébergement Web (com PHP), o mesmo da landing page do Julien. Domínio: `droumondproductions.com`, registado na Infomaniak, com HTTPS (Let's Encrypt); escolhido para a publicação (#11), o Julien confirma-o antes da primeira release em `main`. O email do domínio está no Google Workspace.
 - CI/CD, como na landing page: workflow `Checks` em cada PR (testes em 4 jobs + Lighthouse para `main`) e workflow `Publish` a cada merge em `main`, que publica na Infomaniak e confirma que cada página responde com o commit publicado. Os segredos de publicação existem desde 2026-11-18, com uma conta FTP + SSH só para a publicação.
 - Branches, como na landing page: o trabalho parte de `develop` e os PR vão para `develop`; `main` só recebe releases (PR de `develop`) e hotfixes, e cada merge em `main` publica o site.
 - Convenção da landing page: tudo no repo em inglês (código, comentários, docs), issues e PR em português de Portugal. Confirmar se se mantém aqui.
@@ -79,10 +80,7 @@ Provisória: escolhida pelo Nal a 2026-11-16 (issue #5); o Carlos valida na rond
 
 - Pessoas da equipa a mostrar depois do protótipo.
 - Quem é o cliente (o Julien adiou a decisão).
-- Dados legais da empresa (o Julien vai pedi-los).
-- Se a empresa presta serviços a particulares.
 - Quando fica feito o registo no Livro de Reclamações Eletrónico (obrigatório antes de publicar).
-- Prazo de conservação dos emails de contacto: proposta de 12 meses, a confirmar por Julien (ver issue #7).
 - Número de rondas de revisão.
 
 ## Regras de trabalho

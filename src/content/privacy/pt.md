@@ -3,9 +3,7 @@ title: Política de Privacidade
 description: Como a Droumond Productions trata os dados de quem visita o site ou lhe escreve.
 ---
 
-> Texto provisório, a rever antes da publicação.
-
-Última atualização: 18 de novembro de 2026.
+Última atualização: 19 de novembro de 2026.
 
 ## Quem somos
 
@@ -33,14 +31,14 @@ Quando nos escreve para {email}, tratamos o seu endereço de email, o nome que i
 
 - **Finalidade:** responder ao seu pedido e, se for o caso, preparar uma proposta.
 - **Fundamento:** as diligências pré-contratuais a seu pedido, quando nos pede um trabalho ou uma proposta (RGPD, art. 6.º, n.º 1, alínea b)); o nosso interesse legítimo em responder às restantes mensagens (alínea f)).
-- **Destinatário:** a caixa de correio é um Gmail, por isso a Google guarda as mensagens. A Google pode tratar os dados nos Estados Unidos; a Google LLC está certificada no Quadro de Privacidade de Dados UE-EUA, reconhecido pela decisão de adequação da Comissão Europeia de 10 de julho de 2023.
+- **Destinatário:** a caixa de correio está no Google Workspace, por isso a Google guarda as mensagens. A Google pode tratar os dados nos Estados Unidos; a Google LLC está certificada no Quadro de Privacidade de Dados UE-EUA, reconhecido pela decisão de adequação da Comissão Europeia de 10 de julho de 2023.
 - **Prazo de conservação:** 12 meses após o último contacto, se o pedido não der origem a um trabalho. Se der, a troca de emails passa a fazer parte dos documentos desse trabalho e é guardada pelos prazos legais que lhes correspondem.
 - Dar estes dados é voluntário, mas sem um endereço de email não lhe podemos responder.
 - Não há decisões automatizadas nem definição de perfis.
 
 ## Teaser do YouTube
 
-O teaser de _Efeito Placebo_ aparece primeiro como uma imagem alojada no próprio site, com um aviso. Só quando clica para o ver é que o leitor é carregado a partir de youtube-nocookie.com, da Google: o seu browser envia à Google o seu endereço IP e dados técnicos, e o leitor pode guardar dados no seu dispositivo e mostrar publicidade não personalizada. Somos responsáveis, com a Google, por esse envio; o que a Google faz depois com os dados é da responsabilidade dela. Se o JavaScript estiver desligado, o clique abre o teaser no site do YouTube, num separador novo.
+O teaser de _Efecto Placebo_ aparece primeiro como uma imagem alojada no próprio site, com um aviso. Só quando clica para o ver é que o leitor é carregado a partir de youtube-nocookie.com, da Google: o seu browser envia à Google o seu endereço IP e dados técnicos, e o leitor pode guardar dados no seu dispositivo e mostrar publicidade não personalizada. Somos responsáveis, com a Google, por esse envio; o que a Google faz depois com os dados é da responsabilidade dela. Se o JavaScript estiver desligado, o clique abre o teaser no site do YouTube, num separador novo.
 
 - **Finalidade:** mostrar-lhe o teaser que pediu para ver.
 - **Fundamento:** o seu consentimento, dado ao clicar depois do aviso (RGPD, art. 6.º, n.º 1, alínea a)).
@@ -55,7 +53,7 @@ O site está alojado na Infomaniak, na Suíça, país com decisão de adequaçã
 - **Finalidade:** manter o site a funcionar e protegê-lo contra abusos.
 - **Fundamento:** o nosso interesse legítimo na segurança do site (RGPD, art. 6.º, n.º 1, alínea f)).
 - **Destinatário:** a Infomaniak, que aloja o site.
-- **Prazo de conservação:** Por preencher.
+- **Prazo de conservação:** os registos são apagados automaticamente pela Infomaniak, que os guarda pelo menos 7 dias.
 
 ## Os seus direitos
 

@@ -3,9 +3,7 @@ title: Privacy Policy
 description: How Droumond Productions handles the data of people who visit its site or write to it.
 ---
 
-> Provisional text, to be reviewed before publication.
-
-Last updated: 18 November 2026.
+Last updated: 19 November 2026.
 
 ## Who we are
 
@@ -33,14 +31,14 @@ When you write to {email}, we handle your email address, the name you give and t
 
 - **Purpose:** to answer your request and, where relevant, to prepare a proposal.
 - **Legal basis:** steps taken at your request before a contract, when you ask us for a job or a proposal (GDPR, art. 6(1)(b)); our legitimate interest in answering other messages (art. 6(1)(f)).
-- **Recipient:** the mailbox is a Gmail account, so Google stores the messages. Google may process the data in the United States; Google LLC is certified under the EU-US Data Privacy Framework, recognised by the European Commission's adequacy decision of 10 July 2023.
+- **Recipient:** the mailbox is on Google Workspace, so Google stores the messages. Google may process the data in the United States; Google LLC is certified under the EU-US Data Privacy Framework, recognised by the European Commission's adequacy decision of 10 July 2023.
 - **Retention:** 12 months after the last contact, if the request does not lead to a job. If it does, the emails become part of that job's records and are kept for the legal periods that apply to them.
 - Giving this data is voluntary, but without an email address we cannot answer you.
 - There is no automated decision-making and no profiling.
 
 ## The YouTube teaser
 
-The teaser of _Efeito Placebo_ first appears as an image hosted on the site itself, with a notice. Only when you click to watch it is the player loaded from youtube-nocookie.com, by Google: your browser sends Google your IP address and technical data, and the player may store data on your device and show non-personalised advertising. We are responsible, jointly with Google, for that transmission; what Google does with the data afterwards is its own responsibility. If JavaScript is off, the click opens the teaser on YouTube's own site, in a new tab.
+The teaser of _Efecto Placebo_ first appears as an image hosted on the site itself, with a notice. Only when you click to watch it is the player loaded from youtube-nocookie.com, by Google: your browser sends Google your IP address and technical data, and the player may store data on your device and show non-personalised advertising. We are responsible, jointly with Google, for that transmission; what Google does with the data afterwards is its own responsibility. If JavaScript is off, the click opens the teaser on YouTube's own site, in a new tab.
 
 - **Purpose:** to show you the teaser you asked to watch.
 - **Legal basis:** your consent, given by clicking after the notice (GDPR, art. 6(1)(a)).
@@ -55,7 +53,7 @@ The site is hosted by Infomaniak, in Switzerland, a country with an adequacy dec
 - **Purpose:** to keep the site running and protect it against abuse.
 - **Legal basis:** our legitimate interest in the site's security (GDPR, art. 6(1)(f)).
 - **Recipient:** Infomaniak, which hosts the site.
-- **Retention:** Por preencher.
+- **Retention:** the logs are deleted automatically by Infomaniak, which keeps them for at least 7 days.
 
 ## Your rights
 
