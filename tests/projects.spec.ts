@@ -3,7 +3,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { inEachBuild } from './pages';
 
-/** What the section shows in each language. The English texts are provisional (#18). */
+/** What the section shows in each language. The English texts are reviewed (#18), except the teaser's (#38). */
 const HOMES = [
 	{
 		path: '/',
@@ -30,7 +30,7 @@ const HOMES = [
 		titles: ['Efecto Placebo', 'Resident Evil'],
 		lines: ['Mini-series · Thriller · In production', 'Mini-series · Horror · 5 episodes'],
 		teaser: 'Watch the teaser',
-		instagram: 'See on Instagram',
+		instagram: 'View on Instagram',
 		notice:
 			'When you click, the video loads from YouTube: Google receives your IP address and may store data on your device. Privacy Policy',
 		privacy: 'Privacy Policy',

@@ -5,7 +5,7 @@
 import { expect, test, type Locator, type Page, type Request } from '@playwright/test';
 import { inEachBuild, pagesOf } from './pages';
 
-/** What the first screen shows in each language. The English texts are provisional (#18). */
+/** What the first screen shows in each language. Its English texts are provisional until #37. */
 const HOMES = [
 	{
 		path: '/',
@@ -33,7 +33,7 @@ const HOMES = [
 		pause: 'Pause video',
 		cue: { name: 'Projects', href: '#projects' },
 		description:
-			'Droumond Productions, an audiovisual production company from Leiria: fiction series, advertising, brand videos and music videos.',
+			'Droumond Productions, an audiovisual production company based in Leiria: fiction series, commercials, brand videos and music videos.',
 		snapshot: `
 			- region "Droumond Productions":
 			  - img "Droumond Productions logo"

@@ -3,7 +3,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { inEachBuild } from './pages';
 
-/** What the section shows in each language: the text is Julien's and Nal's (#18), the English provisional. */
+/** What the section shows in each language: the text is Julien's and Nal's, the English reviewed (#18). */
 const HOMES = [
 	{
 		path: '/',
@@ -18,7 +18,7 @@ const HOMES = [
 		english: true,
 		anchor: 'about',
 		heading: 'About',
-		text: 'Droumond Productions is an audiovisual production company from Leiria, founded in 2026.',
+		text: 'Droumond Productions is an audiovisual production company based in Leiria, founded in 2026.',
 		alt: 'A man in a dark coat, sitting in the doorway of an old building on a cobbled street, next to a motorbike.',
 	},
 ];

@@ -1,5 +1,5 @@
 // The Filming service (#16): the band on the home page, right before Contacto, and the page it
-// leads to. The texts are Julien's and Nal's (#18); the English ones are provisional.
+// leads to. The texts are Julien's and Nal's, in both languages (#18).
 import { expect, test } from '@playwright/test';
 import { inEachBuild, languageOf, openExisting } from './pages';
 
@@ -23,12 +23,12 @@ const FILMING = [
 		contact: 'contact',
 		label: 'Filming service',
 		title: 'Want Droumond Productions on your shoot?',
-		line: 'Advertising, brand videos and music videos, filmed with the crew and equipment of our series.',
-		button: 'See the service',
-		text: 'We film advertising, brand videos and music videos in the Leiria region, with the crew and equipment we make our series with. Tell us what you want to film, where and when, and we will reply with what we can do.',
+		line: 'Commercials, brand videos and music videos, shot with the same crew and equipment as our series.',
+		button: 'About the service',
+		text: 'We shoot commercials, brand videos and music videos in the Leiria region, with the same crew and equipment we use for our series. Tell us what you want to film, where and when, and we will tell you what we can do.',
 		pageTitle: 'Filming service · Droumond Productions',
 		description:
-			'The filming service of Droumond Productions in Leiria: advertising, brand videos and music videos.',
+			"Droumond Productions' filming service in Leiria: commercials, brand videos and music videos.",
 	},
 ];
 

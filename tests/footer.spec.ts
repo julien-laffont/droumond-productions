@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test';
 import { CONTACT_EMAIL } from '../src/config/site';
 import { inEachBuild, languageOf, pagesOf } from './pages';
 
-/** What the footer holds in each language. The English texts are provisional (#18). */
+/** What the footer holds in each language. The English texts are reviewed (#18). */
 const EXPECTED = {
 	pt: {
 		legal: ['Firma', 'Tipo de sociedade', 'Sede', 'Registo comercial', 'NIPC', 'Capital social'],
@@ -16,16 +16,16 @@ const EXPECTED = {
 	en: {
 		legal: [
 			'Company name',
-			'Company type',
+			'Legal form',
 			'Registered office',
-			'Commercial registry',
+			'Commercial register',
 			'Tax number (NIPC)',
 			'Share capital',
 		],
 		privacy: { name: 'Privacy Policy', href: '/en/privacy-policy/' },
 		founded: 'Est. 2026',
 		disputes:
-			'In case of a consumer dispute, you may turn to CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (www.cniacc.pt). More information on the Portal do Consumidor (www.consumidor.gov.pt).',
+			'In the event of a consumer dispute, you can turn to CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (www.cniacc.pt). For more information, see the Portal do Consumidor (www.consumidor.gov.pt).',
 	},
 };
 
