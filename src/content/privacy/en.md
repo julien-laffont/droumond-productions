@@ -61,7 +61,7 @@ You can ask us for access to your data, its rectification or erasure, the restri
 
 ## Complaint to the CNPD
 
-If you believe your data is not handled properly, you can lodge a complaint with the Portuguese data protection authority, the Comissão Nacional de Proteção de Dados ([www.cnpd.pt](https://www.cnpd.pt)).
+If you believe your data is not handled properly, you can lodge a complaint with the Portuguese data protection authority, the <span lang="pt-PT">Comissão Nacional de Proteção de Dados</span> ([www.cnpd.pt](https://www.cnpd.pt)).
 
 ## Changes to this policy
 

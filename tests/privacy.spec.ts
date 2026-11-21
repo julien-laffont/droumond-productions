@@ -63,5 +63,22 @@ inEachBuild((build) => {
 			}
 			expect(await main.innerText()).not.toMatch(/\{[a-z.]+\}/i);
 		});
+
+		if (policy.english) {
+			test(`${policy.path}: the Portuguese names are marked as Portuguese, for screen readers`, async ({
+				page,
+			}) => {
+				await openExisting(page, policy.path);
+				const portuguese = await page.getByRole('main').locator('[lang="pt-PT"]').allInnerTexts();
+				expect(portuguese).toEqual(
+					expect.arrayContaining([
+						LEGAL.firm,
+						LEGAL.companyType,
+						LEGAL.registeredOffice,
+						'Comissão Nacional de Proteção de Dados',
+					]),
+				);
+			});
+		}
 	}
 });
