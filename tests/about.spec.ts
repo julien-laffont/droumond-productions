@@ -3,14 +3,14 @@
 import { expect, test, type Page } from '@playwright/test';
 import { inEachBuild } from './pages';
 
-/** What the section shows in each language. The texts are provisional (#18). */
+/** What the section shows in each language: the text is Julien's and Nal's (#18), the English provisional. */
 const HOMES = [
 	{
 		path: '/',
 		english: false,
 		anchor: 'sobre',
 		heading: 'Sobre',
-		text: 'A Droumond Productions é uma produtora audiovisual portuguesa.',
+		text: 'A Droumond Productions é uma produtora audiovisual de Leiria, fundada em 2026.',
 		alt: 'Um homem de casaco escuro, sentado à porta de um prédio antigo, numa rua de calçada, ao lado de uma mota.',
 	},
 	{
@@ -18,7 +18,7 @@ const HOMES = [
 		english: true,
 		anchor: 'about',
 		heading: 'About',
-		text: 'Droumond Productions is a Portuguese audiovisual production company.',
+		text: 'Droumond Productions is an audiovisual production company from Leiria, founded in 2026.',
 		alt: 'A man in a dark coat, sitting in the doorway of an old building on a cobbled street, next to a motorbike.',
 	},
 ];

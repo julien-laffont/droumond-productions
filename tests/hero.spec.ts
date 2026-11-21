@@ -1,6 +1,7 @@
 // The first screen of the home page (#13): the background video, the logo symbol revealed by a
 // brush mask, the name and the words that pass under it until "Produtora audiovisual" stays.
 // Whoever asked for less motion sees it still: the still frame, the logo drawn, the final line.
+// Also the home page's description, for search engines (#18).
 import { expect, test, type Locator, type Page, type Request } from '@playwright/test';
 import { inEachBuild, pagesOf } from './pages';
 
@@ -13,6 +14,8 @@ const HOMES = [
 		words: ['Séries', 'Suspense', 'Terror', 'Filmagens'],
 		pause: 'Pausar vídeo',
 		cue: { name: 'Projetos', href: '#projetos' },
+		description:
+			'Droumond Productions, produtora audiovisual de Leiria: séries de ficção, publicidade, vídeos para marcas e videoclipes.',
 		snapshot: `
 			- region "Droumond Productions":
 			  - img "Logótipo da Droumond Productions"
@@ -29,6 +32,8 @@ const HOMES = [
 		words: ['Series', 'Thriller', 'Horror', 'Filming'],
 		pause: 'Pause video',
 		cue: { name: 'Projects', href: '#projects' },
+		description:
+			'Droumond Productions, an audiovisual production company from Leiria: fiction series, advertising, brand videos and music videos.',
 		snapshot: `
 			- region "Droumond Productions":
 			  - img "Droumond Productions logo"
@@ -83,6 +88,16 @@ inEachBuild((build) => {
 			await page.goto(home.path);
 			await expect(firstScreen(page)).toMatchAriaSnapshot(home.snapshot);
 			await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+		});
+
+		test(`${home.path}: the page's description says what the company is and makes`, async ({
+			page,
+		}) => {
+			await page.goto(home.path);
+			await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+				'content',
+				home.description,
+			);
 		});
 
 		test(`${home.path}: the background video comes from the site, muted, looping and playing`, async ({

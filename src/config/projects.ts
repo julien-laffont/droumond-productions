@@ -32,7 +32,7 @@ export const PROJECTS: Project[] = [
 	{
 		// Spelt as on the teaser's thumbnail, and a mini-series like it says (Julien, #18).
 		title: { pt: 'Efecto Placebo', en: 'Efecto Placebo' },
-		type: { pt: 'Mini-série', en: 'Mini-series' },
+		type: { pt: 'Minissérie', en: 'Mini-series' },
 		genre: { pt: 'Suspense', en: 'Thriller' },
 		status: { pt: 'Em gravação', en: 'In production' },
 		// PROVISIONAL: the YouTube thumbnail, cropped; a clean frame of the teaser comes in #18.
@@ -47,7 +47,7 @@ export const PROJECTS: Project[] = [
 	{
 		// The image is cropped above the poster's title, so no text sits over it.
 		title: { pt: 'Resident Evil', en: 'Resident Evil' },
-		type: { pt: 'Mini-série', en: 'Mini-series' },
+		type: { pt: 'Minissérie', en: 'Mini-series' },
 		genre: { pt: 'Terror', en: 'Horror' },
 		// Five episodes, the last one filmed but not released yet (Julien, #18).
 		status: { pt: '5 episódios', en: '5 episodes' },

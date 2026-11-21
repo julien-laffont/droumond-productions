@@ -7,9 +7,9 @@ Documento de direção inicial. Última atualização: 2026-11-19. Tudo o que es
 - Empresa: Droumond Productions, produtora audiovisual. Sócios: Julien e Carlos.
 - A empresa ainda não tem site.
 - Firma: Droumond & Laffont - Produções, Lda, sociedade por quotas com sede em Leiria, constituída a 26/02/2026. Trabalha também para particulares, por isso o rodapé indica o centro de arbitragem de consumo (CNIACC). Dados legais em `src/config/site.ts`.
-- Mini-série em desenvolvimento: _Efecto Placebo_, suspense, em português de Portugal, em fase de gravação. Grafia da miniatura do teaser (decidido pelo Julien a 2026-11-19).
+- Minissérie em desenvolvimento: _Efecto Placebo_, suspense, em português de Portugal, em fase de gravação. Grafia da miniatura do teaser (decidido pelo Julien a 2026-11-19).
 - YouTube: https://www.youtube.com/@DroumondProductions/videos (só existe um teaser).
-- Instagram: a mini-série _Resident Evil_, com 5 episódios (o último ainda por estrear).
+- Instagram: a minissérie _Resident Evil_, com 5 episódios (o último ainda por estrear).
 - Repositório: https://github.com/julien-laffont/droumond-productions.git (grafia "droumond", como no canal).
 - Grafia: "Droumond" (decidido pelo Julien a 2026-11-13). O logótipo diz "Droummond".
 
@@ -25,7 +25,7 @@ Documento de direção inicial. Última atualização: 2026-11-19. Tudo o que es
 - O site é da empresa, não só da série.
 - Mostra o teaser de _Efecto Placebo_, incorporado do YouTube. Não aloja episódios.
 - Secções obrigatórias: Sobre, Equipa, Contacto.
-- Outros projetos: a mini-série _Resident Evil_ do Instagram, além de _Efecto Placebo_.
+- Outros projetos: a minissérie _Resident Evil_ do Instagram, além de _Efecto Placebo_.
 - Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?").
 - Sem loja, apoio nem newsletter na v1.
 - Qualquer outra secção (portfólio, notícias, loja, newsletter) só entra se for pedida.
@@ -42,7 +42,7 @@ Provisória: escolhida pelo Nal a 2026-11-16 (issue #5); o Carlos valida na rond
 - Zonas: o primeiro ecrã e o bloco Contacto em tela clara, o resto escuro, o cabeçalho sempre quase preto. A passagem do claro para o escuro é uma pincelada a fazer de borda.
 - Tipografia: só Archivo, de licença aberta e alojada no próprio site (sem Google Fonts, por causa do RGPD), em várias larguras. Letra grande só para nomes (empresa, projetos, pessoas); a descrição da empresa fica sempre pequena e em segundo plano. Sem pincelada por baixo dos títulos das secções.
 - Primeiro ecrã: vídeo de fundo gerado por código (pinceladas escuras e um traço carmim sobre tela, 8 s em ciclo). Ao centro, o símbolo do logótipo aparece por uma máscara que segue o pincel; por baixo, o nome e palavras que passam uma a uma (Séries, Suspense, Terror, Filmagens) até ficar "Produtora audiovisual", como na Rodeo FX.
-- Projetos: grelha assimétrica 2:1 com o título por baixo de cada imagem (16:9 para a série, 4:5 para a mini-série, que é vertical). Sobre: texto pequeno à esquerda, uma imagem larga à direita. Equipa: retratos 4:5 com nome e papel.
+- Projetos: grelha assimétrica 2:1 com o título por baixo de cada imagem (16:9 para a série, 4:5 para a minissérie, que é vertical). Sobre: texto pequeno à esquerda, uma imagem larga à direita. Equipa: retratos 4:5 com nome e papel.
 - Logótipo: só o símbolo (círculo e monograma); o nome aparece em texto. Preto sobre a tela e claro sobre o escuro, a partir do mesmo ficheiro. Por agora, o JPEG do Carlos convertido para transparência; o SVG pede-se na #8.
 - Movimento: só CSS e JavaScript simples (revelação do logótipo, aparecimento discreto das secções, pincelada no hover dos links). Quem pediu menos movimento vê tudo parado.
 

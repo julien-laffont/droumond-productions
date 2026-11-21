@@ -11,7 +11,7 @@ const HOMES = [
 		anchor: 'projetos',
 		heading: 'Projetos',
 		titles: ['Efecto Placebo', 'Resident Evil'],
-		lines: ['Mini-série · Suspense · Em gravação', 'Mini-série · Terror · 5 episódios'],
+		lines: ['Minissérie · Suspense · Em gravação', 'Minissérie · Terror · 5 episódios'],
 		teaser: 'Ver o teaser',
 		instagram: 'Ver no Instagram',
 		notice:

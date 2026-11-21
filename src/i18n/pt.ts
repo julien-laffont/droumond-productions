@@ -75,26 +75,28 @@ export const pt = {
 		privacyBefore: 'Os dados que nos enviar são tratados de acordo com a',
 		privacy: 'Política de Privacidade',
 	},
-	/** The Filming service (#16): the home page's band and the filming page. Provisional until #18. */
+	/** The Filming service (#16): the home page's band and the filming page. The texts are Julien's and Nal's (#18). */
 	filming: {
 		label: 'Serviço de filmagens',
 		/** Julien's sentence: the band's title and the filming page's heading. */
 		title: 'Quer a Droumond Productions para gravação?',
 		/** The band's sentence. */
-		line: 'Levamos a nossa equipa e o nosso material de produção às suas filmagens.',
+		line: 'Publicidade, vídeos para marcas e videoclipes, filmados com a equipa e o material das nossas séries.',
 		/** The band's button, to the filming page. */
 		button: 'Ver o serviço',
 		/** The filming page's short text: what the service is and who it is for. */
-		text: 'Levamos a equipa e o material com que fazemos as nossas séries às suas filmagens. Diga-nos o que quer gravar, onde e quando, e respondemos com o que podemos fazer.',
+		text: 'Filmamos publicidade, vídeos para marcas e videoclipes na região de Leiria, com a equipa e o material com que fazemos as nossas séries. Diga-nos o que quer gravar, onde e quando, e respondemos com o que podemos fazer.',
 		/** The subject of the email written from the filming page (#7). */
 		subject: 'Serviço de filmagens',
 		/** The filming page's <title> and description. */
 		pageTitle: 'Serviço de filmagens · Droumond Productions',
-		description: 'Serviço de filmagens da Droumond Productions, produtora audiovisual portuguesa.',
+		description:
+			'Serviço de filmagens da Droumond Productions em Leiria: publicidade, vídeos para marcas e videoclipes.',
 	},
 	home: {
 		title: 'Droumond Productions',
-		description: 'Droumond Productions, produtora audiovisual portuguesa. Site em construção.',
+		description:
+			'Droumond Productions, produtora audiovisual de Leiria: séries de ficção, publicidade, vídeos para marcas e videoclipes.',
 	},
 };
 

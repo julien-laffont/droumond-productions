@@ -59,17 +59,17 @@ export const en: Dictionary = {
 	filming: {
 		label: 'Filming service',
 		title: 'Want Droumond Productions on your shoot?',
-		line: 'We bring our crew and our production equipment to your shoot.',
+		line: 'Advertising, brand videos and music videos, filmed with the crew and equipment of our series.',
 		button: 'See the service',
-		text: 'We bring the crew and the equipment we make our series with to your shoot. Tell us what you want to film, where and when, and we will reply with what we can do.',
+		text: 'We film advertising, brand videos and music videos in the Leiria region, with the crew and equipment we make our series with. Tell us what you want to film, where and when, and we will reply with what we can do.',
 		subject: 'Filming service',
 		pageTitle: 'Filming service · Droumond Productions',
 		description:
-			'Filming service of Droumond Productions, Portuguese audiovisual production company.',
+			'The filming service of Droumond Productions in Leiria: advertising, brand videos and music videos.',
 	},
 	home: {
 		title: 'Droumond Productions',
 		description:
-			'Droumond Productions, Portuguese audiovisual production company. Site in progress.',
+			'Droumond Productions, an audiovisual production company from Leiria: fiction series, advertising, brand videos and music videos.',
 	},
 };
