@@ -1,6 +1,6 @@
 // The Projects shown on the home page (#14), in order: the first one takes two thirds of the row.
 // To add or change one, edit this list; its image goes in src/assets/projects/.
-// Every text has both languages; the English ones are reviewed (#18).
+// Every text has both languages; the English lines and links are reviewed (#18).
 import type { ImageMetadata } from 'astro';
 import efectoPlacebo from '../assets/projects/efecto-placebo.jpg';
 import miniSerie from '../assets/projects/mini-serie.jpg';

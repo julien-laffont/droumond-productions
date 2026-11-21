@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { CONTACT_EMAIL, LEGAL } from '../src/config/site';
 import { inEachBuild, openExisting } from './pages';
 
-/** What the policy holds in each language. The English texts are provisional (#18). */
+/** What the policy holds in each language. The English texts are reviewed (#18), except the teaser's (#38). */
 const POLICIES = [
 	{
 		path: '/politica-de-privacidade/',

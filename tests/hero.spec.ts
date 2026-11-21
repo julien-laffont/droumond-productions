@@ -5,7 +5,8 @@
 import { expect, test, type Locator, type Page, type Request } from '@playwright/test';
 import { inEachBuild, pagesOf } from './pages';
 
-/** What the first screen shows in each language. Its English texts are provisional until #37. */
+/** What the first screen shows in each language. Its English texts are provisional until #37; the
+ * description is reviewed (#18). */
 const HOMES = [
 	{
 		path: '/',
