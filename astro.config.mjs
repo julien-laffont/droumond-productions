@@ -10,23 +10,35 @@ export default defineConfig({
 	trailingSlash: 'always',
 	integrations: [localizedPages()],
 
-	// The site's only font, self-hosted (no Google Fonts, for the GDPR): Archivo, variable in
-	// weight and width, latin subset, licence next to it. Astro creates the fallback font with
-	// size-adjust, so the text does not jump when Archivo arrives.
+	// The fonts of Película (#36), self-hosted (no Google Fonts, for the GDPR), licences next to
+	// them: Big Shoulders Display for names and titles (variable in weight), Space Mono 400 and 700
+	// for everything else. Astro creates each fallback font with size-adjust, so the text does not
+	// jump when the font arrives.
 	fonts: [
 		{
 			provider: fontProviders.local(),
-			name: 'Archivo',
-			cssVariable: '--font-archivo',
-			fallbacks: ['Arial', 'sans-serif'],
+			name: 'Big Shoulders Display',
+			cssVariable: '--font-big-shoulders',
+			fallbacks: ['Arial Narrow', 'sans-serif'],
 			options: {
 				variants: [
 					{
-						src: ['./src/assets/fonts/archivo.woff2'],
+						src: ['./src/assets/fonts/big-shoulders-display.woff2'],
 						weight: '100 900',
-						stretch: '62% 125%',
 						style: 'normal',
 					},
+				],
+			},
+		},
+		{
+			provider: fontProviders.local(),
+			name: 'Space Mono',
+			cssVariable: '--font-space-mono',
+			fallbacks: ['Courier New', 'monospace'],
+			options: {
+				variants: [
+					{ src: ['./src/assets/fonts/space-mono.woff2'], weight: '400', style: 'normal' },
+					{ src: ['./src/assets/fonts/space-mono-bold.woff2'], weight: '700', style: 'normal' },
 				],
 			},
 		},

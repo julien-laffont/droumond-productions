@@ -1,7 +1,8 @@
 ---
-// The header, the same on every page and always near-black, like the bars of a letterboxed film:
-// the symbol (to the home page), the sections and the filming page, and Contacto, always visible.
-// Over 880 px the links sit in a row; below, they move into a menu.
+// The header, the same on every page, as in Película (#36): the symbol (to the home page), a
+// timecode that runs with the scroll (decorative), the sections and the filming page, the language
+// button and Contacto. Over 880 px the links sit in a row; below, they move into a menu. Up to
+// 520 px Contacto leaves the bar for the end of the menu, to make room for the timecode.
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import { contactPath, PAGES, sectionPath, type PageId } from '../lib/paths';
@@ -21,51 +22,64 @@ const links = [
 	{ text: t.team, href: sectionPath('team', language) },
 	{ text: t.filming, href: PAGES.filming[language] },
 ];
+const contact = { text: t.contact, href: contactPath(page, language) };
+const menuLink =
+	'block border-b border-paper/14 py-3 font-name text-[26px] font-extrabold uppercase';
 ---
 
-<header class="sticky top-0 z-50 border-b border-canvas/16 bg-ink">
-	<div class="flex h-(--header-height) items-center gap-[clamp(12px,2.4vw,32px)] px-gutter">
+<header class="sticky top-0 z-50 border-b border-paper/14 bg-ink">
+	<div class="flex h-(--header-height) items-center gap-[clamp(12px,2.2vw,30px)] px-gutter">
 		<a href={PAGES.home[language]} aria-label={t.home} class="block size-10 flex-none">
 			<span class="logo-mark block size-full" aria-hidden="true"></span>
 		</a>
+		{/* Without JavaScript, and with less motion, it stays at the start of the reel. */}
+		<span
+			class="inline-flex items-baseline gap-2 text-xs tracking-[0.08em] whitespace-nowrap text-amber tabular-nums"
+			aria-hidden="true"
+		>
+			<b class="text-[10px] font-normal tracking-[0.16em] text-amber-dim max-[520px]:hidden">TC</b>
+			<span data-timecode>00:00:00:00</span>
+		</span>
 		<nav aria-label={t.nav} class="ml-auto max-[880px]:hidden">
-			<ul class="flex gap-[clamp(14px,2.2vw,30px)]">
+			<ul class="flex gap-[clamp(14px,2vw,28px)]">
 				{links.map(({ text, href }) => (
 					<li>
-						<a
-							href={href}
-							class="brush-link text-xs/[1.55] tracking-[0.12em] uppercase font-stretch-125%"
-						>
+						<a href={href} class="link-line text-xs tracking-[0.14em] uppercase">
 							{text}
 						</a>
 					</li>
 				))}
 			</ul>
 		</nav>
-		<div class="flex items-center gap-[clamp(12px,2.4vw,32px)] max-[880px]:ml-auto">
+		<div class="flex items-center gap-[clamp(12px,2.2vw,30px)] max-[880px]:ml-auto">
 			{page && <LanguageSwitcher language={language} page={page} />}
 			<a
-				href={contactPath(page, language)}
-				class="flex-none rounded-full bg-canvas px-4 py-[9px] text-xs/[1.55] font-semibold tracking-[0.12em] text-ink uppercase font-stretch-125% max-[880px]:px-3.5 max-[880px]:py-2"
+				href={contact.href}
+				class="flex-none bg-paper px-3.5 py-[9px] text-xs font-bold tracking-[0.14em] text-ink uppercase max-[520px]:hidden"
 			>
-				{t.contact}
+				{contact.text}
 			</a>
 			<details class="min-[880px]:hidden" data-menu>
-				<summary class="cursor-pointer list-none px-0.5 py-2 text-sm/[1.55] [&::-webkit-details-marker]:hidden">
+				<summary class="cursor-pointer list-none px-0.5 py-2 text-xs tracking-[0.14em] uppercase [&::-webkit-details-marker]:hidden">
 					{t.menu}
 				</summary>
 				<nav
 					aria-label={t.nav}
-					class="absolute inset-x-0 top-(--header-height) border-b border-canvas/16 bg-ink"
+					class="absolute inset-x-0 top-(--header-height) border-b border-paper/14 bg-ink"
 				>
 					<ul class="px-gutter pt-2 pb-5">
 						{links.map(({ text, href }) => (
 							<li>
-								<a href={href} class="block border-b border-canvas/16 py-3 text-xl/[1.55]">
+								<a href={href} class={menuLink}>
 									{text}
 								</a>
 							</li>
 						))}
+						<li class="min-[520px]:hidden">
+							<a href={contact.href} class={menuLink}>
+								{contact.text}
+							</a>
+						</li>
 					</ul>
 				</nav>
 			</details>
@@ -97,4 +111,38 @@ const links = [
 			if (hadFocus) menu.querySelector('summary')?.focus();
 		}
 	});
+
+	// The timecode (HH:MM:SS:FF, 25 frames per second): the whole page is a 4-minute reel, and the
+	// scroll runs it. Whoever asked for less motion sees it still, at the start of the reel.
+	const timecode = document.querySelector<HTMLElement>('[data-timecode]');
+	const lessMotion = matchMedia('(prefers-reduced-motion: reduce)');
+	const FPS = 25;
+	const FRAMES = FPS * 60 * 4;
+	const pad = (n: number) => String(n).padStart(2, '0');
+	function showTimecode() {
+		if (!timecode) return;
+		const end = document.documentElement.scrollHeight - innerHeight;
+		// Rounded up: a fractional scroll position at the very end still reaches the last frame.
+		const progress = lessMotion.matches || end <= 0 ? 0 : Math.min(1, Math.ceil(scrollY) / end);
+		const f = Math.round(progress * FRAMES);
+		const seconds = f / FPS;
+		timecode.textContent = [seconds / 3600, (seconds / 60) % 60, seconds % 60, f % FPS]
+			.map((n) => pad(Math.floor(n)))
+			.join(':');
+	}
+	let pending = false;
+	addEventListener(
+		'scroll',
+		() => {
+			if (pending) return;
+			pending = true;
+			requestAnimationFrame(() => {
+				pending = false;
+				showTimecode();
+			});
+		},
+		{ passive: true },
+	);
+	lessMotion.addEventListener('change', showTimecode);
+	showTimecode();
 </script>

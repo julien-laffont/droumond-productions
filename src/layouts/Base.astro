@@ -35,11 +35,14 @@ const hreflangLanguages = PUBLISHED_LANGUAGES.length > 1 ? PUBLISHED_LANGUAGES :
 			))}
 		{/* The commit of this build: the Publishing confirmation checks the site serves it. */}
 		<meta name="commit" content={commit} />
-		{/* The logo symbol, canvas on ink, made from src/assets/logo.png (16, 32 and 48 px; 180 px). */}
+		{/* The logo symbol, light on dark in the colours of the first direction (#5), made from
+		    src/assets/logo.png (16, 32 and 48 px; 180 px). */}
 		<link rel="icon" href="/favicon.ico" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		{/* The only font, preloaded: the names in large type use it from the first screen. */}
-		<Font cssVariable="--font-archivo" preload />
+		{/* The fonts of the first screen are preloaded: the name in Big Shoulders, the text in
+		    Space Mono 400. The bold (buttons) comes when a page uses it. */}
+		<Font cssVariable="--font-big-shoulders" preload />
+		<Font cssVariable="--font-space-mono" preload={[{ weight: 400 }]} />
 	</head>
 	<body>
 		<Header language={language} page={page} />

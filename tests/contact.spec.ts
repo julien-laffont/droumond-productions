@@ -90,8 +90,8 @@ inEachBuild((build) => {
 		});
 	}
 
-	// At 360 px the address no longer fits on one line; at 375 px it fits just under the width, where
-	// the brush stroke under it would reach past the screen.
+	// From 360 to 390 px the address does not fit on one line: it breaks before the @, and the part
+	// from the @ fits just under the width.
 	for (const width of [360, 375, 390]) {
 		test.describe(`on a ${width} px phone`, () => {
 			test.use({ viewport: { width, height: 800 }, reducedMotion: 'reduce' });

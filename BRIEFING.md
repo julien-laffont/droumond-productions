@@ -1,6 +1,6 @@
 # Briefing: website da Droumond Productions
 
-Documento de direção inicial. Última atualização: 2026-11-19. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
+Documento de direção inicial. Última atualização: 2026-11-22. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
 
 ## Contexto
 
@@ -34,17 +34,18 @@ Documento de direção inicial. Última atualização: 2026-11-19. Tudo o que es
 
 ## Direção visual
 
-Provisória: escolhida pelo Nal a 2026-11-16 (issue #5); o Carlos valida na ronda de revisão (issue #8). Protótipo: https://claude.ai/artifact/7GfVFwmvAaQbBiRZ1Uyby6 (código em `prototype/` no branch `prototype/visual-direction`, que nunca entra em `develop` nem em `main`).
+Película, aprovada pelo Carlos a 2026-11-20 na ronda de revisão (#8): "exatamente assim". Protótipo: https://claude.ai/artifact/J2Nrc3GjXxXfeBr8NRkfAs (código em `prototype/pelicula.html` no branch `prototype/visual-direction`, que nunca entra em `develop` nem em `main`). Substitui a direção da #5 (tela clara e pinceladas). Implementação por secção: a base na #36, depois #37 a #42 e #33.
 
-- Estilo: cinematográfico e escuro, com a estética de tinta e pincelada como fio condutor (o Carlos gostou de um vídeo do Imaginary Forces porque lembra o logótipo).
-- Referências: The Mill (https://www.themill.com) para a grelha de Projetos; Rodeo FX (https://rodeofx.com) para a tipografia e o primeiro ecrã. Outras: Oats Studios, Blur, Territory Studio, Framestore, Imaginary Forces, Weta FX, DNEG, ILM, Critical Role.
-- Paleta: fundo `#0e0d10`, texto cor de tela `#dbcdc6`, cinzentos tirados da tela. O carmim `#79081b` é só decoração (no vídeo de fundo), nunca texto nem botões.
-- Zonas: o primeiro ecrã e o bloco Contacto em tela clara, o resto escuro, o cabeçalho sempre quase preto. A passagem do claro para o escuro é uma pincelada a fazer de borda.
-- Tipografia: só Archivo, de licença aberta e alojada no próprio site (sem Google Fonts, por causa do RGPD), em várias larguras. Letra grande só para nomes (empresa, projetos, pessoas); a descrição da empresa fica sempre pequena e em segundo plano. Sem pincelada por baixo dos títulos das secções.
-- Primeiro ecrã: vídeo de fundo gerado por código (pinceladas escuras e um traço carmim sobre tela, 8 s em ciclo). Ao centro, o símbolo do logótipo aparece por uma máscara que segue o pincel; por baixo, o nome e palavras que passam uma a uma (Séries, Suspense, Terror, Filmagens) até ficar "Produtora audiovisual", como na Rodeo FX.
-- Projetos: grelha assimétrica 2:1 com o título por baixo de cada imagem (16:9 para a série, 4:5 para a minissérie, que é vertical). Sobre: texto pequeno à esquerda, uma imagem larga à direita. Equipa: retratos 4:5 com nome e papel.
-- Logótipo: só o símbolo (círculo e monograma); o nome aparece em texto. Preto sobre a tela e claro sobre o escuro, a partir do mesmo ficheiro. Por agora, o JPEG do Carlos convertido para transparência; o SVG pede-se na #8.
-- Movimento: só CSS e JavaScript simples (revelação do logótipo, aparecimento discreto das secções, pincelada no hover dos links). Quem pediu menos movimento vê tudo parado.
+- Ideia: uma bobina de 35 mm desenrolada pela página. Fitas de película atravessam o ecrã, com perfurações em cima e em baixo e códigos de borda em âmbar. Um só mundo escuro.
+- Seguir o protótipo de perto. Melhorias (acessibilidade, telemóvel, desempenho) propõem-se ao Nal antes de as fazer. Os textos do site (#18) prevalecem sobre os do protótipo.
+- Paleta: fundo `#0c0b09`, película `#1b1813`, claquete `#151411`, texto `#ece5d8` (16:1 sobre o fundo), secundário `#a59d8f` (7,3:1), âmbar `#e8a43a` e `#b5802e` (códigos de borda, números, timecode). O lápis vermelho `#d63a2f` é só para marcas à mão, nunca texto.
+- Tipografia: Big Shoulders Display, condensada, para nomes e títulos; Space Mono (400 e 700) para tudo o resto. Ambas de licença aberta e alojadas no próprio site (sem Google Fonts, por causa do RGPD). Letra grande só para nomes e títulos das secções; a descrição da empresa fica sempre pequena e em segundo plano. Só o título do primeiro ecrã usa a Shree Devanagari 714, levemente transparente, como imagem SVG (#37).
+- Cabeçalho: o símbolo, um timecode que corre com o scroll (decorativo), as secções, a língua e o Contacto, que no telemóvel passa para dentro do Menu.
+- Primeiro ecrã: a linha de código "35 mm · Droumond 2026 · Leiria · Rolo 01", o nome, uma fita inclinada que passa sozinha, com botão de pausa (#37), "Produtora audiovisual" e as palavras (Séries, Suspense, Terror, Filmagens).
+- Projetos: uma fita que avança para o lado com o scroll, do líder com contagem à ponta final, com os vídeos sem som sempre a passar (#38). Sobre: um fotograma ampliado ao lado do texto. Equipa: uma folha de contactos, cada pessoa rodeada a lápis vermelho (#39). Filmagens: uma claquete. Contacto: o endereço em letra grande (#40).
+- Rodapé: a ponta da bobina ("Fim da bobina"), depois a identificação legal.
+- Logótipo: só o símbolo (círculo e monograma), claro sobre o escuro; o nome aparece em texto. Por agora, o JPEG do Carlos convertido para transparência; o SVG pede-se na #8.
+- Movimento: só CSS e JavaScript simples (as fitas, o timecode, o lápis e a claquete no hover, o aparecimento discreto das secções). Quem pediu menos movimento vê tudo parado.
 
 ## Materiais
 

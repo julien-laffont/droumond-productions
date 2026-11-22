@@ -1,8 +1,8 @@
 ---
 // The Privacy Policy in one language (/politica-de-privacidade/, /en/privacy-policy/), from its
-// Markdown in src/content/privacy/. Dark page; the title and the section headings in the label
-// style of the prototype, the text small. Links inside the text are underlined: they must not
-// rely on colour alone (WCAG 1.4.1); the brush stroke on hover is for standalone links.
+// Markdown in src/content/privacy/. In the language of Película (#36), which has no such page:
+// the title like the sections' titles, the headings in small bold mono capitals, the text in mono.
+// Links inside the text are underlined: they must not rely on colour alone (WCAG 1.4.1).
 import { getEntry } from 'astro:content';
 import type { Language } from '../config/site';
 import Base from '../layouts/Base.astro';
@@ -31,7 +31,7 @@ if (!entry?.rendered) {
 		<article class="max-w-[68ch]">
 			<h1 class="type-label mb-[clamp(20px,2.4vw,32px)]">{entry.data.title}</h1>
 			<div
-				class="text-[0.95rem] leading-[1.65] [&_a]:underline [&_a]:underline-offset-3 [&_strong]:font-semibold [&>*+*]:mt-4 [&>blockquote]:border [&>blockquote]:border-dashed [&>blockquote]:border-canvas/30 [&>blockquote]:px-5 [&>blockquote]:py-4 [&>blockquote]:text-[0.84rem] [&>blockquote]:text-muted [&>h2]:mt-12 [&>h2]:text-xs/[1.55] [&>h2]:font-medium [&>h2]:tracking-[0.14em] [&>h2]:uppercase [&>h2]:font-stretch-125% [&>ul]:list-disc [&>ul]:space-y-1.5 [&>ul]:pl-5"
+				class="text-sm/[1.75] [&_a]:underline [&_a]:underline-offset-3 [&_strong]:font-bold [&>*+*]:mt-4 [&>h2]:mt-12 [&>h2]:text-xs/[1.6] [&>h2]:font-bold [&>h2]:tracking-[0.14em] [&>h2]:uppercase [&>ul]:list-disc [&>ul]:space-y-1.5 [&>ul]:pl-5"
 				set:html={withValues(entry.rendered.html)}
 			/>
 		</article>
