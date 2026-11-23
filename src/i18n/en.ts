@@ -41,10 +41,12 @@ export const en: Dictionary = {
 	},
 	about: {
 		title: 'About',
+		caption: ['Frame 27', 'Leiria'],
 	},
 	team: {
 		title: 'Team',
 		provisional: 'Provisional: characters in place of the team',
+		sheet: 'Contact sheet · Reel 02',
 	},
 	hero: {
 		code: '35 mm · Droumond 2026 · Leiria · Reel 01',
