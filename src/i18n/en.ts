@@ -1,4 +1,5 @@
-// The interface texts in English. Provisional until Julien and Nal translate them (#18).
+// The interface texts in English, reviewed by Nal (#18). Still provisional: the first screen's (#37),
+// the teaser's (#38) and the team's tag, until the team is known.
 import type { Dictionary } from './pt';
 
 export const en: Dictionary = {
@@ -16,17 +17,17 @@ export const en: Dictionary = {
 	footer: {
 		legal: {
 			firm: 'Company name',
-			companyType: 'Company type',
+			companyType: 'Legal form',
 			registeredOffice: 'Registered office',
-			registry: 'Commercial registry',
+			registry: 'Commercial register',
 			nipc: 'Tax number (NIPC)',
 			shareCapital: 'Share capital',
 		},
 		privacy: 'Privacy Policy',
 		founded: 'Est. 2026',
 		disputes: {
-			before: 'In case of a consumer dispute, you may turn to',
-			more: 'More information on the',
+			before: 'In the event of a consumer dispute, you can turn to',
+			more: 'For more information, see the',
 		},
 	},
 	projects: {
@@ -59,17 +60,17 @@ export const en: Dictionary = {
 	filming: {
 		label: 'Filming service',
 		title: 'Want Droumond Productions on your shoot?',
-		line: 'Advertising, brand videos and music videos, filmed with the crew and equipment of our series.',
-		button: 'See the service',
-		text: 'We film advertising, brand videos and music videos in the Leiria region, with the crew and equipment we make our series with. Tell us what you want to film, where and when, and we will reply with what we can do.',
+		line: 'Commercials, brand videos and music videos, shot with the same crew and equipment as our series.',
+		button: 'About the service',
+		text: 'We shoot commercials, brand videos and music videos in the Leiria region, with the same crew and equipment we use for our series. Tell us what you want to film, where and when, and we will tell you what we can do.',
 		subject: 'Filming service',
 		pageTitle: 'Filming service · Droumond Productions',
 		description:
-			'The filming service of Droumond Productions in Leiria: advertising, brand videos and music videos.',
+			"Droumond Productions' filming service in Leiria: commercials, brand videos and music videos.",
 	},
 	home: {
 		title: 'Droumond Productions',
 		description:
-			'Droumond Productions, an audiovisual production company from Leiria: fiction series, advertising, brand videos and music videos.',
+			'Droumond Productions, an audiovisual production company based in Leiria: fiction series, commercials, brand videos and music videos.',
 	},
 };

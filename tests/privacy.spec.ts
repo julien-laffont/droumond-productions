@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { CONTACT_EMAIL, LEGAL } from '../src/config/site';
 import { inEachBuild, openExisting } from './pages';
 
-/** What the policy holds in each language. The English texts are provisional (#18). */
+/** What the policy holds in each language. The English texts are reviewed (#18), except the teaser's (#38). */
 const POLICIES = [
 	{
 		path: '/politica-de-privacidade/',
@@ -63,5 +63,22 @@ inEachBuild((build) => {
 			}
 			expect(await main.innerText()).not.toMatch(/\{[a-z.]+\}/i);
 		});
+
+		if (policy.english) {
+			test(`${policy.path}: the Portuguese names are marked as Portuguese, for screen readers`, async ({
+				page,
+			}) => {
+				await openExisting(page, policy.path);
+				const portuguese = await page.getByRole('main').locator('[lang="pt-PT"]').allInnerTexts();
+				expect(portuguese).toEqual(
+					expect.arrayContaining([
+						LEGAL.firm,
+						LEGAL.companyType,
+						LEGAL.registeredOffice,
+						'Comissão Nacional de Proteção de Dados',
+					]),
+				);
+			});
+		}
 	}
 });

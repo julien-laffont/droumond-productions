@@ -2,7 +2,7 @@
 import { expect, test } from '@playwright/test';
 import { inEachBuild, languageOf, pagesOf } from './pages';
 
-/** What the header holds in each language. The English texts are provisional (#18). */
+/** What the header holds in each language. The English texts are reviewed (#18). */
 const EXPECTED = {
 	pt: {
 		symbol: { name: 'Droumond Productions, início', href: '/' },
