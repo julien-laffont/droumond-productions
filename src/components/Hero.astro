@@ -25,9 +25,11 @@ const projectsTitle = dictionaries[language].projects.title;
 		<p class="type-code" aria-hidden="true">
 			{t.code}
 		</p>
+		{/* Slightly transparent, at Carlos's request (#37): the colour, not the element, so the title
+		    in Shree Devanagari 714 (an SVG in currentColor) will take it too. */}
 		<h1
 			id="hero-title"
-			class="text-[clamp(3.1rem,9.6vw,9.8rem)] leading-[0.84] font-black tracking-[0.005em] type-name"
+			class="text-[clamp(3.1rem,9.6vw,9.8rem)] leading-[0.84] font-black tracking-[0.005em] text-paper/85 type-name"
 		>
 			Droumond Productions
 		</h1>

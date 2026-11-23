@@ -80,6 +80,18 @@ inEachBuild((build) => {
 			);
 		});
 
+		// Carlos's request (#37): the name lets the background show through a little, at 85 %.
+		test(`${home.path}: the title is slightly transparent`, async ({ page }) => {
+			await page.goto(home.path);
+			const color = await page
+				.getByRole('heading', { level: 1 })
+				.evaluate((h1) => getComputedStyle(h1).color);
+			// The alpha is the last number of rgba(…, 0.85), oklab(… / 0.85) or color(srgb … / 0.85);
+			// a colour without one is opaque.
+			const alpha = /^rgba|\//.test(color) ? Number(color.match(/([\d.]+)\)$/)?.[1]) : 1;
+			expect(alpha, color).toBeCloseTo(0.85, 2);
+		});
+
 		test(`${home.path}: the cue leads to Projects`, async ({ page }) => {
 			await page.goto(home.path);
 			const cue = firstScreen(page).getByRole('link', { name: home.cue.name });
