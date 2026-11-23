@@ -1,12 +1,12 @@
-// The first screen of the home page, as in Película (#36): a decorative code line, the name as
-// the only h1, "Produtora audiovisual", the words (decorative) and the cue to Projects. The running
-// strip and the title in Shree Devanagari 714 come with #37. Also the home page's description, for
-// search engines (#18).
+// The first screen of the home page, as in Película (#36, #37): a decorative code line, the name as
+// the only h1, a strip of film that runs on its own (decorative), "Produtora audiovisual", the words
+// (decorative) and the cue to Projects. The title in Shree Devanagari 714 comes later (#37). Also
+// the home page's description, for search engines (#18).
 import { expect, test, type Page } from '@playwright/test';
 import { inEachBuild, pagesOf } from './pages';
 
-/** What the first screen shows in each language. Its English texts are provisional until #37; the
- * description is reviewed (#18). */
+/** What the first screen shows in each language. Nal chose the English of the strip's button (#37);
+ * the description is reviewed (#18). */
 const HOMES = [
 	{
 		path: '/',
@@ -14,12 +14,14 @@ const HOMES = [
 		code: '35 mm · Droumond 2026 · Leiria · Rolo 01',
 		words: 'Séries · Suspense · Terror · Filmagens',
 		cue: { name: 'Projetos', href: '#projetos' },
+		toggle: { pause: 'Pausar fita', resume: 'Retomar fita' },
 		description:
 			'Droumond Productions, produtora audiovisual de Leiria: séries de ficção, publicidade, vídeos para marcas e videoclipes.',
 		snapshot: `
 			- region "Droumond Productions":
 			  - heading "Droumond Productions" [level=1]
 			  - paragraph: Produtora audiovisual
+			  - button "Pausar fita"
 			  - link "Projetos"
 		`,
 	},
@@ -29,15 +31,29 @@ const HOMES = [
 		code: '35 mm · Droumond 2026 · Leiria · Reel 01',
 		words: 'Series · Thriller · Horror · Filming',
 		cue: { name: 'Projects', href: '#projects' },
+		toggle: { pause: 'Pause film', resume: 'Resume film' },
 		description:
 			'Droumond Productions, an audiovisual production company based in Leiria: fiction series, commercials, brand videos and music videos.',
 		snapshot: `
 			- region "Droumond Productions":
 			  - heading "Droumond Productions" [level=1]
 			  - paragraph: Audiovisual production company
+			  - button "Pause film"
 			  - link "Projects"
 		`,
 	},
+];
+
+/** The edge code on top of each frame of the strip, in order: the title card, then the 7 photos. */
+const FRAME_CODES = [
+	'Droumond 2026 ▸ 14',
+	'▸ 15',
+	'Droumond 2026 ▸ 16',
+	'▸ 17',
+	'Droumond 2026 ▸ 18',
+	'▸ 19',
+	'Droumond 2026 ▸ 20',
+	'▸ 21',
 ];
 
 const SCREENS = [
@@ -49,6 +65,28 @@ const SCREENS = [
 const firstScreen = (page: Page) =>
 	page.getByRole('region', { name: 'Droumond Productions', exact: true });
 
+/** How far the strip travels in half a second, in pixels: 0 while it stands still. */
+async function travel(page: Page) {
+	const frame = firstScreen(page).getByText(FRAME_CODES[0], { exact: true }).first();
+	const start = (await frame.boundingBox())!.x;
+	await page.waitForTimeout(500);
+	return start - (await frame.boundingBox())!.x;
+}
+
+/** Scrolls halfway down the page, far below the first screen. */
+const scrollToMiddle = (page: Page) =>
+	page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight / 2));
+
+/** The length of each endless animation on the page, in milliseconds. */
+const loops = (page: Page) =>
+	page.evaluate(() =>
+		document
+			.getAnimations()
+			.map((animation) => animation.effect!.getTiming())
+			.filter((timing) => timing.iterations === Infinity)
+			.map((timing) => timing.duration),
+	);
+
 inEachBuild((build) => {
 	for (const home of HOMES.filter((h) => build.english || !h.english)) {
 		test(`${home.path}: the first screen shows the name as the only h1, the line and the cue`, async ({
@@ -57,6 +95,109 @@ inEachBuild((build) => {
 			await page.goto(home.path);
 			await expect(firstScreen(page)).toMatchAriaSnapshot(home.snapshot);
 			await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+		});
+
+		test(`${home.path}: a strip of film crosses the first screen, hidden from screen readers`, async ({
+			page,
+		}) => {
+			await page.goto(home.path);
+			// The title card and the 7 photos, then the same again: the loop has no seam.
+			const codes = firstScreen(page).getByText(/▸ \d\d$/);
+			await expect(codes).toHaveText([...FRAME_CODES, ...FRAME_CODES]);
+			const photos = firstScreen(page).locator('img');
+			await expect(photos).toHaveCount(14);
+			await expect
+				.poll(() =>
+					photos.evaluateAll((imgs) =>
+						imgs.every(
+							(img) =>
+								(img as HTMLImageElement).complete && (img as HTMLImageElement).naturalWidth > 0,
+						),
+					),
+				)
+				.toBe(true);
+			const sources = await photos.evaluateAll((imgs) =>
+				imgs.map((img) => new URL((img as HTMLImageElement).currentSrc).pathname),
+			);
+			expect(new Set(sources).size).toBe(7);
+			expect(sources.slice(7)).toEqual(sources.slice(0, 7));
+			for (const frame of [...(await codes.all()), ...(await photos.all())]) {
+				expect(await frame.evaluate((el) => el.closest('[aria-hidden="true"]') !== null)).toBe(
+					true,
+				);
+			}
+		});
+
+		test(`${home.path}: the strip runs in a 64 s loop until its button pauses it`, async ({
+			page,
+		}) => {
+			await page.emulateMedia({ reducedMotion: 'no-preference' });
+			await page.goto(home.path);
+			await expect.poll(() => travel(page)).toBeGreaterThan(5);
+			expect(await loops(page)).toEqual([64_000]);
+
+			await firstScreen(page).getByRole('button', { name: home.toggle.pause }).click();
+			const resume = firstScreen(page).getByRole('button', { name: home.toggle.resume });
+			await expect(resume).toBeVisible();
+			expect(await travel(page)).toBe(0);
+
+			await resume.click();
+			await expect(
+				firstScreen(page).getByRole('button', { name: home.toggle.pause }),
+			).toBeVisible();
+			await expect.poll(() => travel(page)).toBeGreaterThan(5);
+		});
+
+		test(`${home.path}: the strip rests while it is off screen, and a pause by hand stays`, async ({
+			page,
+		}) => {
+			await page.emulateMedia({ reducedMotion: 'no-preference' });
+			await page.goto(home.path);
+			await expect.poll(() => travel(page)).toBeGreaterThan(5);
+			await scrollToMiddle(page);
+			await expect.poll(() => travel(page)).toBe(0);
+			await page.evaluate(() => window.scrollTo(0, 0));
+			await expect.poll(() => travel(page)).toBeGreaterThan(5);
+
+			await firstScreen(page).getByRole('button', { name: home.toggle.pause }).click();
+			await scrollToMiddle(page);
+			await page.evaluate(() => window.scrollTo(0, 0));
+			await expect(
+				firstScreen(page).getByRole('button', { name: home.toggle.resume }),
+			).toBeVisible();
+			expect(await travel(page)).toBe(0);
+		});
+
+		test(`${home.path}: with less motion the strip stands still, without its button`, async ({
+			page,
+		}) => {
+			await page.emulateMedia({ reducedMotion: 'reduce' });
+			await page.goto(home.path);
+			expect(await travel(page)).toBe(0);
+			await expect(firstScreen(page).getByRole('button')).toHaveCount(0);
+
+			// Also when the preference changes with the page open.
+			await page.emulateMedia({ reducedMotion: 'no-preference' });
+			await expect(
+				firstScreen(page).getByRole('button', { name: home.toggle.pause }),
+			).toBeVisible();
+			await expect.poll(() => travel(page)).toBeGreaterThan(5);
+			await page.emulateMedia({ reducedMotion: 'reduce' });
+			await expect(firstScreen(page).getByRole('button')).toHaveCount(0);
+			expect(await travel(page)).toBe(0);
+		});
+
+		test.describe('without JavaScript', () => {
+			test.use({ javaScriptEnabled: false });
+
+			test(`${home.path}: the strip stands still, since nothing could pause it`, async ({
+				page,
+			}) => {
+				await page.emulateMedia({ reducedMotion: 'no-preference' });
+				await page.goto(home.path);
+				expect(await travel(page)).toBe(0);
+				await expect(firstScreen(page).getByRole('button')).toHaveCount(0);
+			});
 		});
 
 		test(`${home.path}: the code line and the words show, hidden from screen readers`, async ({
@@ -115,6 +256,22 @@ inEachBuild((build) => {
 		for (const screen of SCREENS) {
 			test.describe(`on a ${screen.name} (${screen.width} px)`, () => {
 				test.use({ viewport: { width: screen.width, height: screen.height } });
+
+				test(`${home.path}: the strip's button has its room from the start, so nothing moves when it shows`, async ({
+					page,
+				}) => {
+					await page.emulateMedia({ reducedMotion: 'no-preference' });
+					await page.goto(home.path);
+					await expect(
+						firstScreen(page).getByRole('button', { name: home.toggle.pause }),
+					).toBeVisible();
+					const projects = page.locator(home.cue.href);
+					const withButton = (await projects.boundingBox())!.y;
+					// With less motion the button never shows: the page as it is before the script.
+					await page.emulateMedia({ reducedMotion: 'reduce' });
+					await expect(firstScreen(page).getByRole('button')).toHaveCount(0);
+					expect((await projects.boundingBox())!.y).toBe(withButton);
+				});
 
 				test(`${home.path}: the first screen fits the screen, under the header`, async ({
 					page,

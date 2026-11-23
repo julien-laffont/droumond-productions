@@ -3,6 +3,7 @@
 // title and the small line under each image, as on The Mill. A YouTube teaser first shows a local
 // image and a notice; the player only loads after a click (#3).
 import { Image } from 'astro:assets';
+import { IMAGE_FILES } from '../config/image-files';
 import { PROJECTS } from '../config/projects';
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
@@ -54,7 +55,7 @@ const anchor = sectionAnchor('projects', language);
 							<Image
 								src={project.image}
 								alt={project.alt[language]}
-								widths={project.shape === 'wide' ? [480, 720, 1080] : [312, 624]}
+								{...IMAGE_FILES.project[project.shape]}
 								sizes={
 									project.shape === 'wide'
 										? '(max-width: 760px) 100vw, 66vw'

@@ -1,11 +1,15 @@
 ---
-// The first screen of the home page, as in Película (#36): above, a code line printed as on the
-// film (decorative) and the name; below, "Produtora audiovisual", the words (decorative) and the
-// cue to Projects. The running strip between them, with its pause button, and the title in Shree
-// Devanagari 714 come with #37. Nothing moves here yet.
+// The first screen of the home page, as in Película (#36, #37): above, a code line printed as on
+// the film (decorative) and the name; across the middle, a tilted strip of film (decorative): the
+// title card with the logo symbol, then the photos of src/config/hero.ts; below, "Produtora
+// audiovisual", the words (decorative) and the cue to Projects. The title in Shree Devanagari 714
+// comes later (#37).
+import { Image } from 'astro:assets';
+import { STRIP_PHOTOS } from '../config/hero';
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import { sectionAnchor } from '../lib/paths';
+import Film from './Film.astro';
 
 interface Props {
 	language: Language;
@@ -14,14 +18,31 @@ interface Props {
 const { language } = Astro.props;
 const t = dictionaries[language].hero;
 const projectsTitle = dictionaries[language].projects.title;
+
+/** The edge codes of the strip's frames, numbered from 14 as in the prototype, the reel's name on
+ * every other one. */
+const edgeCodes = (index: number) => {
+	const number = 14 + index;
+	return {
+		top: index % 2 ? `▸ ${number}` : `Droumond 2026 ▸ ${number}`,
+		bottom: `${number}A`,
+	};
+};
+
+/** The `sizes` of a photo: how wide it shows in its 3:2 frame. a photo wider than 3:2 fills the frame's
+ * height, a narrower one its width. The frame's height is --frame-height, in the style below. */
+const frameSizes = ({ width, height }: { width: number; height: number }) => {
+	const ratio = Math.max(width / height, 3 / 2).toFixed(3);
+	return `(max-width: 700px) calc(${ratio} * clamp(120px, 26vh, 240px)), calc(${ratio} * clamp(120px, 28vh, 300px))`;
+};
 ---
 
 {/* On a desktop it fills the screen under the header; below 700 px it takes only its content. */}
 <section
 	aria-labelledby="hero-title"
-	class="grid min-h-[calc(100svh-var(--header-height)-28px)] grid-rows-[auto_1fr_auto] gap-[clamp(20px,3vh,36px)] px-gutter pt-[clamp(28px,6vh,72px)] pb-[clamp(20px,4vh,40px)] max-[700px]:min-h-0"
+	class="grid min-h-[calc(100svh-var(--header-height)-28px)] grid-rows-[auto_1fr_auto] gap-[clamp(20px,3vh,36px)] overflow-hidden pt-[clamp(28px,6vh,72px)] pb-[clamp(20px,4vh,40px)] max-[700px]:min-h-0"
 >
-	<div class="grid gap-[clamp(12px,2vh,20px)]">
+	<div class="grid gap-[clamp(12px,2vh,20px)] px-gutter">
 		<p class="type-code" aria-hidden="true">
 			{t.code}
 		</p>
@@ -34,16 +55,142 @@ const projectsTitle = dictionaries[language].projects.title;
 			Droumond Productions
 		</h1>
 	</div>
-	<div class="row-start-3 flex flex-wrap items-center gap-x-7 gap-y-3">
+	{/* The strip runs edge to edge. Its frames are there twice, so that it can loop without a seam. */}
+	<div class="window" aria-hidden="true">
+		<div class="tilt">
+			<div class="strip" data-strip>
+				{[0, 1].map(() => (
+					<>
+						<Film {...edgeCodes(0)}>
+							<div class="frame title-card">
+								<span class="logo-mark" />
+							</div>
+						</Film>
+						{STRIP_PHOTOS.map((photo, index) => (
+							<Film {...edgeCodes(index + 1)}>
+								<Image
+									src={photo.image}
+									{...photo.files}
+									sizes={frameSizes(photo.image)}
+									alt=""
+									loading="eager"
+									class="frame"
+									style={photo.focus && `object-position: ${photo.focus}`}
+								/>
+							</Film>
+						))}
+					</>
+				))}
+			</div>
+		</div>
+	</div>
+	<div class="flex flex-wrap items-center gap-x-7 gap-y-3 px-gutter">
 		<p class="text-[13px] tracking-[0.18em] uppercase">{t.line}</p>
 		<p class="type-meta tracking-[0.16em]" aria-hidden="true">
 			{t.words.join(' · ')}
 		</p>
-		<a
-			href={`#${sectionAnchor('projects', language)}`}
-			class="ml-auto text-xs tracking-[0.16em] text-amber uppercase no-underline max-[520px]:ml-0"
-		>
-			{projectsTitle} <span aria-hidden="true">↓</span>
-		</a>
+		{/* At least the button's height (11 px, 8 px above and below, a 1 px border), so that nothing
+		    below moves when the script shows it. */}
+		<div class="ml-auto flex min-h-[29px] items-center gap-[18px] max-[520px]:ml-0">
+			{/* Shown by the script below, which starts the strip; never with less motion. */}
+			<button
+				type="button"
+				data-strip-toggle
+				data-pause={t.pause}
+				data-resume={t.resume}
+				hidden
+				class="cursor-pointer border border-paper/14 px-2.5 py-2 text-[11px] leading-none tracking-[0.12em] uppercase hover:border-paper motion-reduce:hidden"
+			>
+				{t.pause}
+			</button>
+			<a
+				href={`#${sectionAnchor('projects', language)}`}
+				class="text-xs tracking-[0.16em] text-amber uppercase no-underline"
+			>
+				{projectsTitle} <span aria-hidden="true">↓</span>
+			</a>
+		</div>
 	</div>
 </section>
+
+<script>
+	// The strip only runs with JavaScript, which also shows its button: nobody sees it move without
+	// a way to pause it, since it moves for more than 5 seconds (WCAG 2.2.2). Whoever asked for less
+	// motion sees it still and without the button (in CSS, so it follows a change made with the page
+	// open). The label says what the button will do, so no aria-pressed.
+	const strip = document.querySelector<HTMLElement>('[data-strip]');
+	const toggle = document.querySelector<HTMLButtonElement>('[data-strip-toggle]');
+	if (strip && toggle) {
+		strip.classList.add('running');
+		toggle.hidden = false;
+		toggle.addEventListener('click', () => {
+			const paused = strip.classList.toggle('paused');
+			toggle.textContent = (paused ? toggle.dataset.resume : toggle.dataset.pause) ?? '';
+		});
+		// Off screen the strip rests, which spares the battery; a pause by hand stays.
+		if ('IntersectionObserver' in window) {
+			new IntersectionObserver(([entry]) => {
+				strip.classList.toggle('resting', !entry.isIntersecting);
+			}).observe(strip);
+		}
+	}
+</script>
+
+<style>
+	/* The window the strip runs through: room above and below for the tilt. */
+	.window {
+		align-self: center;
+		overflow: hidden;
+		padding-block: clamp(36px, 5vw, 64px);
+		margin-block: calc(-1 * clamp(20px, 3vw, 40px));
+	}
+	/* Wider than the screen, so the tilted strip's ends never show. */
+	.tilt {
+		--frame-height: clamp(120px, 28vh, 300px);
+		width: 116%;
+		margin-left: -8%;
+		transform: rotate(-3deg);
+	}
+	.strip {
+		display: flex;
+		width: max-content;
+	}
+	.frame {
+		display: block;
+		height: var(--frame-height);
+		width: auto;
+		max-width: none;
+		aspect-ratio: 3 / 2;
+		object-fit: cover;
+		background: var(--color-ink);
+	}
+	.title-card {
+		display: grid;
+		place-items: center;
+	}
+	.title-card .logo-mark {
+		width: 46%;
+		aspect-ratio: 1;
+		color: var(--color-paper);
+	}
+	@media (max-width: 700px) {
+		.tilt {
+			--frame-height: clamp(120px, 26vh, 240px);
+		}
+	}
+	/* One loop moves the strip by one copy of its frames, in 64 s. */
+	@media (prefers-reduced-motion: no-preference) {
+		.strip.running {
+			animation: strip-run 64s linear infinite;
+		}
+		.strip.paused,
+		.strip.resting {
+			animation-play-state: paused;
+		}
+	}
+	@keyframes strip-run {
+		to {
+			transform: translate3d(-50%, 0, 0);
+		}
+	}
+</style>

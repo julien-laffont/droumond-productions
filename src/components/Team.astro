@@ -4,6 +4,7 @@
 // desktop, up to 3 on a tablet (below 960 px, like Sobre's single column), and on a phone (below
 // 600 px) one row that slides sideways, out to the screen's edges, so nobody sits alone there.
 import { Image } from 'astro:assets';
+import { IMAGE_FILES } from '../config/image-files';
 import type { Language } from '../config/site';
 import { TEAM, TEAM_IS_PROVISIONAL } from '../config/team';
 import { dictionaries } from '../i18n';
@@ -52,9 +53,8 @@ const grid = {
 				<Image
 					src={person.photo}
 					alt={person.alt[language]}
-					widths={[320, 480, 640]}
+					{...IMAGE_FILES.team}
 					sizes="(max-width: 600px) calc((100vw - 32px) * 0.62), (max-width: 960px) 31vw, 18vw"
-					quality={70}
 					class="aspect-[4/5] w-full bg-stock object-cover"
 				/>
 				<h3 class="mt-1 text-[clamp(1.2rem,1.6vw,1.5rem)] type-name">{person.name}</h3>
