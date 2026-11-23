@@ -67,6 +67,7 @@ export const en: Dictionary = {
 		line: 'Commercials, brand videos and music videos, shot with the same crew and equipment as our series.',
 		button: 'About the service',
 		text: 'We shoot commercials, brand videos and music videos in the Leiria region, with the same crew and equipment we use for our series. Tell us what you want to film, where and when, and we will tell you what we can do.',
+		slate: { production: 'Prod.', scene: 'Scene', take: 'Take', date: 'Date' },
 		subject: 'Filming service',
 		pageTitle: 'Filming service · Droumond Productions',
 		description:
