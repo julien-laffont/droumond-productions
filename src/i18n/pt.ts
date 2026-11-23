@@ -51,12 +51,16 @@ export const pt = {
 	/** The Sobre section of the home page (#15); its text is in src/content/about/. */
 	about: {
 		title: 'Sobre',
+		/** Under the enlarged frame, printed as on the film: decorative, hidden from screen readers. */
+		caption: ['Fot. 27', 'Leiria'],
 	},
 	/** The Equipa section of the home page (#15); the people are in src/config/team.ts. */
 	team: {
 		title: 'Equipa',
 		/** Next to the title while Characters stand in for the team (TEAM_IS_PROVISIONAL). */
 		provisional: 'Provisório: personagens no lugar da equipa',
+		/** Above the contact sheet, printed as on the film: decorative, hidden from screen readers. */
+		sheet: 'Folha de contactos · Rolo 02',
 	},
 	/** The first screen of the home page (#13). */
 	hero: {

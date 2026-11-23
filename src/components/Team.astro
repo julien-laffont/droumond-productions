@@ -1,8 +1,6 @@
 ---
-// The Equipa section of the home page (#15): a card per person of src/config/team.ts, with the
-// photo (4:5), the name and the role; no individual pages, no biographies. Up to 5 per row on a
-// desktop, up to 3 on a tablet (below 960 px, like Sobre's single column), and on a phone (below
-// 600 px) one row that slides sideways, out to the screen's edges, so nobody sits alone there.
+// The Equipa section: a contact sheet of src/config/team.ts, each person on a frame of film ringed
+// in grease pencil, with the name and role under it.
 import { Image } from 'astro:assets';
 import { IMAGE_FILES } from '../config/image-files';
 import type { Language } from '../config/site';
@@ -10,6 +8,8 @@ import { TEAM, TEAM_IS_PROVISIONAL } from '../config/team';
 import { dictionaries } from '../i18n';
 import { sectionAnchor } from '../lib/paths';
 import { teamGrid } from '../lib/team-grid';
+import { sheetFrame } from '../lib/team-sheet';
+import Film from './Film.astro';
 
 interface Props {
 	language: Language;
@@ -34,77 +34,125 @@ const grid = {
 <section
 	id={anchor}
 	aria-labelledby={`${anchor}-title`}
-	class="px-gutter py-[clamp(48px,6vw,88px)]"
+	class="border-t border-paper/14 px-gutter py-[clamp(64px,9vw,128px)]"
 >
-	<div class="mb-[clamp(20px,2.4vw,32px)] flex flex-wrap items-baseline gap-x-4 gap-y-2">
+	<div class="mb-[clamp(24px,3vw,40px)] flex flex-wrap items-end gap-x-5 gap-y-2.5">
 		<h2 id={`${anchor}-title`} class="type-label">
 			{t.title}
 		</h2>
 		{TEAM_IS_PROVISIONAL && (
 			<p class="border border-dashed border-current px-1.5 py-1 type-meta">{t.provisional}</p>
 		)}
+		<p class="ml-auto type-code" aria-hidden="true">
+			{t.sheet}
+		</p>
 	</div>
-	{/* Focusable, so that on a phone the row also slides with the keyboard's arrows. */}
-	<ul class="team-grid" style={grid} tabindex="0" aria-labelledby={`${anchor}-title`}>
-		{TEAM.map((person) => (
-			<li class="reveal grid min-w-0 content-start gap-2.5">
-				{/* Phones fetch the portraits as the page opens, since they sit near the screen: the
-				    sizes match their real width and quality 70 keeps the page under its weight limit. */}
-				<Image
-					src={person.photo}
-					alt={person.alt[language]}
-					{...IMAGE_FILES.team}
-					sizes="(max-width: 600px) calc((100vw - 32px) * 0.62), (max-width: 960px) 31vw, 18vw"
-					class="aspect-[4/5] w-full bg-stock object-cover"
-				/>
-				<h3 class="mt-1 text-[clamp(1.2rem,1.6vw,1.5rem)] type-name">{person.name}</h3>
-				<p class="type-meta">{person.role[language]}</p>
-			</li>
-		))}
+	{/* Focusable, so that on a phone the strip also slides with the keyboard's arrows. */}
+	<ul class="sheet" style={grid} tabindex="0" aria-labelledby={`${anchor}-title`}>
+		{TEAM.map((person, index) => {
+			const frame = sheetFrame(index);
+			return (
+				<li class="reveal grid min-w-0 content-start gap-3.5">
+					<Film top={frame.top} bottom={frame.bottom} side={7}>
+						{/* The sizes match the photo's real width; quality 70 keeps the page under its weight limit. */}
+						<Image
+							src={person.photo}
+							alt={person.alt[language]}
+							{...IMAGE_FILES.team}
+							sizes="(max-width: 700px) calc((100vw - 32px) * 0.64 - 14px), (max-width: 960px) 31vw, 18vw"
+							class="block aspect-[4/5] w-full bg-ink object-cover"
+						/>
+						<svg class="pencil" viewBox="0 0 75 100" preserveAspectRatio="none" aria-hidden="true">
+							<path pathLength="1" d={frame.ring} />
+						</svg>
+					</Film>
+					<div class="grid gap-1.5 px-[7px]">
+						<h3 class="text-[clamp(1.25rem,1.8vw,1.75rem)] type-name">{person.name}</h3>
+						<p class="type-meta">{person.role[language]}</p>
+					</div>
+				</li>
+			);
+		})}
 	</ul>
 </section>
 
 <style>
-	/* Each row holds --columns people; a portrait is 1/--slots of the width. */
-	.team-grid {
-		--gap: clamp(12px, 1.4vw, 20px);
+	/* Each row holds --columns people; a frame is 1/--slots of the width, the films touching. */
+	.sheet {
 		--columns: var(--columns-desktop);
 		--slots: var(--slots-desktop);
 		display: grid;
-		gap: var(--gap);
-		grid-template-columns: repeat(
-			var(--columns),
-			calc((100% - (var(--slots) - 1) * var(--gap)) / var(--slots))
-		);
+		row-gap: 28px;
+		grid-template-columns: repeat(var(--columns), calc(100% / var(--slots)));
 	}
 	@media (width < 960px) {
-		.team-grid {
+		.sheet {
 			--columns: var(--columns-tablet);
 			--slots: var(--slots-tablet);
-			row-gap: 28px;
 		}
 	}
-	/* One row that slides sideways: it runs under the side margins to the screen's edges, and each
-	   portrait (62% of the width between the margins) snaps to the left margin. */
-	@media (width < 600px) {
-		.team-grid {
+	/* One strip that slides sideways: it runs under the side margins to the screen's edges, and each
+	   frame (64% of the width between the margins) snaps to the left margin. */
+	@media (width < 700px) {
+		.sheet {
 			--left: max(var(--gutter), env(safe-area-inset-left, 0px));
 			--right: max(var(--gutter), env(safe-area-inset-right, 0px));
 			grid-template-columns: none;
 			grid-auto-flow: column;
-			grid-auto-columns: 62%;
+			grid-auto-columns: 64%;
 			overflow-x: auto;
 			scroll-snap-type: x mandatory;
+			scrollbar-width: thin;
+			scrollbar-color: var(--color-amber-dim) transparent;
 			margin-inline: calc(-1 * var(--left)) calc(-1 * var(--right));
-			padding: 0 var(--right) 10px var(--left);
+			padding: 0 var(--right) 12px var(--left);
 			scroll-padding-inline: var(--left) var(--right);
 		}
-		.team-grid > li {
+		.sheet > li {
 			scroll-snap-align: start;
 		}
 		/* At the screen's edges, the focus ring goes inside, or it would not show. */
-		.team-grid:focus-visible {
+		.sheet:focus-visible {
 			outline-offset: -2px;
+		}
+	}
+
+	/* The grease pencil, around the photo and over the bands of the film. */
+	.pencil {
+		position: absolute;
+		inset: 22px 2px;
+		width: calc(100% - 4px);
+		height: calc(100% - 44px);
+		overflow: visible;
+		pointer-events: none;
+	}
+	/* One dash as long as the path: whole at offset 0, gone at offset 1. The width is in the box's
+	   units (about 3.5 px on a desktop); a non-scaling stroke would break the dash's length. */
+	.pencil path {
+		fill: none;
+		stroke: var(--color-grease);
+		stroke-width: 1;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		opacity: 0.92;
+		stroke-dasharray: 1 1;
+		stroke-dashoffset: 0;
+	}
+	li:nth-child(2n) .pencil {
+		transform: rotate(1.2deg);
+	}
+	li:nth-child(3n) .pencil {
+		transform: rotate(-1deg);
+	}
+	/* Only with a real hover: on a touch screen a tap would replay it. */
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		li:hover .pencil path {
+			animation: draw 0.7s var(--ease) both;
+		}
+	}
+	@keyframes draw {
+		from {
+			stroke-dashoffset: 1;
 		}
 	}
 </style>
