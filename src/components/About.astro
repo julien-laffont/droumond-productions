@@ -4,6 +4,7 @@
 // from src/content/about/<language>.md, so Julien can change them without touching code.
 import { Image } from 'astro:assets';
 import { getEntry, render } from 'astro:content';
+import { IMAGE_FILES } from '../config/image-files';
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import { sectionAnchor } from '../lib/paths';
@@ -41,9 +42,8 @@ const { Content } = await render(entry);
 	<Image
 		src={entry.data.image}
 		alt={entry.data.alt}
-		widths={[480, 720, 1080]}
+		{...IMAGE_FILES.about}
 		sizes="(max-width: 960px) calc(100vw - 32px), 66vw"
-		quality={70}
 		class="reveal aspect-video w-full bg-stock object-cover"
 	/>
 </section>

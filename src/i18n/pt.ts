@@ -66,6 +66,9 @@ export const pt = {
 		words: ['Séries', 'Suspense', 'Terror', 'Filmagens'],
 		/** The line under the name: the real text. */
 		line: 'Produtora audiovisual',
+		/** The strip's button, before and after pausing. */
+		pause: 'Pausar fita',
+		resume: 'Retomar fita',
 	},
 	/** The Contacto block, on the home page and on the filming page (#7, #16). */
 	contact: {

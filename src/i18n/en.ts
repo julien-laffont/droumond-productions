@@ -50,6 +50,8 @@ export const en: Dictionary = {
 		code: '35 mm · Droumond 2026 · Leiria · Reel 01',
 		words: ['Series', 'Thriller', 'Horror', 'Filming'],
 		line: 'Audiovisual production company',
+		pause: 'Pause film',
+		resume: 'Resume film',
 	},
 	contact: {
 		title: 'Contact',
