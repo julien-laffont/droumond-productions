@@ -45,13 +45,3 @@ export function contactPath(page: PageId | undefined, language: Language): strin
 		? `${PAGES.filming[language]}#${sectionAnchor('contact', language)}`
 		: sectionPath('contact', language);
 }
-
-/**
- * The Privacy Policy's section on the YouTube teaser, which the notice under the teaser links to.
- * Its anchor comes from the heading in src/content/privacy/<language>.md: renaming the heading
- * changes it.
- */
-export function teaserPrivacyPath(language: Language): string {
-	const anchor = { pt: 'teaser-do-youtube', en: 'the-youtube-teaser' }[language];
-	return `${PAGES.privacy[language]}#${anchor}`;
-}

@@ -56,6 +56,28 @@ function randomText(kb: number) {
 	return randomBytes(kb * 1024).toString('base64');
 }
 
+/**
+ * A media file of `mb` MB that Chromium plays, so downloads whole: random sound, in WAV, which
+ * compression barely shrinks.
+ */
+function noise(mb: number) {
+	const data = randomBytes(Math.round(mb * 1024 * 1024));
+	const header = Buffer.alloc(44);
+	header.write('RIFF', 0);
+	header.writeUInt32LE(36 + data.length, 4);
+	header.write('WAVEfmt ', 8);
+	header.writeUInt32LE(16, 16); // format chunk size
+	header.writeUInt16LE(1, 20); // PCM
+	header.writeUInt16LE(2, 22); // stereo
+	header.writeUInt32LE(48_000, 24); // samples per second
+	header.writeUInt32LE(48_000 * 4, 28); // bytes per second
+	header.writeUInt16LE(4, 32); // bytes per sample frame
+	header.writeUInt16LE(16, 34); // bits per sample
+	header.write('data', 36);
+	header.writeUInt32LE(data.length, 40);
+	return Buffer.concat([header, data]);
+}
+
 /** Analyzes every page of the site, one run each, and returns the failures of each page. */
 async function failuresByPage(folder: string) {
 	const analyses = await checkSite({ dist: folder, pages: pagesIn(folder), runs: 1 });
@@ -90,6 +112,23 @@ test('compressed page stays within 400 KB', async () => {
 	});
 	expect(await failuresByPage(folder)).toEqual({
 		'/heavy/': [expect.stringMatching(/^page weighs \d+\.\d KB, max 400\.0 KB$/)],
+	});
+});
+
+test('each video weighs apart from the page, within 1.5 MB', async () => {
+	// Two under the limit: more than 400 KB, and more than 1.5 MB together.
+	const player = (src: string) =>
+		`<video src="${src}" muted autoplay loop playsinline width="320" height="180"></video>`;
+	const folder = createSite({
+		'two-videos/index.html': testPage({ body: player('/a.wav') + player('/b.wav') }),
+		'heavy-video/index.html': testPage({ body: player('/c.wav') }),
+		'a.wav': noise(1),
+		'b.wav': noise(1),
+		'c.wav': noise(1.6),
+	});
+	expect(await failuresByPage(folder)).toEqual({
+		'/heavy-video/': [expect.stringMatching(/^video \/c\.wav weighs 1\.6 MB, max 1\.5 MB$/)],
+		'/two-videos/': [],
 	});
 });
 

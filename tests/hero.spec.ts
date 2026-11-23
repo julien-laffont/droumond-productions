@@ -79,15 +79,17 @@ async function travel(page: Page) {
 const scrollToMiddle = (page: Page) =>
 	page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight / 2));
 
-/** The length of each endless animation on the page, in milliseconds. */
+/** The length of each endless animation of the strip, in milliseconds. */
 const loops = (page: Page) =>
-	page.evaluate(() =>
-		document
-			.getAnimations()
-			.map((animation) => animation.effect!.getTiming())
-			.filter((timing) => timing.iterations === Infinity)
-			.map((timing) => timing.duration),
-	);
+	firstScreen(page)
+		.locator('[data-strip]')
+		.evaluate((strip) =>
+			strip
+				.getAnimations()
+				.map((animation) => animation.effect!.getTiming())
+				.filter((timing) => timing.iterations === Infinity)
+				.map((timing) => timing.duration),
+		);
 
 inEachBuild((build) => {
 	for (const home of HOMES.filter((h) => build.english || !h.english)) {
@@ -243,16 +245,9 @@ inEachBuild((build) => {
 			await expect(page.locator(home.cue.href)).toBeInViewport();
 		});
 
-		test(`${home.path}: no background video any more, so none is requested`, async ({ page }) => {
-			const videos: string[] = [];
-			page.on('request', (request) => {
-				if (request.resourceType() === 'media' || request.url().endsWith('.mp4')) {
-					videos.push(request.url());
-				}
-			});
-			await page.goto(home.path, { waitUntil: 'networkidle' });
-			await expect(page.locator('video')).toHaveCount(0);
-			expect(videos).toEqual([]);
+		test(`${home.path}: no background video any more`, async ({ page }) => {
+			await page.goto(home.path);
+			await expect(firstScreen(page).locator('video')).toHaveCount(0);
 		});
 
 		for (const screen of SCREENS) {
