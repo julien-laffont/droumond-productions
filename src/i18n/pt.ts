@@ -66,7 +66,7 @@ export const pt = {
 		words: ['Séries', 'Suspense', 'Terror', 'Filmagens'],
 		/** The line under the name: the real text. */
 		line: 'Produtora audiovisual',
-		/** The button that pauses the running strip (#37), then resumes it. */
+		/** The strip's button, before and after pausing. */
 		pause: 'Pausar fita',
 		resume: 'Retomar fita',
 	},

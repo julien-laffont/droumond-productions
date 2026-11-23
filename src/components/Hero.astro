@@ -1,9 +1,5 @@
 ---
-// The first screen of the home page, as in Película (#36, #37): above, a code line printed as on
-// the film (decorative) and the name; across the middle, a tilted strip of film (decorative): the
-// title card with the logo symbol, then the photos of src/config/hero.ts; below, "Produtora
-// audiovisual", the words (decorative) and the cue to Projects. The title in Shree Devanagari 714
-// comes later (#37).
+// The home page's first screen: the name, a looping film strip and the cue to Projects.
 import { Image } from 'astro:assets';
 import { STRIP_PHOTOS } from '../config/hero';
 import type { Language } from '../config/site';
@@ -19,8 +15,7 @@ const { language } = Astro.props;
 const t = dictionaries[language].hero;
 const projectsTitle = dictionaries[language].projects.title;
 
-/** The edge codes of the strip's frames, numbered from 14 as in the prototype, the reel's name on
- * every other one. */
+/** Frame numbers from 14, with the reel's name on every other frame. */
 const edgeCodes = (index: number) => {
 	const number = 14 + index;
 	return {
@@ -29,8 +24,7 @@ const edgeCodes = (index: number) => {
 	};
 };
 
-/** The `sizes` of a photo: how wide it shows in its 3:2 frame. a photo wider than 3:2 fills the frame's
- * height, a narrower one its width. The frame's height is --frame-height, in the style below. */
+/** A photo's width in its 3:2 frame, for `sizes`. The heights match --frame-height below. */
 const frameSizes = ({ width, height }: { width: number; height: number }) => {
 	const ratio = Math.max(width / height, 3 / 2).toFixed(3);
 	return `(max-width: 700px) calc(${ratio} * clamp(120px, 26vh, 240px)), calc(${ratio} * clamp(120px, 28vh, 300px))`;
@@ -55,7 +49,7 @@ const frameSizes = ({ width, height }: { width: number; height: number }) => {
 			Droumond Productions
 		</h1>
 	</div>
-	{/* The strip runs edge to edge. Its frames are there twice, so that it can loop without a seam. */}
+	{/* The frames twice, so the loop has no seam. */}
 	<div class="window" aria-hidden="true">
 		<div class="tilt">
 			<div class="strip" data-strip>
@@ -89,10 +83,8 @@ const frameSizes = ({ width, height }: { width: number; height: number }) => {
 		<p class="type-meta tracking-[0.16em]" aria-hidden="true">
 			{t.words.join(' · ')}
 		</p>
-		{/* At least the button's height (11 px, 8 px above and below, a 1 px border), so that nothing
-		    below moves when the script shows it. */}
+		{/* The button's height, so nothing moves when it appears. */}
 		<div class="ml-auto flex min-h-[29px] items-center gap-[18px] max-[520px]:ml-0">
-			{/* Shown by the script below, which starts the strip; never with less motion. */}
 			<button
 				type="button"
 				data-strip-toggle
@@ -114,10 +106,8 @@ const frameSizes = ({ width, height }: { width: number; height: number }) => {
 </section>
 
 <script>
-	// The strip only runs with JavaScript, which also shows its button: nobody sees it move without
-	// a way to pause it, since it moves for more than 5 seconds (WCAG 2.2.2). Whoever asked for less
-	// motion sees it still and without the button (in CSS, so it follows a change made with the page
-	// open). The label says what the button will do, so no aria-pressed.
+	// Runs only with JavaScript, which shows the pause button (WCAG 2.2.2). Reduced motion is in CSS.
+	// The label changes, so no aria-pressed.
 	const strip = document.querySelector<HTMLElement>('[data-strip]');
 	const toggle = document.querySelector<HTMLButtonElement>('[data-strip-toggle]');
 	if (strip && toggle) {
@@ -127,7 +117,7 @@ const frameSizes = ({ width, height }: { width: number; height: number }) => {
 			const paused = strip.classList.toggle('paused');
 			toggle.textContent = (paused ? toggle.dataset.resume : toggle.dataset.pause) ?? '';
 		});
-		// Off screen the strip rests, which spares the battery; a pause by hand stays.
+		// Rests off screen; a manual pause stays.
 		if ('IntersectionObserver' in window) {
 			new IntersectionObserver(([entry]) => {
 				strip.classList.toggle('resting', !entry.isIntersecting);
@@ -137,14 +127,14 @@ const frameSizes = ({ width, height }: { width: number; height: number }) => {
 </script>
 
 <style>
-	/* The window the strip runs through: room above and below for the tilt. */
+	/* Room above and below for the tilt. */
 	.window {
 		align-self: center;
 		overflow: hidden;
 		padding-block: clamp(36px, 5vw, 64px);
 		margin-block: calc(-1 * clamp(20px, 3vw, 40px));
 	}
-	/* Wider than the screen, so the tilted strip's ends never show. */
+	/* Wider than the screen, so the tilted ends never show. */
 	.tilt {
 		--frame-height: clamp(120px, 28vh, 300px);
 		width: 116%;
@@ -178,7 +168,6 @@ const frameSizes = ({ width, height }: { width: number; height: number }) => {
 			--frame-height: clamp(120px, 26vh, 240px);
 		}
 	}
-	/* One loop moves the strip by one copy of its frames, in 64 s. */
 	@media (prefers-reduced-motion: no-preference) {
 		.strip.running {
 			animation: strip-run 64s linear infinite;

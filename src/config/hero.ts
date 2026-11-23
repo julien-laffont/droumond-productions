@@ -1,6 +1,4 @@
-// The photos of the strip that runs across the first screen (#37), in order, after the title card
-// with the logo symbol. To change one, edit this list. Until Carlos's originals replace them (#41),
-// they are the photos of the sections below, in the files those sections already use.
+// The first screen strip's photos, in order, after the title card.
 import type { ImageMetadata } from 'astro';
 import sobre from '../assets/about/sobre.jpg';
 import efectoPlacebo from '../assets/projects/efecto-placebo.jpg';
@@ -13,9 +11,9 @@ import { IMAGE_FILES, type ImageFiles } from './image-files';
 
 export interface StripPhoto {
 	image: ImageMetadata;
-	/** The files to use: the recipe of the section that shows the same photo. */
+	/** The recipe of the section showing the same photo, so both share files. */
 	files: ImageFiles;
-	/** The part of the photo the 3:2 frame keeps (CSS object-position); the centre by default. */
+	/** What the 3:2 frame keeps (object-position); centred by default. */
 	focus?: string;
 }
 

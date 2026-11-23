@@ -1,12 +1,8 @@
-// The first screen of the home page, as in Película (#36, #37): a decorative code line, the name as
-// the only h1, a strip of film that runs on its own (decorative), "Produtora audiovisual", the words
-// (decorative) and the cue to Projects. The title in Shree Devanagari 714 comes later (#37). Also
-// the home page's description, for search engines (#18).
+// The home page's first screen, its film strip, and the page's description.
 import { expect, test, type Page } from '@playwright/test';
 import { inEachBuild, pagesOf } from './pages';
 
-/** What the first screen shows in each language. Nal chose the English of the strip's button (#37);
- * the description is reviewed (#18). */
+/** What the first screen shows in each language. */
 const HOMES = [
 	{
 		path: '/',
@@ -44,7 +40,7 @@ const HOMES = [
 	},
 ];
 
-/** The edge code on top of each frame of the strip, in order: the title card, then the 7 photos. */
+/** The top edge code of each frame: the title card, then the 7 photos. */
 const FRAME_CODES = [
 	'Droumond 2026 ▸ 14',
 	'▸ 15',
@@ -66,9 +62,8 @@ const firstScreen = (page: Page) =>
 	page.getByRole('region', { name: 'Droumond Productions', exact: true });
 
 /**
- * How far the strip travels in half a second, in pixels: 0 while it stands still. It measures once a
- * pause or a restart just asked for has taken effect: until then (the next frame), Chromium still
- * moves a paused animation, by up to 0.65 px on CI.
+ * How far the strip moves in half a second, in pixels (0 when still). Waits first for any pending
+ * pause or play, which Chromium applies only on the next frame.
  */
 async function travel(page: Page) {
 	await page.evaluate(() =>
@@ -274,7 +269,7 @@ inEachBuild((build) => {
 					).toBeVisible();
 					const projects = page.locator(home.cue.href);
 					const withButton = (await projects.boundingBox())!.y;
-					// With less motion the button never shows: the page as it is before the script.
+					// With reduced motion the button never shows, as before the script runs.
 					await page.emulateMedia({ reducedMotion: 'reduce' });
 					await expect(firstScreen(page).getByRole('button')).toHaveCount(0);
 					expect((await projects.boundingBox())!.y).toBe(withButton);
