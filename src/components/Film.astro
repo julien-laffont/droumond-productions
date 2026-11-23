@@ -7,12 +7,14 @@ interface Props {
 	top: string;
 	/** The edge code on the bottom band, in a dimmer amber, such as "48A". */
 	bottom: string;
+	/** The stock's width on each side of the frames, in pixels. */
+	side?: number;
 }
 
-const { top, bottom } = Astro.props;
+const { top, bottom, side = 6 } = Astro.props;
 ---
 
-<div class="film">
+<div class="film" style={`--side: ${side}px`}>
 	<span class="code code-top type-code" aria-hidden="true">
 		{top}
 	</span>
@@ -30,7 +32,7 @@ const { top, bottom } = Astro.props;
 		--holes: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10'%3E%3Crect x='5' width='14' height='10' rx='2.5'/%3E%3C/svg%3E");
 		position: relative;
 		background: var(--color-stock);
-		padding: var(--band) 6px;
+		padding: var(--band) var(--side);
 	}
 	.film::before,
 	.film::after {

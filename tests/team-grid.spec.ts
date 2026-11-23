@@ -19,6 +19,7 @@ test('on a desktop, up to 5 per row, in rows as even as possible', () => {
 	const examples = {
 		1: [1],
 		2: [2],
+		3: [3],
 		5: [5],
 		6: [3, 3],
 		7: [4, 3],
