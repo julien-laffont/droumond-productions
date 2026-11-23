@@ -65,8 +65,15 @@ const SCREENS = [
 const firstScreen = (page: Page) =>
 	page.getByRole('region', { name: 'Droumond Productions', exact: true });
 
-/** How far the strip travels in half a second, in pixels: 0 while it stands still. */
+/**
+ * How far the strip travels in half a second, in pixels: 0 while it stands still. It measures once a
+ * pause or a restart just asked for has taken effect: until then (the next frame), Chromium still
+ * moves a paused animation, by up to 0.65 px on CI.
+ */
 async function travel(page: Page) {
+	await page.evaluate(() =>
+		Promise.allSettled(document.getAnimations().map((animation) => animation.ready)),
+	);
 	const frame = firstScreen(page).getByText(FRAME_CODES[0], { exact: true }).first();
 	const start = (await frame.boundingBox())!.x;
 	await page.waitForTimeout(500);
