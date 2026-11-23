@@ -20,9 +20,8 @@ const anchor = sectionAnchor('projects', language);
 <section
 	id={anchor}
 	aria-labelledby={`${anchor}-title`}
-	class="px-gutter pt-[calc(var(--edge-height)*0.6+clamp(56px,8vw,120px))] pb-[clamp(48px,6vw,88px)]"
+	class="px-gutter py-[clamp(48px,6vw,88px)]"
 >
-	{/* Room above for the first screen's brush-stroke edge (#13), as in the prototype. */}
 	<h2 id={`${anchor}-title`} class="mb-[clamp(20px,2.4vw,32px)] type-label">
 		{t.title}
 	</h2>
@@ -38,7 +37,7 @@ const anchor = sectionAnchor('projects', language);
 					{/* The image's box: after the click, the teaser's player takes the link's place. */}
 					<div
 						class:list={[
-							'bg-ink-2',
+							'bg-stock',
 							project.shape === 'wide' ? 'aspect-video' : 'aspect-[4/5] max-[760px]:aspect-square',
 						]}
 					>

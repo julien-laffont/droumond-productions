@@ -2,7 +2,7 @@
 // Runs the real Lighthouse, one run per page: if a Lighthouse update changes the
 // report and a target stops firing, these tests turn red.
 import { randomBytes } from 'node:crypto';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { expect, test } from '@playwright/test';
 import { pagesIn } from '../pages';
@@ -93,26 +93,9 @@ test('compressed page stays within 400 KB', async () => {
 	});
 });
 
-test('the background video weighs apart from the page, within 700 KB', async () => {
-	// The home page's real video (#13), about 600 KB: Chromium downloads all of it.
-	const video = readFileSync('src/assets/hero/background.mp4');
-	const player = (src: string) =>
-		`<video src="${src}" muted autoplay loop playsinline width="320" height="180"></video>`;
-	const folder = createSite({
-		'one-video/index.html': testPage({ body: player('/a.mp4') }),
-		'two-videos/index.html': testPage({ body: player('/a.mp4') + player('/b.mp4') }),
-		'a.mp4': video,
-		'b.mp4': video,
-	});
-	expect(await failuresByPage(folder)).toEqual({
-		'/one-video/': [],
-		'/two-videos/': [expect.stringMatching(/^video weighs \d+\.\d KB, max 700\.0 KB$/)],
-	});
-});
-
-test('loads at most 2 fonts, all woff2', async () => {
+test('loads at most 3 fonts, all woff2', async () => {
 	// Each font styles visible text, so that the browser fetches it.
-	const styles = ['a.woff2', 'b.woff2', 'c.ttf']
+	const styles = ['a.woff2', 'b.woff2', 'c.woff2', 'd.ttf']
 		.map(
 			(font, i) =>
 				`@font-face { font-family: f${i}; src: url(/${font}); } .f${i} { font-family: f${i}; }`,
@@ -121,14 +104,15 @@ test('loads at most 2 fonts, all woff2', async () => {
 	const folder = createSite({
 		'fonts/index.html': testPage({
 			head: `<style>${styles}</style>`,
-			body: '<p class="f0">Um</p><p class="f1">Dois</p><p class="f2">Três</p>',
+			body: '<p class="f0">Um</p><p class="f1">Dois</p><p class="f2">Três</p><p class="f3">Quatro</p>',
 		}),
 		'a.woff2': randomText(1),
 		'b.woff2': randomText(1),
-		'c.ttf': randomText(1),
+		'c.woff2': randomText(1),
+		'd.ttf': randomText(1),
 	});
 	expect(await failuresByPage(folder)).toEqual({
-		'/fonts/': ['3 fonts, max 2', 'font not in woff2: /c.ttf'],
+		'/fonts/': ['4 fonts, max 3', 'font not in woff2: /d.ttf'],
 	});
 });
 

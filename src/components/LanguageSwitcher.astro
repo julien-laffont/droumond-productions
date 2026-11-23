@@ -23,11 +23,11 @@ const code = language.toUpperCase();
 	<details class="relative" data-menu>
 		<summary
 			aria-label={`${code}, ${t.language}: ${LANGUAGE_NAMES[language]}`}
-			class="cursor-pointer list-none rounded-full border border-canvas/16 px-2.5 py-1.5 text-xs/[1.55] tracking-[0.1em] [&::-webkit-details-marker]:hidden"
+			class="cursor-pointer list-none border border-paper/14 px-2.5 py-1.5 text-xs tracking-[0.1em] [&::-webkit-details-marker]:hidden"
 		>
 			{code}
 		</summary>
-		<ul class="absolute top-[calc(100%+8px)] right-0 min-w-30 border border-canvas/16 bg-ink-2 p-1.5">
+		<ul class="absolute top-[calc(100%+8px)] right-0 min-w-30 border border-paper/14 bg-stock p-1.5">
 			{others.map((l) => (
 				<li>
 					<a href={PAGES[page][l]} lang={HTML_CODES[l]} hreflang={l} class="block px-2.5 py-2">

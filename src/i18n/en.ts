@@ -25,6 +25,7 @@ export const en: Dictionary = {
 		},
 		privacy: 'Privacy Policy',
 		founded: 'Est. 2026',
+		reelEnd: 'End of reel',
 		disputes: {
 			before: 'In the event of a consumer dispute, you can turn to',
 			more: 'For more information, see the',
@@ -46,10 +47,9 @@ export const en: Dictionary = {
 		provisional: 'Provisional: characters in place of the team',
 	},
 	hero: {
-		logo: 'Droumond Productions logo',
+		code: '35 mm · Droumond 2026 · Leiria · Reel 01',
 		words: ['Series', 'Thriller', 'Horror', 'Filming'],
 		line: 'Audiovisual production company',
-		pause: 'Pause video',
 	},
 	contact: {
 		title: 'Contact',

@@ -27,6 +27,8 @@ export const pt = {
 		privacy: 'Política de Privacidade',
 		/** Under the company's name: the year it was founded (26/02/2026, company card). */
 		founded: 'Desde 2026',
+		/** The tail of the reel above the footer (#36): decorative, hidden from screen readers. */
+		reelEnd: 'Fim da bobina',
 		/**
 		 * The consumer arbitration line (Lei 144/2015, art. 18.º): the centre's name and site follow
 		 * `before`, the Portal do Consumidor and its site follow `more`.
@@ -58,14 +60,12 @@ export const pt = {
 	},
 	/** The first screen of the home page (#13). */
 	hero: {
-		/** The symbol's name for screen readers. */
-		logo: 'Logótipo da Droumond Productions',
-		/** The words that pass one at a time under the name, hidden from screen readers. */
+		/** The code line above the name, printed as on the film (#36): decorative, hidden from screen readers. */
+		code: '35 mm · Droumond 2026 · Leiria · Rolo 01',
+		/** The words under the name, in one line: decorative, hidden from screen readers. */
 		words: ['Séries', 'Suspense', 'Terror', 'Filmagens'],
-		/** The line that stays under the name: the real text. */
+		/** The line under the name: the real text. */
 		line: 'Produtora audiovisual',
-		/** The button that pauses the background video. Its name never changes: pressed means paused. */
-		pause: 'Pausar vídeo',
 	},
 	/** The Contacto block, on the home page and on the filming page (#7, #16). */
 	contact: {
