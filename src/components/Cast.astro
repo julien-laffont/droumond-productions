@@ -1,14 +1,14 @@
 ---
-// The Equipa section: a contact sheet of src/config/team.ts, each person on a frame of film ringed
+// The Elenco section: a contact sheet of src/config/cast.ts, each person on a frame of film ringed
 // in grease pencil, with the name and role under it.
 import { Image } from 'astro:assets';
+import { CAST } from '../config/cast';
 import { IMAGE_FILES } from '../config/image-files';
 import type { Language } from '../config/site';
-import { TEAM, TEAM_IS_PROVISIONAL } from '../config/team';
 import { dictionaries } from '../i18n';
+import { castGrid } from '../lib/cast-grid';
+import { sheetFrame } from '../lib/cast-sheet';
 import { sectionAnchor } from '../lib/paths';
-import { teamGrid } from '../lib/team-grid';
-import { sheetFrame } from '../lib/team-sheet';
 import Film from './Film.astro';
 
 interface Props {
@@ -16,13 +16,13 @@ interface Props {
 }
 
 const { language } = Astro.props;
-const t = dictionaries[language].team;
-const anchor = sectionAnchor('team', language);
+const t = dictionaries[language].cast;
+const anchor = sectionAnchor('cast', language);
 
-// The grid is decided here, at build time, from the number of people (src/lib/team-grid.ts):
+// The grid is decided here, at build time, from the number of people (src/lib/cast-grid.ts):
 // how many per row, and the slots a row is divided into. The CSS below only applies it.
-const desktop = teamGrid(TEAM.length, 5);
-const tablet = teamGrid(TEAM.length, 3);
+const desktop = castGrid(CAST.length, 5);
+const tablet = castGrid(CAST.length, 3);
 const grid = {
 	'--columns-desktop': desktop.columns,
 	'--slots-desktop': desktop.slots,
@@ -40,16 +40,13 @@ const grid = {
 		<h2 id={`${anchor}-title`} class="type-label">
 			{t.title}
 		</h2>
-		{TEAM_IS_PROVISIONAL && (
-			<p class="border border-dashed border-current px-1.5 py-1 type-meta">{t.provisional}</p>
-		)}
 		<p class="ml-auto type-code" aria-hidden="true">
 			{t.sheet}
 		</p>
 	</div>
 	{/* Focusable, so that on a phone the strip also slides with the keyboard's arrows. */}
 	<ul class="sheet" style={grid} tabindex="0" aria-labelledby={`${anchor}-title`}>
-		{TEAM.map((person, index) => {
+		{CAST.map((person, index) => {
 			const frame = sheetFrame(index);
 			return (
 				<li class="reveal grid min-w-0 content-start gap-3.5">
@@ -58,7 +55,7 @@ const grid = {
 						<Image
 							src={person.photo}
 							alt={person.alt[language]}
-							{...IMAGE_FILES.team}
+							{...IMAGE_FILES.portrait}
 							sizes="(max-width: 700px) calc((100vw - 32px) * 0.64 - 14px), (max-width: 960px) 31vw, 18vw"
 							class="block aspect-[4/5] w-full bg-ink object-cover"
 						/>

@@ -1,9 +1,9 @@
-// The rule of the Equipa grid (#15): with any number of people, never one alone on a row, and
+// The rule of the Elenco grid: with any number of people, never one alone on a row, and
 // rows as even as possible (the fewest rows, then the fullest last row). At most 5 per row on a
 // desktop and 3 on a tablet; past that only when no count up to the maximum avoids a lone person.
 // A portrait keeps its size (one slot of the maximum) whatever the number of people.
 import { expect, test } from '@playwright/test';
-import { teamGrid } from '../src/lib/team-grid';
+import { castGrid } from '../src/lib/cast-grid';
 
 /** The rows a grid of `columns` makes with `count` people: 7 in 4 columns → [4, 3]. */
 function rows(count: number, columns: number): number[] {
@@ -13,7 +13,7 @@ function rows(count: number, columns: number): number[] {
 }
 
 /** The rows of the grid the rule gives for `count` people and at most `max` per row. */
-const rowsFor = (count: number, max: number) => rows(count, teamGrid(count, max).columns);
+const rowsFor = (count: number, max: number) => rows(count, castGrid(count, max).columns);
 
 test('on a desktop, up to 5 per row, in rows as even as possible', () => {
 	const examples = {
@@ -59,9 +59,9 @@ test('from 2 to 30 people, no row ever holds one person alone', () => {
 
 test('a portrait keeps the size of one of the maximum slots, smaller only past the maximum', () => {
 	// 2 people on a desktop: two fifths of the row, aligned left.
-	expect(teamGrid(2, 5)).toEqual({ columns: 2, slots: 5 });
-	expect(teamGrid(6, 5)).toEqual({ columns: 3, slots: 5 });
-	expect(teamGrid(5, 3)).toEqual({ columns: 3, slots: 3 });
+	expect(castGrid(2, 5)).toEqual({ columns: 2, slots: 5 });
+	expect(castGrid(6, 5)).toEqual({ columns: 3, slots: 5 });
+	expect(castGrid(5, 3)).toEqual({ columns: 3, slots: 3 });
 	// 7 people on a tablet: 4 per row, each a quarter of the row.
-	expect(teamGrid(7, 3)).toEqual({ columns: 4, slots: 4 });
+	expect(castGrid(7, 3)).toEqual({ columns: 4, slots: 4 });
 });
