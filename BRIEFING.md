@@ -1,13 +1,13 @@
 # Briefing: website da Droumond Productions
 
-Documento de direção inicial. Última atualização: 2026-11-23. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
+Documento de direção inicial. Última atualização: 2026-11-24. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
 
 ## Contexto
 
 - Empresa: Droumond Productions, produtora audiovisual. Sócios: Julien e Carlos.
 - A empresa ainda não tem site.
 - Firma: Droumond & Laffont - Produções, Lda, sociedade por quotas com sede em Leiria, constituída a 26/02/2026. Trabalha também para particulares, por isso o rodapé indica o centro de arbitragem de consumo (CNIACC). Dados legais em `src/config/site.ts`.
-- Minissérie em desenvolvimento: _Efecto Placebo_, suspense, em português de Portugal, em fase de gravação. Grafia da miniatura do teaser (decidido pelo Julien a 2026-11-19).
+- Minissérie em desenvolvimento: _Efecto Placebo_, suspense, em português de Portugal, em fase de gravação, 7 episódios (roteiros e bíblia de personagens enviados a 2026-11-24). Grafia da miniatura do teaser (decidido pelo Julien a 2026-11-19).
 - YouTube: https://www.youtube.com/@DroumondProductions/videos (só existe um teaser).
 - Instagram: a minissérie _Resident Evil_, com 5 episódios (o último ainda por estrear).
 - Repositório: https://github.com/julien-laffont/droumond-productions.git (grafia "droumond", como no canal).
@@ -23,7 +23,8 @@ Documento de direção inicial. Última atualização: 2026-11-23. Tudo o que es
 ## Âmbito
 
 - O site é da empresa, não só da série.
-- Em Projetos, excertos curtos e sem som do teaser de _Efecto Placebo_ e de um episódio de _Resident Evil_, alojados no site; o teaser completo abre no YouTube. Não aloja episódios completos.
+- Em Projetos, excertos curtos e sem som do teaser de _Efecto Placebo_ e de um episódio de _Resident Evil_, alojados no site. Não aloja episódios completos.
+- Página de _Efecto Placebo_ (`/efecto-placebo/`, #33), aberta pelo seu quadro em Projetos: outro excerto do teaser, o link para o teaser completo no YouTube, a sinopse com o cartaz, a ficha (realização e produção) e 12 personagens. Os textos param no que se sabe no fim do episódio 1: sem spoilers. Sem atores até o Julien enviar os nomes completos.
 - Secções obrigatórias: Sobre, Equipa, Contacto.
 - Outros projetos: a minissérie _Resident Evil_ do Instagram, além de _Efecto Placebo_.
 - Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?").
@@ -42,7 +43,7 @@ Película, aprovada pelo Carlos a 2026-11-20 na ronda de revisão (#8): "exatame
 - Tipografia: Big Shoulders Display, condensada, para nomes e títulos; Space Mono (400 e 700) para tudo o resto. Ambas de licença aberta e alojadas no próprio site (sem Google Fonts, por causa do RGPD). Letra grande só para nomes e títulos das secções; a descrição da empresa fica sempre pequena e em segundo plano. Só o título do primeiro ecrã usa a Shree Devanagari 714, levemente transparente, como imagem SVG (#37).
 - Cabeçalho: o símbolo, um timecode que corre com o scroll (decorativo), as secções, a língua e o Contacto, que no telemóvel passa para dentro do Menu.
 - Primeiro ecrã: a linha de código "35 mm · Droumond 2026 · Leiria · Rolo 01", o nome, uma fita inclinada que passa sozinha, com botão de pausa (#37), "Produtora audiovisual" e as palavras (Séries, Suspense, Terror, Filmagens).
-- Projetos: uma fita que avança para o lado com o scroll, do líder com contagem à ponta final, com os vídeos sem som sempre a passar (#38). Sobre: um fotograma ampliado ao lado do texto. Equipa: uma folha de contactos, cada pessoa rodeada a lápis vermelho (#39). Filmagens: uma claquete. Contacto: o endereço em letra grande (#40).
+- Projetos: uma fita que avança para o lado com o scroll, do líder com contagem à ponta final, com os vídeos sem som sempre a passar (#38). Sobre: um fotograma ampliado ao lado do texto. Equipa: uma folha de contactos, cada pessoa rodeada a lápis vermelho (#39). Filmagens: uma claquete. Contacto: o endereço em letra grande (#40). Página de _Efecto Placebo_: o título grande, o excerto numa fita, a sinopse ao lado do cartaz, as personagens numeradas (#33).
 - Rodapé: a ponta da bobina ("Fim da bobina"), depois a identificação legal.
 - Logótipo: só o símbolo (círculo e monograma), claro sobre o escuro; o nome aparece em texto. Por agora, o JPEG do Carlos convertido para transparência; o SVG pede-se na #8.
 - Movimento: só CSS e JavaScript simples (as fitas, o timecode, o lápis e a claquete no hover, o aparecimento discreto das secções). Quem pediu menos movimento vê tudo parado.

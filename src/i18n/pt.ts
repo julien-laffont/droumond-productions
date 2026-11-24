@@ -103,6 +103,16 @@ export const pt = {
 		description:
 			'Serviço de filmagens da Droumond Productions em Leiria: publicidade, vídeos para marcas e videoclipes.',
 	},
+	/** The page of Efecto Placebo; its texts are in src/content/efecto-placebo/. */
+	efectoPlacebo: {
+		/** Decorative: the code line above the title, printed as on the film. */
+		code: '35 mm · Efecto Placebo · Leiria',
+		pause: 'Pausar vídeo',
+		resume: 'Retomar vídeo',
+		fullTeaser: 'Ver o teaser completo',
+		synopsis: 'Sinopse',
+		characters: 'Personagens',
+	},
 	home: {
 		title: 'Droumond Productions',
 		description:

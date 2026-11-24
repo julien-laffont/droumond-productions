@@ -6,6 +6,7 @@ import efectoPlaceboPoster from '../assets/projects/efecto-placebo.jpg';
 import efectoPlacebo from '../assets/projects/efecto-placebo.mp4';
 import residentEvilPoster from '../assets/projects/resident-evil.jpg';
 import residentEvil from '../assets/projects/resident-evil.mp4';
+import type { PageId } from '../lib/paths';
 import { SOCIAL, type Language } from './site';
 
 /** A text in each language. */
@@ -26,8 +27,11 @@ export interface Project {
 	alt: Text;
 	/** `wide`: the teaser's picture (~2.36:1). `tall`: 9:16. The frame takes the poster's ratio. */
 	shape: 'wide' | 'tall';
-	/** Opens in a new tab; the glyph, ▶ before the label or ↗ after it, is hidden from screen readers. */
-	link: { url: string; label: Text; glyph: '▶' | '↗' };
+	/**
+	 * The Project's own page, in the same tab, with → after the label; or another site, in a new
+	 * tab, with ↗. The arrows are hidden from screen readers.
+	 */
+	link: { page: PageId; label: Text } | { url: string; label: Text };
 }
 
 export const PROJECTS: Project[] = [
@@ -45,11 +49,7 @@ export const PROJECTS: Project[] = [
 			en: 'Efecto Placebo: a man in sunglasses behind police tape, in a park.',
 		},
 		shape: 'wide',
-		link: {
-			url: 'https://www.youtube.com/watch?v=Y785Re6Cyvk',
-			label: { pt: 'Ver o teaser', en: 'Watch the teaser' },
-			glyph: '▶',
-		},
+		link: { page: 'efectoPlacebo', label: { pt: 'Ver o projeto', en: 'View the project' } },
 	},
 	{
 		title: { pt: 'Resident Evil', en: 'Resident Evil' },
@@ -68,7 +68,6 @@ export const PROJECTS: Project[] = [
 		link: {
 			url: SOCIAL.instagram,
 			label: { pt: 'Ver no Instagram', en: 'View on Instagram' },
-			glyph: '↗',
 		},
 	},
 ];

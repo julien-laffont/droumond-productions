@@ -39,6 +39,9 @@ export const SOCIAL = {
 	instagram: 'https://www.instagram.com/droumond_productions',
 };
 
+/** Efecto Placebo's full teaser on YouTube: only ever a link, never a player. */
+export const EFECTO_PLACEBO_TEASER = 'https://www.youtube.com/watch?v=Y785Re6Cyvk';
+
 /**
  * The site's address, without a final slash. The hreflang links use it (only when English is
  * published), and the Publishing confirmation (`npm run confirm`) checks the site there.

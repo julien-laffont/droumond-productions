@@ -14,10 +14,13 @@ export const IMAGE_FILES = {
 		wide: { widths: [1080, 2048], quality: 70 },
 		tall: { widths: [624, 1080], quality: 70 },
 	},
+	/** A series' poster on its page, 2:3. */
+	seriesPoster: { widths: [360, 540, 800], quality: 70 },
 	about: { widths: [480, 720, 1080], quality: 70 },
 	team: { widths: [320, 480, 640], quality: 70 },
 } satisfies {
 	project: Record<Project['shape'], ImageFiles>;
+	seriesPoster: ImageFiles;
 	about: ImageFiles;
 	team: ImageFiles;
 };

@@ -7,6 +7,8 @@ export const PAGES = {
 	home: { pt: '/', en: '/en/' },
 	/** The Filming service page (#16). */
 	filming: { pt: '/filmagens/', en: '/en/filming/' },
+	/** The page of the Project Efecto Placebo, whose title is never translated. */
+	efectoPlacebo: { pt: '/efecto-placebo/', en: '/en/efecto-placebo/' },
 	/** The Privacy Policy, made in #17. */
 	privacy: { pt: '/politica-de-privacidade/', en: '/en/privacy-policy/' },
 } satisfies Record<string, Record<Language, string>>;
