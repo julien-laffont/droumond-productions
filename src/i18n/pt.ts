@@ -94,6 +94,8 @@ export const pt = {
 		button: 'Ver o serviço',
 		/** The filming page's short text: what the service is and who it is for. */
 		text: 'Filmamos publicidade, vídeos para marcas e videoclipes na região de Leiria, com a equipa e o material com que fazemos as nossas séries. Diga-nos o que quer gravar, onde e quando, e respondemos com o que podemos fazer.',
+		/** The labels of the clapperboard's fields: decorative, hidden from screen readers. */
+		slate: { production: 'Prod.', scene: 'Cena', take: 'Take', date: 'Data' },
 		/** The subject of the email written from the filming page (#7). */
 		subject: 'Serviço de filmagens',
 		/** The filming page's <title> and description. */
