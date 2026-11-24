@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { CONTACT_EMAIL, LEGAL } from '../src/config/site';
 import { inEachBuild, openExisting } from './pages';
 
-/** What the policy holds in each language. The English texts are reviewed (#18), except the teaser's (#38). */
+/** What the policy holds in each language. The English texts are reviewed. */
 const POLICIES = [
 	{
 		path: '/politica-de-privacidade/',
@@ -14,7 +14,6 @@ const POLICIES = [
 			'Quem somos',
 			'O que este site não faz',
 			'Emails recebidos',
-			'Teaser do YouTube',
 			'Registos do servidor',
 			'Os seus direitos',
 			'Queixa à CNPD',
@@ -29,7 +28,6 @@ const POLICIES = [
 			'Who we are',
 			'What this site does not do',
 			'Emails we receive',
-			'The YouTube teaser',
 			'Server logs',
 			'Your rights',
 			'Complaint to the CNPD',

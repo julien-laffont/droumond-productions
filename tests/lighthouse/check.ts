@@ -9,7 +9,11 @@ import lighthouse, { generateReport, type Result } from 'lighthouse';
 
 /** 1 KB = 1024 bytes, as in Lighthouse budgets. */
 const KB = 1024;
+const MB = 1024 * KB;
+/** The page without its videos, which have their own limit. */
 const MAX_PAGE_SIZE = 400 * KB;
+/** Each video, such as the excerpts of Projects. */
+const MAX_VIDEO_SIZE = 1.5 * MB;
 const MAX_JS_SIZE = 75 * KB;
 /** Película's three (#36): Big Shoulders Display, Space Mono 400 and 700. */
 const MAX_FONTS = 3;
@@ -165,9 +169,18 @@ function failuresOf(lhr: Result): string[] {
 	}
 	const failures = seoFailures(lhr);
 	const allRequests = networkRequests(lhr);
-	const pageSize = totalSize(allRequests);
+	const isVideo = (r: NetworkRequest) => r.resourceType === 'Media';
+	const pageSize = totalSize(allRequests.filter((r) => !isVideo(r)));
 	if (pageSize > MAX_PAGE_SIZE) {
 		failures.push(`page weighs ${kb(pageSize)}, max ${kb(MAX_PAGE_SIZE)}`);
+	}
+	// A video can arrive in several requests (ranges): its weight is their sum.
+	const videos = Map.groupBy(allRequests.filter(isVideo), (r) => r.url);
+	for (const [url, requests] of videos) {
+		const size = totalSize(requests);
+		if (size > MAX_VIDEO_SIZE) {
+			failures.push(`video ${new URL(url).pathname} weighs ${mb(size)}, max ${mb(MAX_VIDEO_SIZE)}`);
+		}
 	}
 	// Only counts JS from .js files. JS written inside the HTML only counts toward the page weight.
 	const js = totalSize(allRequests.filter((r) => r.resourceType === 'Script'));
@@ -236,6 +249,10 @@ function formatNumber(value: number, decimals: number) {
 
 function kb(bytes: number) {
 	return `${formatNumber(bytes / KB, 1)} KB`;
+}
+
+function mb(bytes: number) {
+	return `${formatNumber(bytes / MB, 1)} MB`;
 }
 
 /** The report name of a page: `/en/` → `en`, `/` → `index`, `/404.html` → `404`. */

@@ -40,13 +40,14 @@ export const pt = {
 	},
 	projects: {
 		title: 'Projetos',
-		watchTeaser: 'Ver o teaser',
-		/** Under the teaser's image, before the click (#3); the Privacy Policy link follows it. */
-		notice:
-			'Ao clicar, o vídeo é carregado do YouTube: a Google recebe o seu endereço IP e pode guardar dados no seu dispositivo.',
-		privacy: 'Política de Privacidade',
-		/** The player's name for screen readers, after the Project's title. */
-		player: 'teaser no YouTube',
+		/** Decorative: how the reel moves, on a desktop (scroll) and elsewhere (swipe). */
+		hint: { scroll: 'Role para avançar a fita →', swipe: 'Deslize para o lado →' },
+		/** Decorative: the reel's name, by the bar and on the leader and the tail. */
+		reel: 'Rolo 01',
+		/** Decorative: the tail's word. */
+		end: 'Fim',
+		pause: 'Pausar vídeos',
+		resume: 'Retomar vídeos',
 	},
 	/** The Sobre section of the home page (#15); its text is in src/content/about/. */
 	about: {

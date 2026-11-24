@@ -6,10 +6,13 @@ import type { Project } from './projects';
 export type ImageFiles = { widths: number[]; quality?: number };
 
 export const IMAGE_FILES = {
-	/** `wide` is 16:9, `tall` 4:5. */
+	/**
+	 * The posters: `wide` is the teaser's ~2.36:1, `tall` 9:16. Few widths, so that on a phone the
+	 * strip and Projects pick the same file, whatever their frame sizes.
+	 */
 	project: {
-		wide: { widths: [480, 720, 1080] },
-		tall: { widths: [312, 624] },
+		wide: { widths: [1080, 2048], quality: 70 },
+		tall: { widths: [624, 1080], quality: 70 },
 	},
 	about: { widths: [480, 720, 1080], quality: 70 },
 	team: { widths: [320, 480, 640], quality: 70 },

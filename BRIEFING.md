@@ -1,6 +1,6 @@
 # Briefing: website da Droumond Productions
 
-Documento de direção inicial. Última atualização: 2026-11-22. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
+Documento de direção inicial. Última atualização: 2026-11-23. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
 
 ## Contexto
 
@@ -23,7 +23,7 @@ Documento de direção inicial. Última atualização: 2026-11-22. Tudo o que es
 ## Âmbito
 
 - O site é da empresa, não só da série.
-- Mostra o teaser de _Efecto Placebo_, incorporado do YouTube. Não aloja episódios.
+- Em Projetos, excertos curtos e sem som do teaser de _Efecto Placebo_ e de um episódio de _Resident Evil_, alojados no site; o teaser completo abre no YouTube. Não aloja episódios completos.
 - Secções obrigatórias: Sobre, Equipa, Contacto.
 - Outros projetos: a minissérie _Resident Evil_ do Instagram, além de _Efecto Placebo_.
 - Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?").
@@ -54,7 +54,7 @@ Película, aprovada pelo Carlos a 2026-11-20 na ronda de revisão (#8): "exatame
 - Até chegarem, usar placeholders claramente marcados.
 - Equipa: no protótipo, os personagens do perfil do Instagram (https://www.instagram.com/droumond_productions). A equipa deu o consentimento de uso de imagem.
 - Textos (Sobre, Equipa): escrevem o Julien e o autor.
-- A pedir ao Carlos na #8: o símbolo do logótipo em SVG, uma foto de bastidores para a faixa de filmagens e um fotograma limpo do teaser (a miniatura do YouTube tem texto por cima).
+- A pedir ao Carlos na #8: o símbolo do logótipo em SVG e uma foto de bastidores para a faixa de filmagens. O fotograma limpo do teaser deixou de ser preciso: os posters de Projetos são o primeiro fotograma de cada excerto.
 
 ## Tecnologia e entrega
 

@@ -1,5 +1,5 @@
-// The interface texts in English, reviewed by Nal (#18). Still provisional: the first screen's (#37),
-// the teaser's (#38) and the team's tag, until the team is known.
+// The interface texts in English, reviewed. Still provisional: the first screen's, the Projects
+// reel's and the team's tag, until the team is known.
 import type { Dictionary } from './pt';
 
 export const en: Dictionary = {
@@ -33,11 +33,11 @@ export const en: Dictionary = {
 	},
 	projects: {
 		title: 'Projects',
-		watchTeaser: 'Watch the teaser',
-		notice:
-			'When you click, the video loads from YouTube: Google receives your IP address and may store data on your device.',
-		privacy: 'Privacy Policy',
-		player: 'teaser on YouTube',
+		hint: { scroll: 'Scroll to advance the film →', swipe: 'Swipe sideways →' },
+		reel: 'Reel 01',
+		end: 'End',
+		pause: 'Pause videos',
+		resume: 'Resume videos',
 	},
 	about: {
 		title: 'About',

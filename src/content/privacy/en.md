@@ -3,7 +3,7 @@ title: Privacy Policy
 description: How Droumond Productions handles the data of people who visit its site or write to it.
 ---
 
-Last updated: 19 November 2026.
+Last updated: 23 November 2026.
 
 ## Who we are
 
@@ -23,7 +23,7 @@ We have not appointed a data protection officer.
 - It collects no visitor statistics and shows no advertising of its own.
 - It has no forms: contact is by email only.
 - The fonts are hosted on the site itself, with no requests to other services.
-- The YouTube and Instagram profiles only appear as links. The YouTube teaser is only loaded if you click it (see below).
+- The YouTube and Instagram profiles only appear as links.
 
 ## Emails we receive
 
@@ -36,16 +36,6 @@ When you write to {email}, we process your email address, the name you give us a
 - Providing this data is voluntary, but without an email address we cannot answer you.
 - There is no automated decision-making and no profiling.
 
-## The YouTube teaser
-
-The teaser of _Efecto Placebo_ first appears as an image hosted on the site itself, with a notice. Only when you click to watch it is the player loaded from youtube-nocookie.com, by Google: your browser sends Google your IP address and technical data, and the player may store data on your device and show non-personalised advertising. We are responsible, jointly with Google, for that transmission; what Google does with the data afterwards is its own responsibility. If JavaScript is off, the click opens the teaser on YouTube's own site, in a new tab.
-
-- **Purpose:** to show you the teaser you asked to watch.
-- **Legal basis:** your consent, given by clicking after the notice (GDPR, art. 6(1)(a)).
-- **Recipient:** Google, which may process the data in the United States; Google LLC is certified under the EU-US Data Privacy Framework.
-
-From the click on, the [YouTube Terms of Service](https://www.youtube.com/t/terms) and the [Google Privacy Policy](https://policies.google.com/privacy) apply.
-
 ## Server logs
 
 The site is hosted by Infomaniak, in Switzerland, a country covered by an adequacy decision of the European Commission. Like any server, it logs each request: the IP address, the date and time, the page requested and the browser used.
@@ -57,7 +47,7 @@ The site is hosted by Infomaniak, in Switzerland, a country covered by an adequa
 
 ## Your rights
 
-You can ask us for access to your data, its rectification or erasure, the restriction of its processing and the portability of the data you gave us, and you can object to processing based on legitimate interest. Where processing is based on your consent (the YouTube teaser), you can withdraw it at any time, without affecting what was already done. Just write to {email}. We will reply within one month.
+You can ask us for access to your data, its rectification or erasure, the restriction of its processing and the portability of the data you gave us, and you can object to processing based on legitimate interest. Just write to {email}. We will reply within one month.
 
 ## Complaint to the CNPD
 
