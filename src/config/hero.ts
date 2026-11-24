@@ -1,12 +1,12 @@
 // The first screen strip's photos, in order, after the title card.
 import type { ImageMetadata } from 'astro';
-import sobre from '../assets/about/sobre.jpg';
+import mg1914 from '../assets/cast/mg-1914.jpg';
+import mg1947 from '../assets/cast/mg-1947.jpg';
+import miguel from '../assets/cast/miguel-figueiredo.jpg';
 import efectoPlacebo from '../assets/projects/efecto-placebo.jpg';
 import residentEvil from '../assets/projects/resident-evil.jpg';
-import equipa1 from '../assets/team/equipa-1.jpg';
-import equipa2 from '../assets/team/equipa-2.jpg';
-import equipa3 from '../assets/team/equipa-3.jpg';
-import equipa4 from '../assets/team/equipa-4.jpg';
+import carlos from '../assets/team/carlos-droumond.jpg';
+import julien from '../assets/team/julien-laffont.jpg';
 import { IMAGE_FILES, type ImageFiles } from './image-files';
 
 export interface StripPhoto {
@@ -19,11 +19,11 @@ export interface StripPhoto {
 
 export const STRIP_PHOTOS: StripPhoto[] = [
 	{ image: efectoPlacebo, files: IMAGE_FILES.project.wide },
-	{ image: equipa1, files: IMAGE_FILES.team, focus: '50% 28%' },
+	{ image: miguel, files: IMAGE_FILES.portrait, focus: '50% 60%' },
 	// The eyes and the figure under them.
 	{ image: residentEvil, files: IMAGE_FILES.project.tall, focus: '50% 40%' },
-	{ image: sobre, files: IMAGE_FILES.about },
-	{ image: equipa2, files: IMAGE_FILES.team, focus: '50% 30%' },
-	{ image: equipa4, files: IMAGE_FILES.team, focus: '50% 30%' },
-	{ image: equipa3, files: IMAGE_FILES.team, focus: '50% 26%' },
+	{ image: carlos, files: IMAGE_FILES.portrait, focus: '50% 15%' },
+	{ image: mg1947, files: IMAGE_FILES.portrait, focus: '50% 45%' },
+	{ image: mg1914, files: IMAGE_FILES.portrait, focus: '50% 25%' },
+	{ image: julien, files: IMAGE_FILES.portrait, focus: '50% 26%' },
 ];

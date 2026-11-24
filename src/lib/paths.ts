@@ -19,7 +19,7 @@ export type PageId = keyof typeof PAGES;
 const SECTIONS = {
 	projects: { pt: 'projetos', en: 'projects' },
 	about: { pt: 'sobre', en: 'about' },
-	team: { pt: 'equipa', en: 'team' },
+	cast: { pt: 'elenco', en: 'cast' },
 	contact: { pt: 'contacto', en: 'contact' },
 } satisfies Record<string, Record<Language, string>>;
 

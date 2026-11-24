@@ -14,16 +14,10 @@ const privacy = defineCollection({
 	}),
 });
 
-// The Sobre section of the home page (#15), one file per language: src/content/about/<language>.md.
-// The text is the Markdown's body (_Efecto Placebo_ in italics shows in the narrow heavy type);
-// the frontmatter holds the image and its alt text, which the build requires.
+// The Sobre section's text, one file per language: src/content/about/<language>.md, the Markdown's
+// body (_Efecto Placebo_ in italics shows in amber). The team beside it is in src/config/team.ts.
 const about = defineCollection({
 	loader: glob({ pattern: '*.md', base: './src/content/about' }),
-	schema: ({ image }) =>
-		z.object({
-			image: image(),
-			alt: z.string().trim().min(1),
-		}),
 });
 
 // The page of Efecto Placebo, one file per language: src/content/efecto-placebo/<language>.md.

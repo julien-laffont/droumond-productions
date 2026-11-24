@@ -1,4 +1,4 @@
-// The frames of the Equipa contact sheet, for any number of people: each person's edge codes and
+// The frames of the Elenco contact sheet, for any number of people: each person's edge codes and
 // the grease-pencil ring drawn around them.
 
 /**

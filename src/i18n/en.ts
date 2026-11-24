@@ -1,5 +1,5 @@
 // The interface texts in English, reviewed. Still provisional: the first screen's, the Projects
-// reel's and the team's tag, until the team is known.
+// reel's and the Elenco's.
 import type { Dictionary } from './pt';
 
 export const en: Dictionary = {
@@ -8,7 +8,7 @@ export const en: Dictionary = {
 		nav: 'Main',
 		projects: 'Projects',
 		about: 'About',
-		team: 'Team',
+		cast: 'Cast',
 		filming: 'Filming',
 		contact: 'Contact',
 		menu: 'Menu',
@@ -41,11 +41,10 @@ export const en: Dictionary = {
 	},
 	about: {
 		title: 'About',
-		caption: ['Frame 27', 'Leiria'],
+		team: 'Team',
 	},
-	team: {
-		title: 'Team',
-		provisional: 'Provisional: characters in place of the team',
+	cast: {
+		title: 'Cast',
 		sheet: 'Contact sheet · Reel 02',
 	},
 	hero: {

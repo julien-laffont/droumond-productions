@@ -7,7 +7,7 @@ export const pt = {
 		nav: 'Principal',
 		projects: 'Projetos',
 		about: 'Sobre',
-		team: 'Equipa',
+		cast: 'Elenco',
 		filming: 'Filmagens',
 		contact: 'Contacto',
 		menu: 'Menu',
@@ -49,17 +49,15 @@ export const pt = {
 		pause: 'Pausar vídeos',
 		resume: 'Retomar vídeos',
 	},
-	/** The Sobre section of the home page (#15); its text is in src/content/about/. */
+	/** The Sobre section of the home page; its text is in src/content/about/, the team in src/config/team.ts. */
 	about: {
 		title: 'Sobre',
-		/** Under the enlarged frame, printed as on the film: decorative, hidden from screen readers. */
-		caption: ['Fot. 27', 'Leiria'],
+		/** The name of the team's list, for screen readers. */
+		team: 'Equipa',
 	},
-	/** The Equipa section of the home page (#15); the people are in src/config/team.ts. */
-	team: {
-		title: 'Equipa',
-		/** Next to the title while Characters stand in for the team (TEAM_IS_PROVISIONAL). */
-		provisional: 'Provisório: personagens no lugar da equipa',
+	/** The Elenco section of the home page; the people are in src/config/cast.ts. */
+	cast: {
+		title: 'Elenco',
 		/** Above the contact sheet, printed as on the film: decorative, hidden from screen readers. */
 		sheet: 'Folha de contactos · Rolo 02',
 	},
