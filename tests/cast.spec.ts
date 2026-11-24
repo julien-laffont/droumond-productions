@@ -1,48 +1,37 @@
-// The Equipa section of the home page: a contact sheet of src/config/team.ts, each person on a
-// frame of film ringed in grease pencil, laid out by src/lib/team-grid.ts.
+// The Elenco section of the home page: a contact sheet of src/config/cast.ts, each person on a
+// frame of film ringed in grease pencil, laid out by src/lib/cast-grid.ts.
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { inEachBuild } from './pages';
 
-/** What the section shows in each language. The Characters and texts are provisional. */
+/** Everyone in the Elenco plays a Character of Efecto Placebo. */
+const ROLE = { pt: 'Personagem · Efecto Placebo', en: 'Character · Efecto Placebo' };
+
+/** What the section shows in each language. */
 const HOMES = [
 	{
 		path: '/',
 		english: false,
-		anchor: 'equipa',
-		heading: 'Equipa',
-		tag: 'Provisório: personagens no lugar da equipa',
+		anchor: 'elenco',
+		heading: 'Elenco',
 		sheet: 'Folha de contactos · Rolo 02',
-		roles: [
-			'Personagem · Efecto Placebo',
-			'Personagem · Efecto Placebo',
-			'Personagem · Efecto Placebo',
-			'Personagem',
-			'Personagem',
-		],
+		role: ROLE.pt,
 	},
 	{
 		path: '/en/',
 		english: true,
-		anchor: 'team',
-		heading: 'Team',
-		tag: 'Provisional: characters in place of the team',
+		anchor: 'cast',
+		heading: 'Cast',
 		sheet: 'Contact sheet · Reel 02',
-		roles: [
-			'Character · Efecto Placebo',
-			'Character · Efecto Placebo',
-			'Character · Efecto Placebo',
-			'Character',
-			'Character',
-		],
+		role: ROLE.en,
 	},
 ];
 
 const NAMES = [
-	'Raul de Valverde',
-	'Miguel Figueredo',
-	'Julien Laffont',
-	'Bruno Moreira',
+	'Miguel Figueiredo',
 	'Nome por confirmar',
+	'Nome por confirmar',
+	'Nome por confirmar',
+	'Bruno Moreira',
 ];
 
 /** The top edge code of each person's frame. */
@@ -57,20 +46,20 @@ const isHidden = (decoration: Locator) =>
 
 inEachBuild((build) => {
 	for (const home of HOMES.filter((h) => build.english || !h.english)) {
-		test(`${home.path}: Equipa shows the provisional tag and each person's photo, name and role`, async ({
+		test(`${home.path}: Elenco shows each person's photo, name and role, nothing provisional`, async ({
 			page,
 			baseURL,
 		}) => {
 			await page.goto(home.path);
 			const section = page.locator(`section#${home.anchor}`);
 			await expect(section.getByRole('heading', { level: 2 })).toHaveText(home.heading);
-			await expect(section.getByText(home.tag)).toBeVisible();
+			await expect(section.getByText(/Provisório|Provisional/)).toHaveCount(0);
 
 			const people = section.getByRole('listitem');
 			await expect(people).toHaveCount(NAMES.length);
 			await expect(section.getByRole('heading', { level: 3 })).toHaveText(NAMES);
 			for (const [index, person] of (await people.all()).entries()) {
-				await expect(person.getByRole('paragraph')).toHaveText(home.roles[index]);
+				await expect(person.getByRole('paragraph')).toHaveText(home.role);
 				// Every photo says what it shows, comes from the site itself, in several sizes.
 				const photo = person.getByRole('img');
 				expect((await photo.getAttribute('alt'))?.trim(), NAMES[index]).toBeTruthy();
@@ -80,7 +69,7 @@ inEachBuild((build) => {
 			}
 		});
 
-		test(`${home.path}: Equipa is a contact sheet, each person ringed in pencil, all hidden from screen readers`, async ({
+		test(`${home.path}: Elenco is a contact sheet, each person ringed in pencil, all hidden from screen readers`, async ({
 			page,
 		}) => {
 			await page.goto(home.path);
@@ -107,7 +96,7 @@ inEachBuild((build) => {
 async function openPortraits(page: Page) {
 	await page.goto('/');
 	const boxes = [];
-	for (const photo of await page.locator('section#equipa img').all()) {
+	for (const photo of await page.locator('section#elenco img').all()) {
 		const box = await photo.boundingBox();
 		if (!box) throw new Error('A portrait is not displayed');
 		boxes.push(box);
@@ -127,7 +116,7 @@ const pageOverflow = (page: Page) =>
 	page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
 
 /** The first person's pencil ring. */
-const firstRing = (page: Page) => page.locator('section#equipa li svg path').first();
+const firstRing = (page: Page) => page.locator('section#elenco li svg path').first();
 
 /** The length, in milliseconds, of each animation running on the first person's pencil ring. */
 const ringAnimationDurations = (page: Page) =>
@@ -140,7 +129,7 @@ const ringAnimationDurations = (page: Page) =>
  * there change when the ring is hidden.
  */
 async function paintsAt(page: Page, share: number) {
-	const ring = page.locator('section#equipa li svg').first();
+	const ring = page.locator('section#elenco li svg').first();
 	const point = await ring.locator('path').evaluate((path: SVGPathElement, share) => {
 		const along = path.getPointAtLength(path.getTotalLength() * share);
 		const onScreen = new DOMPoint(along.x, along.y).matrixTransform(path.getScreenCTM()!);
@@ -159,7 +148,7 @@ inEachBuild(() => {
 		// Less motion: nothing fades in while the pixels are compared.
 		await page.emulateMedia({ reducedMotion: 'reduce' });
 		await page.goto('/');
-		await page.locator('section#equipa li').first().scrollIntoViewIfNeeded();
+		await page.locator('section#elenco li').first().scrollIntoViewIfNeeded();
 		for (const share of [0.05, 0.5, 0.95]) {
 			expect(await paintsAt(page, share), `at ${share * 100}% of the ring`).toBe(true);
 		}
@@ -197,7 +186,7 @@ inEachBuild(() => {
 
 			/** The sliding strip: the list of people, named after the section. */
 			const strip = (page: Page): Locator =>
-				page.locator('section#equipa').getByRole('list', { name: 'Equipa' });
+				page.locator('section#elenco').getByRole('list', { name: 'Elenco' });
 
 			test('/: one strip that slides sideways, out to the screen edges, the page itself never', async ({
 				page,
@@ -233,14 +222,14 @@ inEachBuild(() => {
 		await expect(firstRing(page)).toHaveCSS('stroke-dashoffset', '0px');
 		expect(await ringAnimationDurations(page)).toEqual([]);
 
-		await page.locator('section#equipa li').first().hover();
+		await page.locator('section#elenco li').first().hover();
 		expect(await ringAnimationDurations(page)).toEqual([700]);
 	});
 
 	test('/: with less motion, the pencil ring stays whole and still on hover', async ({ page }) => {
 		await page.emulateMedia({ reducedMotion: 'reduce' });
 		await page.goto('/');
-		await page.locator('section#equipa li').first().hover();
+		await page.locator('section#elenco li').first().hover();
 		expect(await ringAnimationDurations(page)).toEqual([]);
 		await expect(firstRing(page)).toHaveCSS('stroke-dashoffset', '0px');
 	});

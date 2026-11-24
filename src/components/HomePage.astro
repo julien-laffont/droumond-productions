@@ -1,15 +1,15 @@
 ---
-// The home page, in one language (/ and /en/): the first screen, Projects, Sobre, Equipa, the filming
+// The home page, in one language (/ and /en/): the first screen, Projects, Sobre, Elenco, the filming
 // band, then Contacto.
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import Base from '../layouts/Base.astro';
 import About from './About.astro';
+import Cast from './Cast.astro';
 import Contact from './Contact.astro';
 import FilmingBand from './FilmingBand.astro';
 import Hero from './Hero.astro';
 import Projects from './Projects.astro';
-import Team from './Team.astro';
 
 interface Props {
 	language: Language;
@@ -24,7 +24,7 @@ const t = dictionaries[language].home;
 		<Hero language={language} />
 		<Projects language={language} />
 		<About language={language} />
-		<Team language={language} />
+		<Cast language={language} />
 		<FilmingBand language={language} />
 		<Contact language={language} />
 	</main>

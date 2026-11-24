@@ -1,10 +1,11 @@
 ---
-// The Sobre section: small text beside one frame enlarged on film. Text, image and alt text come
-// from src/content/about/<language>.md, so Julien can change them without touching code.
+// The Sobre section: small text beside the team, one frame of film per person, name and role under
+// each. The text is in src/content/about/<language>.md, the team in src/config/team.ts.
 import { Image } from 'astro:assets';
 import { getEntry, render } from 'astro:content';
 import { IMAGE_FILES } from '../config/image-files';
 import type { Language } from '../config/site';
+import { TEAM } from '../config/team';
 import { dictionaries } from '../i18n';
 import { sectionAnchor } from '../lib/paths';
 import Film from './Film.astro';
@@ -21,6 +22,15 @@ if (!entry) {
 	throw new Error(`Missing src/content/about/${language}.md: Sobre exists in every language.`);
 }
 const { Content } = await render(entry);
+
+/** Each frame's edge codes, numbered on from 27; the reel's name on every other top code. */
+const frame = (index: number) => {
+	const number = 27 + index;
+	return {
+		top: index % 2 ? `▸ ${number}` : `Droumond 2026 ▸ ${number}`,
+		bottom: `${number}A`,
+	};
+};
 ---
 
 <section
@@ -37,21 +47,24 @@ const { Content } = await render(entry);
 			<Content />
 		</div>
 	</div>
-	<figure class="reveal grid min-w-0 gap-3">
-		<Film top="Droumond 2026 ▸ 27" bottom="27A" side={12}>
-			{/* The sizes match the photo's real width; quality 70 keeps the page under its weight limit. */}
-			<Image
-				src={entry.data.image}
-				alt={entry.data.alt}
-				{...IMAGE_FILES.about}
-				sizes="(max-width: 960px) calc(100vw - 56px), 55vw"
-				class="block aspect-video w-full bg-ink object-cover"
-			/>
-		</Film>
-		<figcaption class="flex justify-between gap-4" aria-hidden="true">
-			{t.caption.map((code) => (
-				<span class="type-code">{code}</span>
-			))}
-		</figcaption>
-	</figure>
+	<ul class="reveal grid min-w-0 grid-cols-2 items-start" aria-label={t.team}>
+		{TEAM.map((person, index) => (
+			<li class="grid min-w-0 content-start gap-3.5">
+				<Film {...frame(index)} side={12}>
+					{/* The sizes match the photo's real width; quality 70 keeps the page under its weight limit. */}
+					<Image
+						src={person.photo}
+						alt={person.alt[language]}
+						{...IMAGE_FILES.portrait}
+						sizes="(max-width: 960px) calc(50vw - 40px), 26vw"
+						class="block aspect-[4/5] w-full bg-ink object-cover"
+					/>
+				</Film>
+				<div class="grid gap-1.5 px-3">
+					<h3 class="text-[clamp(1.25rem,1.8vw,1.75rem)] type-name">{person.name}</h3>
+					<p class="type-meta">{person.role[language]}</p>
+				</div>
+			</li>
+		))}
+	</ul>
 </section>

@@ -1,7 +1,7 @@
-// Each frame of the Equipa contact sheet, for any number of people: its edge codes and the pencil
+// Each frame of the Elenco contact sheet, for any number of people: its edge codes and the pencil
 // ring drawn around the person.
 import { expect, test } from '@playwright/test';
-import { PENCIL_RINGS, sheetFrame } from '../src/lib/team-sheet';
+import { PENCIL_RINGS, sheetFrame } from '../src/lib/cast-sheet';
 
 /** The frames of a sheet of `count` people, in order. */
 const framesOf = (count: number) => Array.from({ length: count }, (_, index) => sheetFrame(index));

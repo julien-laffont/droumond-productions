@@ -28,7 +28,7 @@ const EXPECTED = {
 		links: [
 			{ name: 'Projetos', href: '/#projetos' },
 			{ name: 'Sobre', href: '/#sobre' },
-			{ name: 'Equipa', href: '/#equipa' },
+			{ name: 'Elenco', href: '/#elenco' },
 			{ name: 'Filmagens', href: '/filmagens/' },
 		],
 		contact: { name: 'Contacto', href: '/#contacto' },
@@ -39,7 +39,7 @@ const EXPECTED = {
 		links: [
 			{ name: 'Projects', href: '/en/#projects' },
 			{ name: 'About', href: '/en/#about' },
-			{ name: 'Team', href: '/en/#team' },
+			{ name: 'Cast', href: '/en/#cast' },
 			{ name: 'Filming', href: '/en/filming/' },
 		],
 		contact: { name: 'Contact', href: '/en/#contact' },
