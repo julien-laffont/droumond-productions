@@ -20,4 +20,24 @@ const about = defineCollection({
 	loader: glob({ pattern: '*.md', base: './src/content/about' }),
 });
 
-export const collections = { privacy, about };
+// The page of Efecto Placebo, one file per language: src/content/efecto-placebo/<language>.md.
+// The body is the synopsis; the frontmatter holds the rest of the page's text and the poster.
+const nonEmpty = z.string().trim().min(1);
+const efectoPlacebo = defineCollection({
+	loader: glob({ pattern: '*.md', base: './src/content/efecto-placebo' }),
+	schema: ({ image }) =>
+		z.object({
+			/** The series in one sentence, for search engines. */
+			description: nonEmpty,
+			/** The small line under the title: type · genre · episodes · status. */
+			line: nonEmpty,
+			/** What the excerpt's first frame shows. */
+			excerptAlt: nonEmpty,
+			poster: image(),
+			posterAlt: nonEmpty,
+			credits: z.array(z.object({ role: nonEmpty, name: nonEmpty })).min(1),
+			characters: z.array(z.object({ name: nonEmpty, description: nonEmpty })).min(1),
+		}),
+});
+
+export const collections = { privacy, about, efectoPlacebo };

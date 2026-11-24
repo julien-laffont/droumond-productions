@@ -7,6 +7,7 @@ import { inEachBuild, languageOf, openExisting, pagesOf } from './pages';
 const PAIRS = [
 	{ pt: '/', en: '/en/' },
 	{ pt: '/filmagens/', en: '/en/filming/' },
+	{ pt: '/efecto-placebo/', en: '/en/efecto-placebo/' },
 	{ pt: '/politica-de-privacidade/', en: '/en/privacy-policy/' },
 ];
 

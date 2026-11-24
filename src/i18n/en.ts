@@ -72,6 +72,14 @@ export const en: Dictionary = {
 		description:
 			"Droumond Productions' filming service in Leiria: commercials, brand videos and music videos.",
 	},
+	efectoPlacebo: {
+		code: '35 mm · Efecto Placebo · Leiria',
+		pause: 'Pause video',
+		resume: 'Resume video',
+		fullTeaser: 'Watch the full teaser',
+		synopsis: 'Synopsis',
+		characters: 'Characters',
+	},
 	home: {
 		title: 'Droumond Productions',
 		description:

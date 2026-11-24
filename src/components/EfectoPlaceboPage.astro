@@ -1,0 +1,232 @@
+---
+// The page of Efecto Placebo in one language. Its texts and poster come from
+// src/content/efecto-placebo/<language>.md, so Julien can change them without touching code.
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import excerptFrame from '../assets/efecto-placebo/excerpt.jpg';
+import excerpt from '../assets/efecto-placebo/excerpt.mp4';
+import { IMAGE_FILES } from '../config/image-files';
+import { EFECTO_PLACEBO_TEASER, type Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import Base from '../layouts/Base.astro';
+import Film from './Film.astro';
+
+interface Props {
+	language: Language;
+}
+
+/** Project titles are never translated. */
+const TITLE = 'Efecto Placebo';
+
+const { language } = Astro.props;
+const t = dictionaries[language].efectoPlacebo;
+const entry = await getEntry('efectoPlacebo', language);
+if (!entry) {
+	throw new Error(
+		`Missing src/content/efecto-placebo/${language}.md: the page exists in every language.`,
+	);
+}
+const { data } = entry;
+const { Content } = await render(entry);
+---
+
+<Base
+	language={language}
+	page="efectoPlacebo"
+	title={`${TITLE} · Droumond Productions`}
+	description={data.description}
+>
+	<main class="mx-auto grid max-w-[1600px] gap-[clamp(64px,9vw,128px)] px-gutter pt-[clamp(40px,5vw,72px)] pb-[clamp(64px,9vw,128px)]">
+		<div class="grid gap-[clamp(24px,3vw,36px)]">
+			<div class="grid gap-3">
+				<p class="type-code" aria-hidden="true">
+					{t.code}
+				</p>
+				<h1 class="text-[clamp(3rem,9vw,7.5rem)] type-name">{TITLE}</h1>
+				<p class="type-meta text-balance">{data.line}</p>
+			</div>
+			<div class="grid gap-4" data-excerpt>
+				<Film top={`▸ 01 · ${TITLE}`} bottom="01A">
+					<div class="relative aspect-[2048/868] bg-ink">
+						<Image
+							src={excerptFrame}
+							alt={data.excerptAlt}
+							{...IMAGE_FILES.project.wide}
+							sizes="calc(100vw - 32px)"
+							loading="eager"
+							fetchpriority="high"
+							class="size-full object-cover"
+						/>
+						{/* Loaded by the script below, over its first frame. */}
+						<video
+							data-src={excerpt}
+							muted
+							loop
+							playsinline
+							preload="none"
+							aria-hidden="true"
+							hidden
+							class="absolute inset-0 size-full object-cover motion-reduce:hidden"
+						></video>
+					</div>
+				</Film>
+				<div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+					<button
+						type="button"
+						data-excerpt-toggle
+						data-pause={t.pause}
+						data-resume={t.resume}
+						hidden
+						class="cursor-pointer border border-paper/14 px-2.5 py-2 text-[11px] leading-none tracking-[0.12em] uppercase hover:border-paper motion-reduce:hidden"
+					>
+						{t.pause}
+					</button>
+					<a href={EFECTO_PLACEBO_TEASER} target="_blank" rel="noopener" class="ml-auto cta">
+						<span aria-hidden="true">▶ </span>
+						{t.fullTeaser}
+						<span aria-hidden="true"> ↗</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<section aria-labelledby="synopsis-title" class="synopsis">
+			<h2 id="synopsis-title" class="title type-label">
+				{t.synopsis}
+			</h2>
+			<div class="poster reveal min-w-0">
+				<Film top="Droumond 2026 ▸ 02" bottom="02A">
+					<Image
+						src={data.poster}
+						alt={data.posterAlt}
+						{...IMAGE_FILES.seriesPoster}
+						sizes="(max-width: 760px) 60vw, 34vw"
+						class="block aspect-[2/3] w-full bg-ink object-cover"
+					/>
+				</Film>
+			</div>
+			<div class="text reveal grid max-w-[62ch] min-w-0 gap-[clamp(24px,3vw,36px)]">
+				{/* The Project's name, in italics in the Markdown, shows upright in amber. */}
+				<div class="grid gap-[1em] text-[clamp(1rem,1.2vw,1.1rem)] leading-[1.7] [&_em]:text-amber [&_em]:not-italic">
+					<Content />
+				</div>
+				<dl class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 border-t border-paper/14 pt-4">
+					{data.credits.map(({ role, name }) => (
+						<>
+							<dt class="type-meta leading-[1.9]">{role}</dt>
+							<dd>{name}</dd>
+						</>
+					))}
+				</dl>
+			</div>
+		</section>
+
+		<section aria-labelledby="characters-title" class="grid gap-[clamp(24px,3vw,40px)]">
+			<h2 id="characters-title" class="type-label">
+				{t.characters}
+			</h2>
+			<ul class="characters">
+				{data.characters.map(({ name, description }, index) => (
+					<li class="reveal grid content-start gap-2 border-t border-paper/14 pt-4">
+						<span class="type-code" aria-hidden="true">
+							{String(index + 1).padStart(2, '0')}
+						</span>
+						<h3 class="text-[clamp(1.5rem,2.2vw,2rem)] type-name">{name}</h3>
+						<p class="max-w-[46ch] text-sm leading-[1.65] text-muted">{description}</p>
+					</li>
+				))}
+			</ul>
+		</section>
+	</main>
+</Base>
+
+<script>
+	// The excerpt loads once the page has, plays while in view and pauses with the button (WCAG
+	// 2.2.2), whose label changes, so no aria-pressed. With less motion, only its first frame.
+	const block = document.querySelector<HTMLElement>('[data-excerpt]');
+	const video = block?.querySelector<HTMLVideoElement>('video[data-src]');
+	const toggle = block?.querySelector<HTMLButtonElement>('[data-excerpt-toggle]');
+	if (video && toggle) {
+		const lessMotion = matchMedia('(prefers-reduced-motion: reduce)');
+		let pageLoaded = document.readyState === 'complete';
+		let inView = false;
+		let pausedByHand = false;
+
+		const sync = () => {
+			if (!pageLoaded || !inView || pausedByHand || lessMotion.matches) {
+				video.pause();
+				return;
+			}
+			if (!video.getAttribute('src')) video.src = video.dataset.src!;
+			// Refused (power saving, say): the first frame stays.
+			video.play().catch(() => {});
+		};
+
+		// Shown once it plays, so the first frame never gives way to an empty one.
+		video.addEventListener('playing', () => (video.hidden = false), { once: true });
+		new IntersectionObserver(([entry]) => {
+			inView = entry.isIntersecting;
+			sync();
+		}).observe(video.parentElement!);
+		addEventListener('load', () => {
+			pageLoaded = true;
+			sync();
+		});
+		lessMotion.addEventListener('change', sync);
+
+		toggle.hidden = false;
+		toggle.addEventListener('click', () => {
+			pausedByHand = !pausedByHand;
+			toggle.textContent = (pausedByHand ? toggle.dataset.resume : toggle.dataset.pause) ?? '';
+			sync();
+		});
+	}
+</script>
+
+<style>
+	/* Desktop: the poster on the left, the title and the text on the right. Phone: one column. */
+	.synopsis {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+		grid-template-areas:
+			'poster title'
+			'poster text';
+		grid-template-rows: auto 1fr;
+		gap: clamp(20px, 2.4vw, 32px) clamp(28px, 5vw, 80px);
+		align-items: start;
+	}
+	.title {
+		grid-area: title;
+	}
+	.poster {
+		grid-area: poster;
+	}
+	.text {
+		grid-area: text;
+	}
+	@media (max-width: 760px) {
+		.synopsis {
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-areas: 'title' 'poster' 'text';
+			grid-template-rows: none;
+		}
+		.poster {
+			max-width: 60%;
+		}
+	}
+	.characters {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: clamp(28px, 3.5vw, 48px) clamp(20px, 3vw, 48px);
+	}
+	@media (max-width: 960px) {
+		.characters {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	@media (max-width: 560px) {
+		.characters {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+</style>

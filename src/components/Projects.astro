@@ -6,7 +6,7 @@ import { IMAGE_FILES } from '../config/image-files';
 import { PROJECTS, type Project } from '../config/projects';
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
-import { sectionAnchor } from '../lib/paths';
+import { PAGES, sectionAnchor } from '../lib/paths';
 import Film from './Film.astro';
 
 interface Props {
@@ -27,6 +27,13 @@ const edgeCodes = (number: number, title?: string) => {
 };
 
 const ratio = ({ poster }: Project) => poster.width / poster.height;
+
+/** A Project's link: its own page in the same tab, or another site in a new tab. */
+const linkAttributes = ({ link }: Project) =>
+	'page' in link
+		? { href: PAGES[link.page][language] }
+		: { href: link.url, target: '_blank', rel: 'noopener' };
+
 /** On a phone, the frames are lowered until the widest one fits the screen. */
 const widest = Math.max(...PROJECTS.map(ratio));
 
@@ -126,10 +133,9 @@ const posterSizes = (project: Project) => {
 							{project.sentence && (
 								<p class="max-w-[60ch] text-sm text-muted">{project.sentence[language]}</p>
 							)}
-							<a href={project.link.url} target="_blank" rel="noopener" class="cta">
-								{project.link.glyph === '▶' && <span aria-hidden="true">▶ </span>}
+							<a {...linkAttributes(project)} class="cta">
 								{project.link.label[language]}
-								{project.link.glyph === '↗' && <span aria-hidden="true"> ↗</span>}
+								<span aria-hidden="true">{'page' in project.link ? ' →' : ' ↗'}</span>
 							</a>
 						</div>
 					</li>
@@ -352,14 +358,6 @@ const posterSizes = (project: Project) => {
 	}
 	.cta {
 		margin-top: 6px;
-		padding-bottom: 2px;
-		border-bottom: 1px solid currentColor;
-		font-size: 12px;
-		font-weight: 700;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		text-decoration: none;
-		color: var(--color-amber);
 	}
 	/* The whole cell is the link: one tab stop, and the poster keeps its description. */
 	.cta::after {
