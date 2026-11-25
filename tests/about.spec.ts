@@ -13,7 +13,10 @@ const HOMES = [
 		anchor: 'sobre',
 		heading: 'Sobre',
 		text: 'A Droumond Productions é uma produtora audiovisual de Leiria, fundada em 2026.',
-		roles: ['Cofundador · Ator', 'Cofundador · Ator'],
+		roles: [
+			'Cofundador · Realizador · Ator · Produtor',
+			'Cofundador · Ator · Gerente · Direção de atores',
+		],
 		alts: [
 			'Carlos Droumond, de casaco castanho e camisola preta, encostado a um vidro que o reflete, numa rua de calçada.',
 			'Julien Laffont, de óculos escuros e casaco de cabedal.',
@@ -25,7 +28,10 @@ const HOMES = [
 		anchor: 'about',
 		heading: 'About',
 		text: 'Droumond Productions is an audiovisual production company based in Leiria, founded in 2026.',
-		roles: ['Co-founder · Actor', 'Co-founder · Actor'],
+		roles: [
+			'Co-founder · Director · Actor · Producer',
+			'Co-founder · Actor · Managing director · Director of actors',
+		],
 		alts: [
 			'Carlos Droumond, in a brown jacket and a black top, leaning on a glass wall that reflects him, on a cobbled street.',
 			'Julien Laffont, in sunglasses and a leather jacket.',

@@ -55,13 +55,8 @@ const frameSizes = ({ width, height }: { width: number; height: number }) => {
 			<div class="strip" data-strip>
 				{[0, 1].map(() => (
 					<>
-						<Film {...edgeCodes(0)}>
-							<div class="frame title-card">
-								<span class="logo-mark" />
-							</div>
-						</Film>
 						{STRIP_PHOTOS.map((photo, index) => (
-							<Film {...edgeCodes(index + 1)}>
+							<Film {...edgeCodes(index)}>
 								<Image
 									src={photo.image}
 									{...photo.files}
@@ -153,15 +148,6 @@ const frameSizes = ({ width, height }: { width: number; height: number }) => {
 		aspect-ratio: 3 / 2;
 		object-fit: cover;
 		background: var(--color-ink);
-	}
-	.title-card {
-		display: grid;
-		place-items: center;
-	}
-	.title-card .logo-mark {
-		width: 46%;
-		aspect-ratio: 1;
-		color: var(--color-paper);
 	}
 	@media (max-width: 700px) {
 		.tilt {
