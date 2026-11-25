@@ -46,6 +46,8 @@ export const en: Dictionary = {
 	cast: {
 		title: 'Cast',
 		sheet: 'Contact sheet · Reel 02',
+		pause: 'Pause cast',
+		resume: 'Resume cast',
 	},
 	hero: {
 		code: '35 mm · Droumond 2026 · Leiria · Reel 01',

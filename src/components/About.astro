@@ -51,7 +51,7 @@ const frame = (index: number) => {
 		{TEAM.map((person, index) => (
 			<li class="grid min-w-0 content-start gap-3.5">
 				<Film {...frame(index)} side={12}>
-					{/* The sizes match the photo's real width; quality 70 keeps the page under its weight limit. */}
+					{/* The sizes match the photo's real width; quality 55 keeps the page under its weight limit. */}
 					<Image
 						src={person.photo}
 						alt={person.alt[language]}
