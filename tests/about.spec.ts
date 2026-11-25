@@ -12,11 +12,9 @@ const HOMES = [
 		english: false,
 		anchor: 'sobre',
 		heading: 'Sobre',
+		founders: 'Cofundadores',
 		text: 'A Droumond Productions é uma produtora audiovisual de Leiria, fundada em 2026.',
-		roles: [
-			'Cofundador · Realizador · Ator · Produtor',
-			'Cofundador · Ator · Gerente · Direção de atores',
-		],
+		roles: ['Realizador · Produtor · Ator', 'Gerente · Ator · Direção de atores'],
 		alts: [
 			'Carlos Droumond, de casaco castanho e camisola preta, encostado a um vidro que o reflete, numa rua de calçada.',
 			'Julien Laffont, de óculos escuros e casaco de cabedal.',
@@ -27,11 +25,9 @@ const HOMES = [
 		english: true,
 		anchor: 'about',
 		heading: 'About',
+		founders: 'Co-founders',
 		text: 'Droumond Productions is an audiovisual production company based in Leiria, founded in 2026.',
-		roles: [
-			'Co-founder · Director · Actor · Producer',
-			'Co-founder · Actor · Managing director · Director of actors',
-		],
+		roles: ['Director · Producer · Actor', 'Managing director · Actor · Director of actors'],
 		alts: [
 			'Carlos Droumond, in a brown jacket and a black top, leaning on a glass wall that reflects him, on a cobbled street.',
 			'Julien Laffont, in sunglasses and a leather jacket.',
@@ -68,7 +64,9 @@ inEachBuild((build) => {
 			baseURL,
 		}) => {
 			await page.goto(home.path);
-			const people = page.locator(`section#${home.anchor}`).getByRole('listitem');
+			const section = page.locator(`section#${home.anchor}`);
+			await expect(section.getByRole('list', { name: home.founders })).toBeVisible();
+			const people = section.getByRole('listitem');
 			await expect(people).toHaveCount(NAMES.length);
 			for (const [index, person] of (await people.all()).entries()) {
 				await expect(person.getByRole('heading', { level: 3 })).toHaveText(NAMES[index]);

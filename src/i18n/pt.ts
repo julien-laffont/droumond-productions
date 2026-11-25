@@ -52,8 +52,8 @@ export const pt = {
 	/** The Sobre section of the home page; its text is in src/content/about/, the team in src/config/team.ts. */
 	about: {
 		title: 'Sobre',
-		/** The name of the team's list, for screen readers. */
-		team: 'Equipa',
+		/** Above the team's photos; also the name of their list. */
+		founders: 'Cofundadores',
 	},
 	/** The Elenco section of the home page; the people are in src/config/cast.ts. */
 	cast: {
