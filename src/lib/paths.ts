@@ -7,6 +7,8 @@ export const PAGES = {
 	home: { pt: '/', en: '/en/' },
 	/** The Filming service page (#16). */
 	filming: { pt: '/filmagens/', en: '/en/filming/' },
+	/** The page of the Project Efecto Placebo, whose title is never translated. */
+	efectoPlacebo: { pt: '/efecto-placebo/', en: '/en/efecto-placebo/' },
 	/** The Privacy Policy, made in #17. */
 	privacy: { pt: '/politica-de-privacidade/', en: '/en/privacy-policy/' },
 } satisfies Record<string, Record<Language, string>>;
@@ -17,7 +19,7 @@ export type PageId = keyof typeof PAGES;
 const SECTIONS = {
 	projects: { pt: 'projetos', en: 'projects' },
 	about: { pt: 'sobre', en: 'about' },
-	team: { pt: 'equipa', en: 'team' },
+	cast: { pt: 'elenco', en: 'cast' },
 	contact: { pt: 'contacto', en: 'contact' },
 } satisfies Record<string, Record<Language, string>>;
 
@@ -44,14 +46,4 @@ export function contactPath(page: PageId | undefined, language: Language): strin
 	return page === 'filming'
 		? `${PAGES.filming[language]}#${sectionAnchor('contact', language)}`
 		: sectionPath('contact', language);
-}
-
-/**
- * The Privacy Policy's section on the YouTube teaser, which the notice under the teaser links to.
- * Its anchor comes from the heading in src/content/privacy/<language>.md: renaming the heading
- * changes it.
- */
-export function teaserPrivacyPath(language: Language): string {
-	const anchor = { pt: 'teaser-do-youtube', en: 'the-youtube-teaser' }[language];
-	return `${PAGES.privacy[language]}#${anchor}`;
 }

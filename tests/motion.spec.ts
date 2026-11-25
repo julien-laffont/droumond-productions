@@ -1,23 +1,29 @@
-// Whoever asked for less motion (prefers-reduced-motion) sees everything still. In the header, the
-// brush stroke under the links appears at once instead of painting itself.
+// Whoever asked for less motion (prefers-reduced-motion) sees everything still: on hover, the
+// header's links turn amber at once instead of fading, and the amber line under the Contacto
+// address appears at once instead of growing. The timecode's stillness is in header.spec.
 import { expect, test, type Page } from '@playwright/test';
 import { inEachBuild } from './pages';
 
-/** How long the brush stroke under the header's first link takes to paint itself. */
-async function brushDuration(page: Page) {
+/** How long the hover takes on the header's first link and on the Contacto address. */
+async function hoverDurations(page: Page) {
 	const link = page.getByRole('banner').getByRole('navigation').getByRole('link').first();
-	return link.evaluate((a) => getComputedStyle(a, '::after').transitionDuration);
+	const email = page
+		.getByRole('region', { name: 'Contacto', exact: true })
+		.getByRole('link')
+		.first();
+	return {
+		link: await link.evaluate((a) => getComputedStyle(a).transitionDuration),
+		email: await email.evaluate((a) => getComputedStyle(a).transitionDuration),
+	};
 }
 
 inEachBuild(() => {
-	test('/: the brush stroke under the links paints itself, unless less motion is asked', async ({
-		page,
-	}) => {
+	test('/: the hover effects are gradual, unless less motion is asked', async ({ page }) => {
 		await page.emulateMedia({ reducedMotion: 'no-preference' });
 		await page.goto('/');
-		expect(await brushDuration(page)).toBe('0.35s');
+		expect(await hoverDurations(page)).toEqual({ link: '0.2s, 0.2s', email: '0.4s' });
 
 		await page.emulateMedia({ reducedMotion: 'reduce' });
-		expect(await brushDuration(page)).toBe('0s');
+		expect(await hoverDurations(page)).toEqual({ link: '0s', email: '0s' });
 	});
 });

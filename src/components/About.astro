@@ -1,12 +1,14 @@
 ---
-// The Sobre section of the home page (#15): small text on the left, a wide image (16:9) on the
-// right, the Projects grid in reverse; one column below 960 px. Text, image and alt text come
-// from src/content/about/<language>.md, so Julien can change them without touching code.
+// The Sobre section: small text beside the team, one frame of film per person, name and role under
+// each. The text is in src/content/about/<language>.md, the team in src/config/team.ts.
 import { Image } from 'astro:assets';
 import { getEntry, render } from 'astro:content';
+import { IMAGE_FILES } from '../config/image-files';
 import type { Language } from '../config/site';
+import { TEAM } from '../config/team';
 import { dictionaries } from '../i18n';
 import { sectionAnchor } from '../lib/paths';
+import Film from './Film.astro';
 
 interface Props {
 	language: Language;
@@ -20,30 +22,49 @@ if (!entry) {
 	throw new Error(`Missing src/content/about/${language}.md: Sobre exists in every language.`);
 }
 const { Content } = await render(entry);
+
+/** Each frame's edge codes, numbered on from 27; the reel's name on every other top code. */
+const frame = (index: number) => {
+	const number = 27 + index;
+	return {
+		top: index % 2 ? `▸ ${number}` : `Droumond 2026 ▸ ${number}`,
+		bottom: `${number}A`,
+	};
+};
 ---
 
 <section
 	id={anchor}
 	aria-labelledby={`${anchor}-title`}
-	class="grid grid-cols-[1fr_2fr] items-start gap-[clamp(12px,1.4vw,20px)] px-gutter py-[clamp(48px,6vw,88px)] max-[960px]:grid-cols-1"
+	class="grid grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] items-center gap-[clamp(28px,5vw,80px)] border-t border-paper/14 px-gutter py-[clamp(64px,9vw,128px)] max-[960px]:grid-cols-1"
 >
-	<div class="min-w-0">
-		<h2 id={`${anchor}-title`} class="mb-[clamp(20px,2.4vw,32px)] type-label">
+	<div class="grid min-w-0 gap-[clamp(18px,2.4vw,28px)]">
+		<h2 id={`${anchor}-title`} class="type-label">
 			{t.title}
 		</h2>
-		{/* The Projects' names, in italics in the Markdown, show in the narrow heavy type of names. */}
-		<div class="reveal grid max-w-[62ch] gap-[1em] text-[clamp(1.02rem,1.25vw,1.15rem)] leading-[1.65] [&_em]:font-bold [&_em]:tracking-[0.02em] [&_em]:uppercase [&_em]:not-italic [&_em]:font-stretch-62%">
+		{/* The Projects' names, in italics in the Markdown, show upright in amber. */}
+		<div class="reveal grid max-w-[58ch] gap-[1em] text-sm leading-[1.75] [&_em]:text-amber [&_em]:not-italic">
 			<Content />
 		</div>
 	</div>
-	{/* Phones fetch it as the page opens, since it sits near the screen: the sizes match its real
-	    width (the screen minus the margins) and quality 70 keeps the page under its weight limit. */}
-	<Image
-		src={entry.data.image}
-		alt={entry.data.alt}
-		widths={[480, 720, 1080]}
-		sizes="(max-width: 960px) calc(100vw - 32px), 66vw"
-		quality={70}
-		class="reveal aspect-video w-full bg-ink-2 object-cover"
-	/>
+	<ul class="reveal grid min-w-0 grid-cols-2 items-start" aria-label={t.team}>
+		{TEAM.map((person, index) => (
+			<li class="grid min-w-0 content-start gap-3.5">
+				<Film {...frame(index)} side={12}>
+					{/* The sizes match the photo's real width; quality 70 keeps the page under its weight limit. */}
+					<Image
+						src={person.photo}
+						alt={person.alt[language]}
+						{...IMAGE_FILES.portrait}
+						sizes="(max-width: 960px) calc(50vw - 40px), 26vw"
+						class="block aspect-[4/5] w-full bg-ink object-cover"
+					/>
+				</Film>
+				<div class="grid gap-1.5 px-3">
+					<h3 class="text-[clamp(1.25rem,1.8vw,1.75rem)] type-name">{person.name}</h3>
+					<p class="type-meta">{person.role[language]}</p>
+				</div>
+			</li>
+		))}
+	</ul>
 </section>

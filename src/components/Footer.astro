@@ -1,12 +1,14 @@
 ---
-// The footer, on every page: the founding year, the company's legal identification (#3), the
-// email, the Privacy Policy, the profiles (links only, no embeds), the official Livro de
-// Reclamações icon and, below, the consumer arbitration centre (#3, #18). No "legal information" page
-// and no cookie banner (#3).
+// The footer, on every page, as in Película (#36): first the tail of the reel ("Fim da bobina"),
+// decorative; then the founding year, the company's legal identification (#3), the email, the
+// Privacy Policy, the profiles (links only, no embeds), the official Livro de Reclamações icon and,
+// below, the consumer arbitration centre (#3, #18). No "legal information" page and no cookie
+// banner (#3).
 import type { Language } from '../config/site';
 import { CONSUMER_ARBITRATION, CONTACT_EMAIL, LEGAL, SOCIAL } from '../config/site';
 import { dictionaries } from '../i18n';
 import { PAGES } from '../lib/paths';
+import Film from './Film.astro';
 // The official icon, from the platform's own "Imagens dos Logótipos" (livroreclamacoes.pt,
 // Informação de Apoio), untouched: "preto negativo", white circle and letters on black, which read
 // white on ink. The rules ask for an icon that contrasts with the background and links to the platform.
@@ -34,21 +36,29 @@ const CONSUMER_PORTAL = { name: 'Portal do Consumidor', url: 'https://www.consum
 const hostOf = (url: string) => new URL(url).host;
 ---
 
-<footer class="relative z-1 px-gutter pt-[calc(var(--edge-height)*0.5+clamp(40px,5vw,64px))] pb-[clamp(32px,4vw,48px)] text-[0.84rem] text-muted">
-	<div class="grid grid-cols-[1.1fr_1.6fr_1fr_auto] items-start gap-[clamp(24px,3vw,48px)] max-[960px]:grid-cols-2 max-[520px]:grid-cols-1">
-		<div class="grid justify-items-start gap-3 text-canvas">
+<div aria-hidden="true">
+	<Film top={`Droumond 2026 ▸ 48 · ${t.reelEnd}`} bottom="48A">
+		<div class="tail-frame grid place-items-center">
+			<span class="bg-ink px-4 py-1.5 text-xs tracking-[0.24em] text-amber uppercase">
+				{t.reelEnd}
+			</span>
+		</div>
+	</Film>
+</div>
+
+<footer class="px-gutter pt-[clamp(40px,5vw,64px)] pb-[clamp(32px,4vw,48px)] text-xs/[1.6] text-muted">
+	<div class="grid grid-cols-[1.1fr_1.7fr_1fr_auto] items-start gap-[clamp(24px,3vw,48px)] max-[960px]:grid-cols-2 max-[520px]:grid-cols-1">
+		<div class="grid justify-items-start gap-3 text-paper">
 			<span class="logo-mark block size-14" aria-hidden="true"></span>
 			<div>
-				<p class="text-[1.3rem] leading-none font-extrabold uppercase font-stretch-62%">
-					Droumond Productions
-				</p>
-				<p class="mt-2 type-meta">{t.founded}</p>
+				<p class="text-[1.6rem] type-name">Droumond Productions</p>
+				<p class="type-meta">{t.founded}</p>
 			</div>
 		</div>
 		<dl class="grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-1">
 			{legal.map(({ label, value }) => (
 				<>
-					<dt class="text-canvas">{label}</dt>
+					<dt class="text-paper">{label}</dt>
 					{/* The values stay in Portuguese in every language: only the labels are translated. */}
 					<dd lang="pt-PT" class="min-w-0">
 						{value}
@@ -56,12 +66,12 @@ const hostOf = (url: string) => new URL(url).host;
 				</>
 			))}
 		</dl>
-		<ul class="grid gap-2 text-canvas">
+		<ul class="grid gap-2 text-paper">
 			{links.map(({ text, href, external }) => (
 				<li>
 					<a
 						href={href}
-						class="brush-link [overflow-wrap:anywhere]"
+						class="[overflow-wrap:anywhere] hover:text-amber"
 						{...(external && { target: '_blank', rel: 'noopener' })}
 					>
 						{text}
@@ -108,3 +118,15 @@ const hostOf = (url: string) => new URL(url).host;
 		).
 	</p>
 </footer>
+
+<style>
+	/* The run-out after the last frame: diagonal stripes of stock and ink. */
+	.tail-frame {
+		height: clamp(64px, 9vw, 110px);
+		background: repeating-linear-gradient(
+			-45deg,
+			var(--color-stock) 0 10px,
+			var(--color-ink) 10px 20px
+		);
+	}
+</style>

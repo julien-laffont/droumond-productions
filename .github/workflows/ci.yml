@@ -1,15 +1,14 @@
-# The checks that block a PR: any failure turns it red. Same shape as Julien's landing page.
+# The checks that block a release: any failure turns the PR red.
+# Only PRs into main (releases and hotfixes) run them, to save CI minutes;
+# for PRs into develop, `npm run verify` runs locally before each push (CLAUDE.md).
 # The steps live in .github/actions/verify, which the Publish workflow reuses.
-# The Playwright suite is split into 4 jobs that run side by side.
-# PRs into main (releases and hotfixes) run every check: Chromium in 1 job,
-# WebKit (about 3 times slower) in 3, plus Lighthouse.
-# PRs into any other branch, develop included, run the quick checks: Chromium in 4 jobs.
-# Every PR runs it, documentation-only ones too: the branch rules require these checks,
-# and a PR whose required checks never start could not be merged.
+# The Playwright suite runs in 4 parallel jobs: Chromium in 1, WebKit (about 3 times slower) in 3.
+# Documentation-only PRs run it too: main's branch rules require these checks.
 name: Checks
 
 on:
   pull_request:
+    branches: [main]
 
 permissions:
   contents: read
@@ -26,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        part: ${{ fromJSON(github.base_ref == 'main' && '["chromium 1/1", "webkit 1/3", "webkit 2/3", "webkit 3/3"]' || '["chromium 1/4", "chromium 2/4", "chromium 3/4", "chromium 4/4"]') }}
+        part: ['chromium 1/1', 'webkit 1/3', 'webkit 2/3', 'webkit 3/3']
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -52,7 +51,6 @@ jobs:
 
   lighthouse:
     name: Lighthouse
-    if: github.base_ref == 'main'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

@@ -2,7 +2,7 @@
 // Runs the real Lighthouse, one run per page: if a Lighthouse update changes the
 // report and a target stops firing, these tests turn red.
 import { randomBytes } from 'node:crypto';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { expect, test } from '@playwright/test';
 import { pagesIn } from '../pages';
@@ -56,6 +56,28 @@ function randomText(kb: number) {
 	return randomBytes(kb * 1024).toString('base64');
 }
 
+/**
+ * A media file of `mb` MB that Chromium plays, so downloads whole: random sound, in WAV, which
+ * compression barely shrinks.
+ */
+function noise(mb: number) {
+	const data = randomBytes(Math.round(mb * 1024 * 1024));
+	const header = Buffer.alloc(44);
+	header.write('RIFF', 0);
+	header.writeUInt32LE(36 + data.length, 4);
+	header.write('WAVEfmt ', 8);
+	header.writeUInt32LE(16, 16); // format chunk size
+	header.writeUInt16LE(1, 20); // PCM
+	header.writeUInt16LE(2, 22); // stereo
+	header.writeUInt32LE(48_000, 24); // samples per second
+	header.writeUInt32LE(48_000 * 4, 28); // bytes per second
+	header.writeUInt16LE(4, 32); // bytes per sample frame
+	header.writeUInt16LE(16, 34); // bits per sample
+	header.write('data', 36);
+	header.writeUInt32LE(data.length, 40);
+	return Buffer.concat([header, data]);
+}
+
 /** Analyzes every page of the site, one run each, and returns the failures of each page. */
 async function failuresByPage(folder: string) {
 	const analyses = await checkSite({ dist: folder, pages: pagesIn(folder), runs: 1 });
@@ -93,26 +115,26 @@ test('compressed page stays within 400 KB', async () => {
 	});
 });
 
-test('the background video weighs apart from the page, within 700 KB', async () => {
-	// The home page's real video (#13), about 600 KB: Chromium downloads all of it.
-	const video = readFileSync('src/assets/hero/background.mp4');
+test('each video weighs apart from the page, within 1.5 MB', async () => {
+	// Two under the limit: more than 400 KB, and more than 1.5 MB together.
 	const player = (src: string) =>
 		`<video src="${src}" muted autoplay loop playsinline width="320" height="180"></video>`;
 	const folder = createSite({
-		'one-video/index.html': testPage({ body: player('/a.mp4') }),
-		'two-videos/index.html': testPage({ body: player('/a.mp4') + player('/b.mp4') }),
-		'a.mp4': video,
-		'b.mp4': video,
+		'two-videos/index.html': testPage({ body: player('/a.wav') + player('/b.wav') }),
+		'heavy-video/index.html': testPage({ body: player('/c.wav') }),
+		'a.wav': noise(1),
+		'b.wav': noise(1),
+		'c.wav': noise(1.6),
 	});
 	expect(await failuresByPage(folder)).toEqual({
-		'/one-video/': [],
-		'/two-videos/': [expect.stringMatching(/^video weighs \d+\.\d KB, max 700\.0 KB$/)],
+		'/heavy-video/': [expect.stringMatching(/^video \/c\.wav weighs 1\.6 MB, max 1\.5 MB$/)],
+		'/two-videos/': [],
 	});
 });
 
-test('loads at most 2 fonts, all woff2', async () => {
+test('loads at most 3 fonts, all woff2', async () => {
 	// Each font styles visible text, so that the browser fetches it.
-	const styles = ['a.woff2', 'b.woff2', 'c.ttf']
+	const styles = ['a.woff2', 'b.woff2', 'c.woff2', 'd.ttf']
 		.map(
 			(font, i) =>
 				`@font-face { font-family: f${i}; src: url(/${font}); } .f${i} { font-family: f${i}; }`,
@@ -121,14 +143,15 @@ test('loads at most 2 fonts, all woff2', async () => {
 	const folder = createSite({
 		'fonts/index.html': testPage({
 			head: `<style>${styles}</style>`,
-			body: '<p class="f0">Um</p><p class="f1">Dois</p><p class="f2">Três</p>',
+			body: '<p class="f0">Um</p><p class="f1">Dois</p><p class="f2">Três</p><p class="f3">Quatro</p>',
 		}),
 		'a.woff2': randomText(1),
 		'b.woff2': randomText(1),
-		'c.ttf': randomText(1),
+		'c.woff2': randomText(1),
+		'd.ttf': randomText(1),
 	});
 	expect(await failuresByPage(folder)).toEqual({
-		'/fonts/': ['3 fonts, max 2', 'font not in woff2: /c.ttf'],
+		'/fonts/': ['4 fonts, max 3', 'font not in woff2: /d.ttf'],
 	});
 });
 

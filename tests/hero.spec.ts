@@ -1,43 +1,55 @@
-// The first screen of the home page (#13): the background video, the logo symbol revealed by a
-// brush mask, the name and the words that pass under it until "Produtora audiovisual" stays.
-// Whoever asked for less motion sees it still: the still frame, the logo drawn, the final line.
-import { expect, test, type Locator, type Page, type Request } from '@playwright/test';
+// The home page's first screen, its film strip, and the page's description.
+import { expect, test, type Page } from '@playwright/test';
 import { inEachBuild, pagesOf } from './pages';
 
-/** What the first screen shows in each language. The English texts are provisional (#18). */
+/** What the first screen shows in each language. */
 const HOMES = [
 	{
 		path: '/',
 		english: false,
-		logo: 'Logótipo da Droumond Productions',
-		words: ['Séries', 'Suspense', 'Terror', 'Filmagens'],
-		pause: 'Pausar vídeo',
+		code: '35 mm · Droumond 2026 · Leiria · Rolo 01',
+		words: 'Séries · Suspense · Terror · Filmagens',
 		cue: { name: 'Projetos', href: '#projetos' },
+		toggle: { pause: 'Pausar fita', resume: 'Retomar fita' },
+		description:
+			'Droumond Productions, produtora audiovisual de Leiria: séries de ficção, publicidade, vídeos para marcas e videoclipes.',
 		snapshot: `
 			- region "Droumond Productions":
-			  - img "Logótipo da Droumond Productions"
 			  - heading "Droumond Productions" [level=1]
 			  - paragraph: Produtora audiovisual
+			  - button "Pausar fita"
 			  - link "Projetos"
-			  - button "Pausar vídeo" [pressed=false]
 		`,
 	},
 	{
 		path: '/en/',
 		english: true,
-		logo: 'Droumond Productions logo',
-		words: ['Series', 'Thriller', 'Horror', 'Filming'],
-		pause: 'Pause video',
+		code: '35 mm · Droumond 2026 · Leiria · Reel 01',
+		words: 'Series · Thriller · Horror · Filming',
 		cue: { name: 'Projects', href: '#projects' },
+		toggle: { pause: 'Pause film', resume: 'Resume film' },
+		description:
+			'Droumond Productions, an audiovisual production company based in Leiria: fiction series, commercials, brand videos and music videos.',
 		snapshot: `
 			- region "Droumond Productions":
-			  - img "Droumond Productions logo"
 			  - heading "Droumond Productions" [level=1]
 			  - paragraph: Audiovisual production company
+			  - button "Pause film"
 			  - link "Projects"
-			  - button "Pause video" [pressed=false]
 		`,
 	},
+];
+
+/** The top edge code of each frame: the title card, then the 7 photos. */
+const FRAME_CODES = [
+	'Droumond 2026 ▸ 14',
+	'▸ 15',
+	'Droumond 2026 ▸ 16',
+	'▸ 17',
+	'Droumond 2026 ▸ 18',
+	'▸ 19',
+	'Droumond 2026 ▸ 20',
+	'▸ 21',
 ];
 
 const SCREENS = [
@@ -49,35 +61,39 @@ const SCREENS = [
 const firstScreen = (page: Page) =>
 	page.getByRole('region', { name: 'Droumond Productions', exact: true });
 
-/** The still frame behind the video: the first screen's only <img>. */
-const stillFrame = (page: Page) => firstScreen(page).locator('img');
-
-/** Waits until the video plays: not paused, and its time moves. */
-async function expectPlaying(video: Locator) {
-	await expect
-		.poll(() => video.evaluate((v: HTMLVideoElement) => !v.paused && v.currentTime > 0))
-		.toBe(true);
+/**
+ * How far the strip moves in half a second, in pixels (0 when still). Waits first for any pending
+ * pause or play, which Chromium applies only on the next frame.
+ */
+async function travel(page: Page) {
+	await page.evaluate(() =>
+		Promise.allSettled(document.getAnimations().map((animation) => animation.ready)),
+	);
+	const frame = firstScreen(page).getByText(FRAME_CODES[0], { exact: true }).first();
+	const start = (await frame.boundingBox())!.x;
+	await page.waitForTimeout(500);
+	return start - (await frame.boundingBox())!.x;
 }
 
-const isVideo = (request: Request) =>
-	request.resourceType() === 'media' || new URL(request.url()).pathname.endsWith('.mp4');
+/** Scrolls halfway down the page, far below the first screen. */
+const scrollToMiddle = (page: Page) =>
+	page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight / 2));
 
-/** Records the addresses of the videos the page requests. */
-function recordVideoRequests(page: Page) {
-	const videos: string[] = [];
-	page.on('request', (request) => {
-		if (isVideo(request)) videos.push(request.url());
-	});
-	return videos;
-}
-
-/** The passing words, one locator each (the aria snapshot checks screen readers skip them). */
-const passingWords = (page: Page, words: string[]) =>
-	words.map((word) => firstScreen(page).getByText(word, { exact: true }));
+/** The length of each endless animation of the strip, in milliseconds. */
+const loops = (page: Page) =>
+	firstScreen(page)
+		.locator('[data-strip]')
+		.evaluate((strip) =>
+			strip
+				.getAnimations()
+				.map((animation) => animation.effect!.getTiming())
+				.filter((timing) => timing.iterations === Infinity)
+				.map((timing) => timing.duration),
+		);
 
 inEachBuild((build) => {
 	for (const home of HOMES.filter((h) => build.english || !h.english)) {
-		test(`${home.path}: the first screen shows the logo, the name as the only h1 and the final line`, async ({
+		test(`${home.path}: the first screen shows the name as the only h1, the line and the cue`, async ({
 			page,
 		}) => {
 			await page.goto(home.path);
@@ -85,105 +101,140 @@ inEachBuild((build) => {
 			await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
 		});
 
-		test(`${home.path}: the background video comes from the site, muted, looping and playing`, async ({
+		test(`${home.path}: a strip of film crosses the first screen, hidden from screen readers`, async ({
 			page,
-			baseURL,
 		}) => {
 			await page.goto(home.path);
-			const video = firstScreen(page).locator('video');
-			await expectPlaying(video);
-			const { src, muted, loop, autoplay, playsInline, poster } = await video.evaluate(
-				(v: HTMLVideoElement) => ({
-					src: v.currentSrc,
-					muted: v.muted,
-					loop: v.loop,
-					autoplay: v.autoplay,
-					playsInline: v.playsInline,
-					poster: v.poster,
-				}),
+			// The title card and the 7 photos, then the same again: the loop has no seam.
+			const codes = firstScreen(page).getByText(/▸ \d\d$/);
+			await expect(codes).toHaveText([...FRAME_CODES, ...FRAME_CODES]);
+			const photos = firstScreen(page).locator('img');
+			await expect(photos).toHaveCount(14);
+			await expect
+				.poll(() =>
+					photos.evaluateAll((imgs) =>
+						imgs.every(
+							(img) =>
+								(img as HTMLImageElement).complete && (img as HTMLImageElement).naturalWidth > 0,
+						),
+					),
+				)
+				.toBe(true);
+			const sources = await photos.evaluateAll((imgs) =>
+				imgs.map((img) => new URL((img as HTMLImageElement).currentSrc).pathname),
 			);
-			expect(new URL(src).origin).toBe(baseURL);
-			expect(new URL(src).pathname).toMatch(/\.mp4$/);
-			expect({ muted, loop, autoplay, playsInline }).toEqual({
-				muted: true,
-				loop: true,
-				autoplay: true,
-				playsInline: true,
-			});
-			// The still frame shows behind the video until it plays, and is its poster.
-			const still = stillFrame(page);
-			await expect(still).toBeVisible();
-			expect(await still.evaluate((img: HTMLImageElement) => img.currentSrc)).toBe(poster);
+			expect(new Set(sources).size).toBe(7);
+			expect(sources.slice(7)).toEqual(sources.slice(0, 7));
+			for (const frame of [...(await codes.all()), ...(await photos.all())]) {
+				expect(await frame.evaluate((el) => el.closest('[aria-hidden="true"]') !== null)).toBe(
+					true,
+				);
+			}
 		});
 
-		test(`${home.path}: the video only loads once the page has, so it never delays the still frame (LCP)`, async ({
-			page,
-		}) => {
-			const events: string[] = [];
-			page.on('load', () => events.push('page loaded'));
-			page.on('request', (request) => {
-				if (isVideo(request)) events.push('video requested');
-			});
-			await page.goto(home.path);
-			await expectPlaying(firstScreen(page).locator('video'));
-			expect(events.slice(0, 2)).toEqual(['page loaded', 'video requested']);
-		});
-
-		test(`${home.path}: the button pauses and resumes the video, keeping its name`, async ({
-			page,
-		}) => {
-			await page.goto(home.path);
-			const video = firstScreen(page).locator('video');
-			const button = firstScreen(page).getByRole('button', { name: home.pause });
-			await expectPlaying(video);
-
-			await button.click();
-			await expect(button).toHaveAttribute('aria-pressed', 'true');
-			expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
-
-			await button.click();
-			await expect(button).toHaveAttribute('aria-pressed', 'false');
-			await expectPlaying(video);
-		});
-
-		test(`${home.path}: the logo draws itself and the words pass, ending on the final line`, async ({
+		test(`${home.path}: the strip runs in a 64 s loop until its button pauses it`, async ({
 			page,
 		}) => {
 			await page.emulateMedia({ reducedMotion: 'no-preference' });
 			await page.goto(home.path);
-			const screen = firstScreen(page);
-			// Jumps to the end of the animations that end (the grain flickers forever).
-			const finished = await screen.evaluate((section) => {
-				const animations = section
-					.getAnimations({ subtree: true })
-					.filter((a) => a.effect?.getComputedTiming().endTime !== Infinity);
-				for (const animation of animations) animation.finish();
-				return animations.length;
-			});
-			expect(finished).toBeGreaterThan(0);
-			for (const word of passingWords(page, home.words))
-				await expect(word).toHaveCSS('opacity', '0');
-			await expect(screen.getByRole('paragraph')).toHaveCSS('opacity', '1');
-			await expect(screen.getByRole('heading', { level: 1 })).toHaveCSS('opacity', '1');
+			await expect.poll(() => travel(page)).toBeGreaterThan(5);
+			expect(await loops(page)).toEqual([64_000]);
+
+			await firstScreen(page).getByRole('button', { name: home.toggle.pause }).click();
+			const resume = firstScreen(page).getByRole('button', { name: home.toggle.resume });
+			await expect(resume).toBeVisible();
+			expect(await travel(page)).toBe(0);
+
+			await resume.click();
+			await expect(
+				firstScreen(page).getByRole('button', { name: home.toggle.pause }),
+			).toBeVisible();
+			await expect.poll(() => travel(page)).toBeGreaterThan(5);
 		});
 
-		test(`${home.path}: with less motion, no video, the logo drawn and only the final line`, async ({
+		test(`${home.path}: the strip rests while it is off screen, and a pause by hand stays`, async ({
 			page,
 		}) => {
-			const videos = recordVideoRequests(page);
+			await page.emulateMedia({ reducedMotion: 'no-preference' });
+			await page.goto(home.path);
+			await expect.poll(() => travel(page)).toBeGreaterThan(5);
+			await scrollToMiddle(page);
+			await expect.poll(() => travel(page)).toBe(0);
+			await page.evaluate(() => window.scrollTo(0, 0));
+			await expect.poll(() => travel(page)).toBeGreaterThan(5);
+
+			await firstScreen(page).getByRole('button', { name: home.toggle.pause }).click();
+			await scrollToMiddle(page);
+			await page.evaluate(() => window.scrollTo(0, 0));
+			await expect(
+				firstScreen(page).getByRole('button', { name: home.toggle.resume }),
+			).toBeVisible();
+			expect(await travel(page)).toBe(0);
+		});
+
+		test(`${home.path}: with less motion the strip stands still, without its button`, async ({
+			page,
+		}) => {
 			await page.emulateMedia({ reducedMotion: 'reduce' });
 			await page.goto(home.path);
-			const screen = firstScreen(page);
-			await expect(stillFrame(page)).toBeVisible();
-			await expect(screen.locator('video')).toBeHidden();
-			await expect(screen.getByRole('button', { name: home.pause })).toBeHidden();
-			for (const word of passingWords(page, home.words)) await expect(word).toBeHidden();
-			await expect(screen.getByRole('paragraph')).toBeVisible();
-			await expect(screen.getByRole('paragraph')).toHaveCSS('opacity', '1');
-			// Nothing moves, so the logo is already drawn.
-			expect(await screen.evaluate((s) => s.getAnimations({ subtree: true }).length)).toBe(0);
-			await page.waitForLoadState('networkidle');
-			expect(videos).toEqual([]);
+			expect(await travel(page)).toBe(0);
+			await expect(firstScreen(page).getByRole('button')).toHaveCount(0);
+
+			// Also when the preference changes with the page open.
+			await page.emulateMedia({ reducedMotion: 'no-preference' });
+			await expect(
+				firstScreen(page).getByRole('button', { name: home.toggle.pause }),
+			).toBeVisible();
+			await expect.poll(() => travel(page)).toBeGreaterThan(5);
+			await page.emulateMedia({ reducedMotion: 'reduce' });
+			await expect(firstScreen(page).getByRole('button')).toHaveCount(0);
+			expect(await travel(page)).toBe(0);
+		});
+
+		test.describe('without JavaScript', () => {
+			test.use({ javaScriptEnabled: false });
+
+			test(`${home.path}: the strip stands still, since nothing could pause it`, async ({
+				page,
+			}) => {
+				await page.emulateMedia({ reducedMotion: 'no-preference' });
+				await page.goto(home.path);
+				expect(await travel(page)).toBe(0);
+				await expect(firstScreen(page).getByRole('button')).toHaveCount(0);
+			});
+		});
+
+		test(`${home.path}: the code line and the words show, hidden from screen readers`, async ({
+			page,
+		}) => {
+			await page.goto(home.path);
+			for (const text of [home.code, home.words]) {
+				const line = firstScreen(page).getByText(text, { exact: true });
+				await expect(line).toBeVisible();
+				expect(await line.evaluate((el) => el.closest('[aria-hidden="true"]') !== null)).toBe(true);
+			}
+		});
+
+		test(`${home.path}: the page's description says what the company is and makes`, async ({
+			page,
+		}) => {
+			await page.goto(home.path);
+			await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+				'content',
+				home.description,
+			);
+		});
+
+		// Carlos's request (#37): the name lets the background show through a little, at 85 %.
+		test(`${home.path}: the title is slightly transparent`, async ({ page }) => {
+			await page.goto(home.path);
+			const color = await page
+				.getByRole('heading', { level: 1 })
+				.evaluate((h1) => getComputedStyle(h1).color);
+			// The alpha is the last number of rgba(…, 0.85), oklab(… / 0.85) or color(srgb … / 0.85);
+			// a colour without one is opaque.
+			const alpha = /^rgba|\//.test(color) ? Number(color.match(/([\d.]+)\)$/)?.[1]) : 1;
+			expect(alpha, color).toBeCloseTo(0.85, 2);
 		});
 
 		test(`${home.path}: the cue leads to Projects`, async ({ page }) => {
@@ -194,51 +245,45 @@ inEachBuild((build) => {
 			await expect(page.locator(home.cue.href)).toBeInViewport();
 		});
 
+		test(`${home.path}: no background video any more`, async ({ page }) => {
+			await page.goto(home.path);
+			await expect(firstScreen(page).locator('video')).toHaveCount(0);
+		});
+
 		for (const screen of SCREENS) {
 			test.describe(`on a ${screen.name} (${screen.width} px)`, () => {
 				test.use({ viewport: { width: screen.width, height: screen.height } });
 
-				test(`${home.path}: the logo sits at the exact centre of the first screen`, async ({
+				test(`${home.path}: the strip's button has its room from the start, so nothing moves when it shows`, async ({
+					page,
+				}) => {
+					await page.emulateMedia({ reducedMotion: 'no-preference' });
+					await page.goto(home.path);
+					await expect(
+						firstScreen(page).getByRole('button', { name: home.toggle.pause }),
+					).toBeVisible();
+					const projects = page.locator(home.cue.href);
+					const withButton = (await projects.boundingBox())!.y;
+					// With reduced motion the button never shows, as before the script runs.
+					await page.emulateMedia({ reducedMotion: 'reduce' });
+					await expect(firstScreen(page).getByRole('button')).toHaveCount(0);
+					expect((await projects.boundingBox())!.y).toBe(withButton);
+				});
+
+				test(`${home.path}: the first screen fits the screen, under the header`, async ({
 					page,
 				}) => {
 					await page.goto(home.path);
 					const section = await firstScreen(page).boundingBox();
-					const logo = await firstScreen(page).getByRole('img', { name: home.logo }).boundingBox();
-					if (!section || !logo) throw new Error('The first screen or its logo has no box.');
-					expect(Math.abs(logo.x + logo.width / 2 - (section.x + section.width / 2))).toBeLessThan(
-						1,
-					);
-					expect(
-						Math.abs(logo.y + logo.height / 2 - (section.y + section.height / 2)),
-					).toBeLessThan(1);
-					// The first screen fits the screen, under the header.
-					expect(section.y + section.height).toBeLessThanOrEqual(screen.height);
+					expect(section!.y + section!.height).toBeLessThanOrEqual(screen.height);
 				});
 			});
 		}
-
-		test.describe('without JavaScript', () => {
-			test.use({ javaScriptEnabled: false });
-
-			test(`${home.path}: the still frame stays, without the video, which could not be paused`, async ({
-				page,
-			}) => {
-				const videos = recordVideoRequests(page);
-				await page.goto(home.path);
-				const screen = firstScreen(page);
-				await expect(stillFrame(page)).toBeVisible();
-				await expect(screen.getByRole('heading', { level: 1 })).toBeVisible();
-				await expect(screen.getByRole('button', { name: home.pause })).toBeHidden();
-				await page.waitForLoadState('networkidle');
-				expect(videos).toEqual([]);
-			});
-		});
 	}
 
 	test('the first screen only exists on the home page', async ({ page }) => {
 		for (const path of pagesOf(build).filter((p) => p !== '/' && p !== '/en/')) {
 			await page.goto(path);
-			await expect(page.locator('video'), path).toHaveCount(0);
 			await expect(firstScreen(page), path).toHaveCount(0);
 		}
 	});

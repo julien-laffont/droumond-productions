@@ -1,4 +1,4 @@
-// The rule of the Equipa grid (#15), so that adding or removing a person in src/config/team.ts
+// The rule of the Elenco grid, so that adding or removing a person in src/config/cast.ts
 // never breaks it: never one person alone on a row, rows as even as possible, and portraits that
 // keep their size whatever the number of people.
 
@@ -32,7 +32,7 @@ function columnsFor(count: number, max: number): number {
  * - `slots`: how many parts a row is divided into; a portrait takes one. It stays `max` when a row
  *   holds fewer, so 2 people on a desktop keep the size of 5, aligned left.
  */
-export function teamGrid(count: number, max: number): { columns: number; slots: number } {
+export function castGrid(count: number, max: number): { columns: number; slots: number } {
 	const columns = columnsFor(count, max);
 	return { columns, slots: Math.max(columns, max) };
 }

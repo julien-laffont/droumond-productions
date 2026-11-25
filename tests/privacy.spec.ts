@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { CONTACT_EMAIL, LEGAL } from '../src/config/site';
 import { inEachBuild, openExisting } from './pages';
 
-/** What the policy holds in each language. The English texts are provisional (#18). */
+/** What the policy holds in each language. The English texts are reviewed. */
 const POLICIES = [
 	{
 		path: '/politica-de-privacidade/',
@@ -14,7 +14,6 @@ const POLICIES = [
 			'Quem somos',
 			'O que este site não faz',
 			'Emails recebidos',
-			'Teaser do YouTube',
 			'Registos do servidor',
 			'Os seus direitos',
 			'Queixa à CNPD',
@@ -29,7 +28,6 @@ const POLICIES = [
 			'Who we are',
 			'What this site does not do',
 			'Emails we receive',
-			'The YouTube teaser',
 			'Server logs',
 			'Your rights',
 			'Complaint to the CNPD',
@@ -63,5 +61,22 @@ inEachBuild((build) => {
 			}
 			expect(await main.innerText()).not.toMatch(/\{[a-z.]+\}/i);
 		});
+
+		if (policy.english) {
+			test(`${policy.path}: the Portuguese names are marked as Portuguese, for screen readers`, async ({
+				page,
+			}) => {
+				await openExisting(page, policy.path);
+				const portuguese = await page.getByRole('main').locator('[lang="pt-PT"]').allInnerTexts();
+				expect(portuguese).toEqual(
+					expect.arrayContaining([
+						LEGAL.firm,
+						LEGAL.companyType,
+						LEGAL.registeredOffice,
+						'Comissão Nacional de Proteção de Dados',
+					]),
+				);
+			});
+		}
 	}
 });

@@ -1,0 +1,72 @@
+---
+// A piece of 35 mm film (#36): the stock, with a band of sprocket holes above and below the frames
+// and an edge code printed on each band, in amber. The frames go in the slot. The codes are
+// decorative, hidden from screen readers.
+interface Props {
+	/** The edge code on the top band, such as "Droumond 2026 ▸ 48". */
+	top: string;
+	/** The edge code on the bottom band, in a dimmer amber, such as "48A". */
+	bottom: string;
+	/** The stock's width on each side of the frames, in pixels. */
+	side?: number;
+}
+
+const { top, bottom, side = 6 } = Astro.props;
+---
+
+<div class="film" style={`--side: ${side}px`}>
+	<span class="code code-top type-code" aria-hidden="true">
+		{top}
+	</span>
+	<slot />
+	<span class="code code-bottom type-code" aria-hidden="true">
+		{bottom}
+	</span>
+</div>
+
+<style>
+	.film {
+		/* The height of each band of sprocket holes. */
+		--band: 38px;
+		/* One hole, repeated along the band: the page's background shows through it. */
+		--holes: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10'%3E%3Crect x='5' width='14' height='10' rx='2.5'/%3E%3C/svg%3E");
+		position: relative;
+		background: var(--color-stock);
+		padding: var(--band) var(--side);
+	}
+	.film::before,
+	.film::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: var(--band);
+		pointer-events: none;
+		background: var(--color-ink);
+		-webkit-mask: var(--holes) 0 0 / 24px 10px;
+		mask: var(--holes) 0 0 / 24px 10px;
+		-webkit-mask-repeat: space no-repeat;
+		mask-repeat: space no-repeat;
+	}
+	.film::before {
+		top: 0;
+		-webkit-mask-position: 0 20px;
+		mask-position: 0 20px;
+	}
+	.film::after {
+		bottom: 0;
+		-webkit-mask-position: 0 8px;
+		mask-position: 0 8px;
+	}
+	.code {
+		position: absolute;
+		left: 10px;
+	}
+	.code-top {
+		top: 4px;
+	}
+	.code-bottom {
+		bottom: 4px;
+		color: var(--color-amber-dim);
+	}
+</style>

@@ -1,12 +1,13 @@
 ---
-// The Projects section of the home page (#14): the Projects of src/config/projects.ts, with the
-// title and the small line under each image, as on The Mill. A YouTube teaser first shows a local
-// image and a notice; the player only loads after a click (#3).
+// The home page's Projects: a reel of film (leader, Projects, tail) that the scroll drives sideways
+// on a desktop and that swipes elsewhere. The excerpts are hosted here, never in YouTube's player.
 import { Image } from 'astro:assets';
-import { PROJECTS } from '../config/projects';
+import { IMAGE_FILES } from '../config/image-files';
+import { PROJECTS, type Project } from '../config/projects';
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
-import { sectionAnchor, teaserPrivacyPath } from '../lib/paths';
+import { PAGES, sectionAnchor } from '../lib/paths';
+import Film from './Film.astro';
 
 interface Props {
 	language: Language;
@@ -15,105 +16,463 @@ interface Props {
 const { language } = Astro.props;
 const t = dictionaries[language].projects;
 const anchor = sectionAnchor('projects', language);
+
+/** Frame numbers from 01, the leader's: the reel's name on odd frames, a Project's title on even ones. */
+const edgeCodes = (number: number, title?: string) => {
+	const code = String(number).padStart(2, '0');
+	return {
+		top: number % 2 ? `Droumond 2026 ▸ ${code}` : [`▸ ${code}`, title].filter(Boolean).join(' · '),
+		bottom: `${code}A`,
+	};
+};
+
+const ratio = ({ poster }: Project) => poster.width / poster.height;
+
+/** A Project's link: its own page in the same tab, or another site in a new tab. */
+const linkAttributes = ({ link }: Project) =>
+	'page' in link
+		? { href: PAGES[link.page][language] }
+		: { href: link.url, target: '_blank', rel: 'noopener' };
+
+/** On a phone, the frames are lowered until the widest one fits the screen. */
+const widest = Math.max(...PROJECTS.map(ratio));
+
+/** A poster's width in its frame, for `sizes`. The heights match --frame-height below. */
+const posterSizes = (project: Project) => {
+	const r = ratio(project).toFixed(3);
+	return `(max-width: 760px) calc(${r} * min(42vw, (100vw - 48px) / ${widest.toFixed(3)})), calc(${r} * clamp(200px, 100vh - 456px, 540px))`;
+};
 ---
 
 <section
 	id={anchor}
 	aria-labelledby={`${anchor}-title`}
-	class="px-gutter pt-[calc(var(--edge-height)*0.6+clamp(56px,8vw,120px))] pb-[clamp(48px,6vw,88px)]"
+	class="reel"
+	style={`--widest: ${widest.toFixed(4)}`}
+	data-reel
 >
-	{/* Room above for the first screen's brush-stroke edge (#13), as in the prototype. */}
-	<h2 id={`${anchor}-title`} class="mb-[clamp(20px,2.4vw,32px)] type-label">
-		{t.title}
-	</h2>
-	<div class="grid grid-cols-[2fr_1fr] items-start gap-[clamp(12px,1.4vw,20px)] max-[760px]:grid-cols-1 max-[760px]:gap-10">
-		{PROJECTS.map((project, index) => {
-			const { link } = project;
-			const youtube = 'youtube' in link ? link.youtube : undefined;
-			const href = 'youtube' in link ? `https://www.youtube.com/watch?v=${link.youtube}` : link.url;
-			const label = 'youtube' in link ? t.watchTeaser : link.label[language];
-			const noticeId = `teaser-notice-${index}`;
-			return (
-				<article class="reveal grid min-w-0 gap-3.5">
-					{/* The image's box: after the click, the teaser's player takes the link's place. */}
-					<div
-						class:list={[
-							'bg-ink-2',
-							project.shape === 'wide' ? 'aspect-video' : 'aspect-[4/5] max-[760px]:aspect-square',
-						]}
-					>
-						{/* The link clips the zoom itself, so its focus ring stays visible around it. */}
-						<a
-							href={href}
-							target="_blank"
-							rel="noopener"
-							aria-describedby={youtube && noticeId}
-							data-teaser={youtube}
-							data-player={youtube && `${project.title[language]}, ${t.player}`}
-							class="group relative block size-full overflow-hidden"
-						>
-							<Image
-								src={project.image}
-								alt={project.alt[language]}
-								widths={project.shape === 'wide' ? [480, 720, 1080] : [312, 624]}
-								sizes={
-									project.shape === 'wide'
-										? '(max-width: 760px) 100vw, 66vw'
-										: '(max-width: 760px) 100vw, 33vw'
-								}
-								class="size-full object-cover motion-safe:transition-transform motion-safe:duration-900 motion-safe:ease-(--ease) motion-safe:group-hover:scale-[1.025]"
-							/>
-							{/* Nothing drawn over the image, which is the link itself; screen readers still
-							    hear what it does. */}
-							<span class="sr-only">{label}</span>
-						</a>
-					</div>
-					{youtube && (
-						<p id={noticeId} class="text-[0.78rem]/[1.5] text-muted">
-							{t.notice}{' '}
-							<a href={teaserPrivacyPath(language)} class="underline underline-offset-3">
-								{t.privacy}
+	<div class="pin">
+		<div class="flex flex-wrap items-end gap-x-6 gap-y-2.5 px-gutter">
+			<h2 id={`${anchor}-title`} class="type-label">
+				{t.title}
+			</h2>
+			<p class="type-meta" aria-hidden="true">
+				<span class="hint-scroll">{t.hint.scroll}</span>
+				<span class="hint-swipe">{t.hint.swipe}</span>
+			</p>
+			<div class="ml-auto flex items-center gap-3" aria-hidden="true">
+				<span class="type-code">{t.reel}</span>
+				<span class="relative h-0.5 w-[clamp(80px,14vw,200px)] bg-paper/14">
+					<span class="bar" data-reel-bar></span>
+				</span>
+			</div>
+			<button
+				type="button"
+				data-reel-toggle
+				data-pause={t.pause}
+				data-resume={t.resume}
+				hidden
+				class="cursor-pointer border border-paper/14 px-2.5 py-2 text-[11px] leading-none tracking-[0.12em] uppercase hover:border-paper motion-reduce:hidden"
+			>
+				{t.pause}
+			</button>
+		</div>
+		<div class="window reveal" data-reel-window>
+			<ol class="strip px-gutter" data-reel-strip>
+				<li aria-hidden="true">
+					<Film {...edgeCodes(1)}>
+						<div class="frame slug">
+							<span class="sweep"></span>
+							<svg viewBox="0 0 300 400" preserveAspectRatio="none">
+								<circle cx="150" cy="200" r="111"></circle>
+								<circle cx="150" cy="200" r="94"></circle>
+								<line x1="150" y1="0" x2="150" y2="400"></line>
+								<line x1="0" y1="200" x2="300" y2="200"></line>
+							</svg>
+							<span class="count">3</span>
+							<span class="slug-text">
+								{t.reel}
+								<span class="max-[760px]:hidden">{` · ${t.title}`}</span>
+							</span>
+						</div>
+					</Film>
+				</li>
+				{PROJECTS.map((project, index) => (
+					<li class="project">
+						<Film {...edgeCodes(index + 2, project.title[language])}>
+							<div class="frame" style={`--ratio: ${ratio(project).toFixed(4)}`}>
+								<Image
+									src={project.poster}
+									alt={project.alt[language]}
+									{...IMAGE_FILES.project[project.shape]}
+									sizes={posterSizes(project)}
+									loading="eager"
+									fetchpriority="low"
+									class="size-full object-cover"
+								/>
+								{/* Loaded by the script below, over the poster (its first frame). */}
+								<video
+									data-src={project.video}
+									muted
+									loop
+									playsinline
+									preload="none"
+									aria-hidden="true"
+									hidden
+									class="absolute inset-0 size-full object-cover motion-reduce:hidden"
+								/>
+							</div>
+						</Film>
+						<div class="caption">
+							<h3 class="text-[clamp(1.9rem,3vw,3.2rem)] type-name">{project.title[language]}</h3>
+							<p class="type-meta">
+								{[project.type, project.genre, project.status]
+									.map((text) => text[language])
+									.join(' · ')}
+							</p>
+							{project.sentence && (
+								<p class="max-w-[60ch] text-sm text-muted">{project.sentence[language]}</p>
+							)}
+							<a {...linkAttributes(project)} class="cta">
+								{project.link.label[language]}
+								<span aria-hidden="true">{'page' in project.link ? ' →' : ' ↗'}</span>
 							</a>
-						</p>
-					)}
-					<div class="grid gap-2">
-						<h3 class="text-[clamp(1.7rem,2.6vw,2.4rem)] type-name">{project.title[language]}</h3>
-						<p class="type-meta">
-							{[project.type, project.genre, project.status]
-								.map((text) => text[language])
-								.join(' · ')}
-						</p>
-						{project.sentence && (
-							<p class="max-w-[60ch] text-sm text-muted">{project.sentence[language]}</p>
-						)}
-					</div>
-				</article>
-			);
-		})}
+						</div>
+					</li>
+				))}
+				<li aria-hidden="true">
+					<Film {...edgeCodes(PROJECTS.length + 2)}>
+						<div class="frame slug runout">
+							<span class="count">{t.end}</span>
+							<span class="slug-text">{t.reel}</span>
+						</div>
+					</Film>
+				</li>
+			</ol>
+		</div>
 	</div>
 </section>
 
 <script>
-	// Click to load (#3): until the click, the page asks nothing of YouTube. A plain click (or Enter)
-	// swaps the image for the player from youtube-nocookie.com, playing at once; nothing is
-	// remembered, so the next visit starts with the image again. Without JavaScript, or with a
-	// modifier key (new tab, new window), the link simply opens the teaser on YouTube.
-	for (const link of document.querySelectorAll<HTMLAnchorElement>('a[data-teaser]')) {
-		link.addEventListener('click', (event) => {
-			if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+	// Excerpts load once the page has and their frame comes near, and pause off screen; with less
+	// motion, only the posters. The button (WCAG 2.2.2) changes its label, so no aria-pressed.
+	const section = document.querySelector<HTMLElement>('[data-reel]');
+	const reelWindow = section?.querySelector<HTMLElement>('[data-reel-window]');
+	const strip = section?.querySelector<HTMLElement>('[data-reel-strip]');
+	const bar = section?.querySelector<HTMLElement>('[data-reel-bar]');
+	const toggle = section?.querySelector<HTMLButtonElement>('[data-reel-toggle]');
+	const header = document.querySelector('header');
+	if (section && reelWindow && strip && bar && toggle && header) {
+		/** Pixels of vertical scroll per pixel of film. */
+		const SLOWNESS = 1.8;
+		const scrollDrives = matchMedia(
+			'(min-width: 761px) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+		);
+		const lessMotion = matchMedia('(prefers-reduced-motion: reduce)');
+		const clamp = (value: number) => Math.min(1, Math.max(0, value));
+		/** How far the strip travels sideways when the scroll drives it. */
+		let distance = 0;
+
+		const follow = () => {
+			let progress;
+			if (section.classList.contains('driven')) {
+				const travel = distance * SLOWNESS;
+				const top = section.getBoundingClientRect().top;
+				progress = travel > 0 ? clamp((header.offsetHeight - top) / travel) : 0;
+				strip.style.transform = `translate3d(${(-progress * distance).toFixed(1)}px, 0, 0)`;
+			} else {
+				const max = reelWindow.scrollWidth - reelWindow.clientWidth;
+				progress = max > 0 ? reelWindow.scrollLeft / max : 0;
+			}
+			bar.style.transform = `scaleX(${progress.toFixed(3)})`;
+		};
+
+		// The section grows by the strip's travel, so the pinned reel has room to scroll through.
+		const layout = () => {
+			const driven = scrollDrives.matches;
+			section.classList.toggle('driven', driven);
+			distance = driven ? Math.max(0, strip.scrollWidth - reelWindow.clientWidth) : 0;
+			section.style.height = driven
+				? `${innerHeight - header.offsetHeight + distance * SLOWNESS}px`
+				: '';
+			if (!driven) strip.style.transform = '';
+			follow();
+		};
+
+		// A focused link brings its frame into view: through the page's scroll when it drives the
+		// strip, through the window's otherwise.
+		strip.addEventListener('focusin', (event) => {
+			const cell = (event.target as HTMLElement).closest('li');
+			if (!cell) return;
+			if (section.classList.contains('driven')) {
+				const x = cell.offsetLeft - (reelWindow.clientWidth - cell.offsetWidth) / 2;
+				const progress = distance > 0 ? clamp(x / distance) : 0;
+				const top = section.getBoundingClientRect().top + scrollY;
+				scrollTo(0, top - header.offsetHeight + progress * distance * SLOWNESS);
+			} else {
+				cell.scrollIntoView({ block: 'nearest', inline: 'start' });
+			}
+		});
+
+		let ticking = false;
+		addEventListener(
+			'scroll',
+			() => {
+				if (ticking) return;
+				ticking = true;
+				requestAnimationFrame(() => {
+					ticking = false;
+					follow();
+				});
+			},
+			{ passive: true },
+		);
+		reelWindow.addEventListener('scroll', follow, { passive: true });
+		addEventListener('resize', layout);
+		scrollDrives.addEventListener('change', layout);
+		document.fonts.ready.then(layout);
+		layout();
+
+		const videos = [...section.querySelectorAll<HTMLVideoElement>('video[data-src]')];
+		const inView = new Set<Element>();
+		let pageLoaded = document.readyState === 'complete';
+		let pausedByHand = false;
+
+		const syncPlayback = (video: HTMLVideoElement) => {
+			const plays =
+				pageLoaded && inView.has(video.parentElement!) && !pausedByHand && !lessMotion.matches;
+			if (!plays) {
+				video.pause();
 				return;
 			}
-			event.preventDefault();
-			const player = document.createElement('iframe');
-			player.src = `https://www.youtube-nocookie.com/embed/${link.dataset.teaser}?autoplay=1`;
-			player.title = link.dataset.player ?? '';
-			player.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-			player.allowFullscreen = true;
-			// YouTube refuses to play in a page that sends no referrer.
-			player.referrerPolicy = 'strict-origin-when-cross-origin';
-			player.className = 'size-full';
-			link.replaceWith(player);
-			player.focus();
+			if (!video.getAttribute('src')) video.src = video.dataset.src!;
+			// Refused (power saving, say): the poster stays.
+			video.play().catch(() => {});
+		};
+		const syncAllPlayback = () => videos.forEach(syncPlayback);
+
+		// A quarter of a screen ahead, so the excerpt is ready as its frame arrives.
+		const frameWatcher = new IntersectionObserver(
+			(entries) => {
+				for (const { target, isIntersecting } of entries) {
+					if (isIntersecting) inView.add(target);
+					else inView.delete(target);
+					syncPlayback(target.querySelector('video')!);
+				}
+			},
+			{ rootMargin: '25% 0px' },
+		);
+		for (const video of videos) {
+			// Shown once it plays, so the poster never gives way to an empty frame.
+			video.addEventListener('playing', () => (video.hidden = false), { once: true });
+			frameWatcher.observe(video.parentElement!);
+		}
+		// WebKit may jump to the URL's anchor only after the load, once the fonts are in: the frames
+		// are watched again after that, so an excerpt far from the anchor stays unloaded.
+		addEventListener('load', async () => {
+			layout();
+			await document.fonts.ready;
+			await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+			pageLoaded = true;
+			for (const video of videos) {
+				frameWatcher.unobserve(video.parentElement!);
+				frameWatcher.observe(video.parentElement!);
+			}
+		});
+		lessMotion.addEventListener('change', syncAllPlayback);
+
+		section.classList.add('running');
+		toggle.hidden = false;
+		toggle.addEventListener('click', () => {
+			pausedByHand = !pausedByHand;
+			section.classList.toggle('paused', pausedByHand);
+			toggle.textContent = (pausedByHand ? toggle.dataset.resume : toggle.dataset.pause) ?? '';
+			syncAllPlayback();
 		});
 	}
 </script>
+
+<style>
+	.reel {
+		/* Swiping: lowered on a phone until the widest frame fits between the side margins. */
+		--frame-height: min(
+			clamp(150px, 42vw, 300px),
+			calc((100vw - 2 * var(--gutter) - 16px) / var(--widest))
+		);
+		position: relative;
+		/* The line above the reel, as a shadow: a border would take height from the pinned travel. */
+		box-shadow: inset 0 1px 0 color-mix(in oklab, var(--color-paper) 14%, transparent);
+	}
+	.pin {
+		display: grid;
+		align-content: center;
+		gap: clamp(18px, 3vh, 30px);
+		padding-block: clamp(40px, 6vh, 72px);
+	}
+	.bar {
+		position: absolute;
+		inset: 0;
+		background: var(--color-amber);
+		transform-origin: left;
+		transform: scaleX(0);
+	}
+	.window {
+		min-width: 0;
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px));
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-amber-dim) transparent;
+		padding-bottom: 12px;
+	}
+	.strip {
+		display: flex;
+		width: max-content;
+	}
+	.strip > li {
+		flex: none;
+		/* For the link that covers the whole cell. */
+		position: relative;
+		display: grid;
+		align-content: start;
+		gap: 18px;
+		min-width: 12rem;
+		scroll-snap-align: start;
+	}
+	.strip :global(.film) {
+		padding-inline: 8px;
+	}
+	.frame {
+		position: relative;
+		height: var(--frame-height);
+		aspect-ratio: var(--ratio, 3 / 4);
+		background: var(--color-ink);
+	}
+	.project .frame {
+		filter: saturate(0.85);
+		transition: filter 0.4s var(--ease);
+	}
+	.project:hover .frame {
+		filter: saturate(1.1) brightness(1.06);
+	}
+	.caption {
+		display: grid;
+		gap: 8px;
+		justify-items: start;
+		padding-inline: 8px;
+		max-width: 30rem;
+	}
+	.cta {
+		margin-top: 6px;
+	}
+	/* The whole cell is the link: one tab stop, and the poster keeps its description. */
+	.cta::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+	}
+
+	/* The leader (a crosshair, a circle and a sweep) and the tail. */
+	.slug {
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+	}
+	.slug svg {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.slug svg * {
+		fill: none;
+		stroke: var(--color-muted);
+		stroke-width: 1.5;
+		vector-effect: non-scaling-stroke;
+	}
+	.sweep {
+		position: absolute;
+		width: 74%;
+		aspect-ratio: 1;
+		left: 13%;
+		top: 50%;
+		margin-top: -37%;
+		border-radius: 50%;
+		background: conic-gradient(from 0deg, rgb(236 229 216 / 0.22), rgb(236 229 216 / 0) 30%);
+	}
+	.count {
+		position: relative;
+		font-family: var(--font-name);
+		font-weight: 800;
+		font-size: calc(var(--frame-height) * 0.34);
+		line-height: 1;
+		text-transform: uppercase;
+		color: var(--color-paper);
+	}
+	.slug-text {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 14px;
+		text-align: center;
+		font-size: 11px;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+	.runout {
+		background: repeating-linear-gradient(
+			-45deg,
+			var(--color-stock) 0 10px,
+			var(--color-ink) 10px 20px
+		);
+	}
+	.runout .count {
+		font-size: calc(var(--frame-height) * 0.2);
+		background: var(--color-ink);
+		padding: 4px 14px;
+	}
+
+	/* Driven by the scroll: pinned under the header, filling the screen. The 392px are the rest of
+	   the pinned reel: the title row, the film's bands, the caption and the margins. */
+	.reel.driven {
+		--frame-height: clamp(200px, calc(100svh - var(--header-height) - 392px), 540px);
+	}
+	.reel.driven .pin {
+		position: sticky;
+		top: var(--header-height);
+		height: calc(100svh - var(--header-height));
+	}
+	/* The bottom padding stays: room for a focused link's outline. */
+	.reel.driven .window {
+		overflow: clip;
+		scroll-snap-type: none;
+	}
+	.reel.driven .strip {
+		will-change: transform;
+	}
+	.reel.driven .hint-swipe,
+	.reel:not(.driven) .hint-scroll {
+		display: none;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.reel.running .sweep {
+			animation: sweep 1s linear infinite;
+		}
+		.reel.paused .sweep {
+			animation-play-state: paused;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.project .frame {
+			transition: none;
+		}
+	}
+	@keyframes sweep {
+		to {
+			transform: rotate(1turn);
+		}
+	}
+</style>

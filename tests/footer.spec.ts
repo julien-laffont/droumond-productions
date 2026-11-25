@@ -1,31 +1,34 @@
-// The footer, on every page: the legal identification, the founding year, the email, the Privacy
-// Policy, YouTube, Instagram, the Livro de Reclamações and the consumer arbitration centre (#3, #6, #18).
+// The footer, on every page: the tail of the reel (#36), then the legal identification, the founding
+// year, the email, the Privacy Policy, YouTube, Instagram, the Livro de Reclamações and the consumer
+// arbitration centre (#3, #6, #18).
 import { expect, test } from '@playwright/test';
 import { CONTACT_EMAIL } from '../src/config/site';
 import { inEachBuild, languageOf, pagesOf } from './pages';
 
-/** What the footer holds in each language. The English texts are provisional (#18). */
+/** What the footer holds in each language. The English texts are reviewed (#18). */
 const EXPECTED = {
 	pt: {
 		legal: ['Firma', 'Tipo de sociedade', 'Sede', 'Registo comercial', 'NIPC', 'Capital social'],
 		privacy: { name: 'Política de Privacidade', href: '/politica-de-privacidade/' },
 		founded: 'Desde 2026',
+		reelEnd: 'Fim da bobina',
 		disputes:
 			'Em caso de litígio de consumo, pode recorrer ao CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (www.cniacc.pt). Mais informações no Portal do Consumidor (www.consumidor.gov.pt).',
 	},
 	en: {
 		legal: [
 			'Company name',
-			'Company type',
+			'Legal form',
 			'Registered office',
-			'Commercial registry',
+			'Commercial register',
 			'Tax number (NIPC)',
 			'Share capital',
 		],
 		privacy: { name: 'Privacy Policy', href: '/en/privacy-policy/' },
 		founded: 'Est. 2026',
+		reelEnd: 'End of reel',
 		disputes:
-			'In case of a consumer dispute, you may turn to CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (www.cniacc.pt). More information on the Portal do Consumidor (www.consumidor.gov.pt).',
+			'In the event of a consumer dispute, you can turn to CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (www.cniacc.pt). For more information, see the Portal do Consumidor (www.consumidor.gov.pt).',
 	},
 };
 
@@ -42,6 +45,22 @@ const LEGAL_VALUES = [
 inEachBuild((build) => {
 	for (const path of pagesOf(build)) {
 		const expected = EXPECTED[languageOf(path)];
+
+		test(`${path}: the reel ends above the footer ("${expected.reelEnd}"), hidden from screen readers`, async ({
+			page,
+		}) => {
+			await page.goto(path);
+			const tail = page.getByText(expected.reelEnd, { exact: true });
+			await expect(tail).toBeVisible();
+			expect(await tail.evaluate((el) => el.closest('[aria-hidden="true"]') !== null)).toBe(true);
+			// The film's edge codes, in amber, as on the rest of the reel.
+			await expect(page.getByText('48A', { exact: true })).toBeVisible();
+			const [tailBox, legalBox] = [
+				await tail.boundingBox(),
+				await page.getByRole('contentinfo').locator('dl').boundingBox(),
+			];
+			expect(tailBox!.y + tailBox!.height).toBeLessThan(legalBox!.y);
+		});
 
 		test(`${path}: the footer identifies the company with its legal data, in Portuguese`, async ({
 			page,

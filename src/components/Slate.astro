@@ -1,0 +1,118 @@
+---
+// A clapperboard: the striped arm and base, the board with its content (the slot), and four
+// decorative fields at its foot. The arm claps on hover and while something inside has the focus.
+import type { Language } from '../config/site';
+import { dictionaries } from '../i18n';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const t = dictionaries[language].filming.slate;
+// Only the labels are translated. The date is the company's founding day.
+const fields = [
+	[t.production, 'Droumond Productions'],
+	[t.scene, '01'],
+	[t.take, '01'],
+	[t.date, '26.02.2026'],
+];
+---
+
+<div class="slate reveal mx-auto max-w-[880px]">
+	<div class="clapper relative h-[clamp(40px,5vw,56px)]" aria-hidden="true">
+		<span class="arm"></span>
+		<span class="base"></span>
+	</div>
+	<div class="grid border-2 border-t-0 border-paper bg-slate">
+		<div class="grid justify-items-start gap-3.5 p-[clamp(20px,3.4vw,40px)]">
+			<slot />
+		</div>
+		<dl
+			class="fields grid grid-cols-[2fr_1fr_1fr_1.4fr] border-t-2 border-paper max-[700px]:grid-cols-2"
+			aria-hidden="true"
+		>
+			{fields.map(([label, value]) => (
+				<div class="min-w-0 px-[clamp(12px,2vw,20px)] pt-2.5 pb-3">
+					<dt class="text-[10px] tracking-[0.18em] text-muted uppercase">{label}</dt>
+					<dd class="font-name text-[clamp(1.1rem,2vw,1.6rem)] leading-[1.1] font-bold uppercase [overflow-wrap:anywhere]">
+						{value}
+					</dd>
+				</div>
+			))}
+		</dl>
+	</div>
+</div>
+
+<style>
+	.slate {
+		container-type: inline-size;
+	}
+	/* The open arm rises about width × sin 9° above the board. Where the space left above the slate
+	   (--space-above) is smaller, the slate adds the rest, and a small gap. */
+	.clapper {
+		margin-top: max(0px, calc(100cqi * sin(9deg) + 14px - var(--space-above, 0px)));
+	}
+
+	.arm,
+	.base {
+		position: absolute;
+		inset-inline: 0;
+		height: 50%;
+		background: repeating-linear-gradient(
+			-55deg,
+			var(--color-paper) 0 22px,
+			var(--color-ink) 22px 44px
+		);
+		border: 2px solid var(--color-paper);
+	}
+	/* Open, hinged on its bottom left corner. */
+	.arm {
+		top: -6px;
+		transform-origin: 2px 100%;
+		transform: rotate(-9deg);
+	}
+	.base {
+		bottom: 0;
+		background-position: 22px 0;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.slate:focus-within .arm {
+			animation: clap 0.5s var(--ease) both;
+		}
+	}
+	/* Only with a real hover: on a touch screen a tap would replay it. */
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		.slate:hover .arm {
+			animation: clap 0.5s var(--ease) both;
+		}
+	}
+	@keyframes clap {
+		0% {
+			transform: rotate(-9deg);
+		}
+		45% {
+			transform: rotate(0deg);
+		}
+		60% {
+			transform: rotate(-2deg);
+		}
+		100% {
+			transform: rotate(-9deg);
+		}
+	}
+
+	.fields > div:not(:first-child) {
+		border-left: 2px solid var(--color-paper);
+	}
+	/* Two by two on a phone. */
+	@media (width < 700px) {
+		.fields > div:nth-child(odd) {
+			border-left: 0;
+		}
+		.fields > div:nth-child(n + 3) {
+			border-top: 2px solid var(--color-paper);
+		}
+	}
+</style>

@@ -1,32 +1,37 @@
 @import 'tailwindcss';
 
 /*
- * The visual direction of the prototype (#5): dark and cinematic, opened and closed by light canvas,
- * with brush strokes painting the seams. Only these colours exist: the Tailwind classes use them by
- * name (bg-ink, text-canvas, text-muted…). The crimson #79081b only lives in the background video,
- * never as text or buttons, so it has no token.
+ * The visual direction of Película (#36), chosen by Carlos on 2026-11-20: a 35 mm reel unspooled
+ * down the page, one dark world. Only these colours exist: the Tailwind classes use them by name
+ * (bg-ink, text-paper, text-amber…). Lines are paper at 14 % (border-paper/14).
  */
 @theme {
 	--color-*: initial;
-	/* Page background, and the paint of the brush strokes. */
-	--color-ink: #0e0d10;
-	/* Raised dark surface. */
-	--color-ink-2: #18161a;
-	/* Light zones, and text on ink (12.5:1). */
-	--color-canvas: #dbcdc6;
-	--color-canvas-hi: #e7ddd8;
-	--color-canvas-lo: #c9b8b0;
-	/* Secondary text on ink (5.3:1). */
-	--color-muted: #8d8481;
-	/* Secondary text on canvas (5:1). */
-	--color-muted-on-canvas: #5a5150;
+	/* The page: the dark of the projection room. */
+	--color-ink: #0c0b09;
+	/* The film stock around the frames. */
+	--color-stock: #1b1813;
+	/* The clapperboard. */
+	--color-slate: #151411;
+	/* Names and running text (16:1 on ink). */
+	--color-paper: #ece5d8;
+	/* Secondary text (7.3:1 on ink). */
+	--color-muted: #a59d8f;
+	/* Edge codes, frame numbers, the timecode. */
+	--color-amber: #e8a43a;
+	/* Secondary codes (5:1 on stock). */
+	--color-amber-dim: #b5802e;
+	/* The grease pencil: hand marks only, never text. */
+	--color-grease: #d63a2f;
 }
 
-/* Archivo only, in several widths (font-stretch-62% for names, font-stretch-125% for labels).
-   --font-archivo comes from the Astro fonts API (astro.config.mjs), with its fallback font. */
+/* Names and titles in Big Shoulders Display (font-name), everything else in Space Mono, the
+   page's font. The variables come from the Astro fonts API (astro.config.mjs), with their
+   fallback fonts. */
 @theme inline {
-	--font-sans: var(--font-archivo);
-	--default-font-family: var(--font-archivo);
+	--font-*: initial;
+	--font-name: var(--font-big-shoulders);
+	--default-font-family: var(--font-space-mono);
 }
 
 /* The side margin of every block (--gutter), wider than the phone's notch. */
@@ -35,33 +40,76 @@
 	padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
 }
 
-/* The label style of the prototype: section titles, the Privacy Policy's title, the 404's
-   sentences. Wide uppercase, never large display type, which is for names only. */
+/* Labels: the section titles, the Privacy Policy's title and the 404's two sentences, which stand
+   as the page's titles. Large and condensed, uppercase. Descriptions never use it: they stay small. */
 @utility type-label {
-	font-size: clamp(1rem, 1.5vw, 1.25rem);
-	line-height: 1.2;
-	font-weight: 500;
-	letter-spacing: 0.14em;
+	font-family: var(--font-name);
+	font-size: clamp(1.9rem, 3vw, 2.8rem);
+	line-height: 0.9;
+	font-weight: 800;
+	letter-spacing: 0.02em;
 	text-transform: uppercase;
-	font-stretch: 125%;
 }
 
-/* Names in large type (Projects, people): narrow, heavy, uppercase. Each use sets the size. */
+/* Names in large type (the company, Projects, people): condensed, heavy, uppercase. Each use sets
+   the size. */
 @utility type-name {
+	font-family: var(--font-name);
 	font-weight: 800;
 	line-height: 0.92;
+	letter-spacing: 0.01em;
 	text-transform: uppercase;
-	font-stretch: 62%;
+	text-wrap: balance;
 }
 
 /* The small grey line under a name: a Project's type · genre · status, a person's role. */
 @utility type-meta {
-	font-size: 0.72rem;
-	font-weight: 300;
-	letter-spacing: 0.18em;
+	font-size: 11px;
+	line-height: 1.5;
+	letter-spacing: 0.14em;
 	text-transform: uppercase;
-	font-stretch: 125%;
 	color: var(--color-muted);
+}
+
+/* The edge codes printed on the film, in amber: decorative, so always hidden from screen readers. */
+@utility type-code {
+	font-size: 10px;
+	line-height: 12px;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-amber);
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+
+/* A call to action: small bold capitals in amber, underlined (Projects' links, the teaser's). */
+@utility cta {
+	padding-bottom: 2px;
+	border-bottom: 1px solid currentColor;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: var(--color-amber);
+}
+
+/* A standalone link that turns amber, with an amber line under it, on hover (the header's
+   sections, the 404's links). */
+@utility link-line {
+	text-decoration: none;
+	padding-block: 6px;
+	border-bottom: 1px solid transparent;
+	transition:
+		border-color 0.2s var(--ease),
+		color 0.2s var(--ease);
+	&:hover {
+		color: var(--color-amber);
+		border-bottom-color: var(--color-amber);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
 }
 
 @layer base {
@@ -69,8 +117,6 @@
 		--header-height: 4rem;
 		/* The side margin of the blocks (px-gutter). */
 		--gutter: clamp(16px, 3vw, 40px);
-		/* The height of the brush-stroke seams (.edge); the blocks next to one leave room for half of it. */
-		--edge-height: clamp(44px, 7vw, 104px);
 		--ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 	}
 
@@ -82,111 +128,33 @@
 
 	body {
 		background: var(--color-ink);
-		color: var(--color-canvas);
-		line-height: 1.55;
+		color: var(--color-paper);
+		font-size: 15px;
+		line-height: 1.6;
 		-webkit-font-smoothing: antialiased;
 	}
 
 	:focus-visible {
-		outline: 2px solid currentColor;
+		outline: 2px solid var(--color-amber);
 		outline-offset: 3px;
 	}
 }
 
 @layer components {
-	/* The logo symbol, in the text colour: dark on canvas, light on ink, from the same file.
-	   When the SVG arrives (#18), only the file changes. */
+	/* The logo symbol, in the text colour, from the black file. When the SVG arrives (#18), only
+	   the file changes. */
 	.logo-mark {
 		background: currentColor;
 		-webkit-mask: url('../assets/logo.png') center / contain no-repeat;
 		mask: url('../assets/logo.png') center / contain no-repeat;
-	}
-
-	/* The brush stroke paints itself under a link on hover and on keyboard focus. */
-	.brush-link {
-		position: relative;
-		text-decoration: none;
-	}
-	.brush-link::after {
-		content: '';
-		position: absolute;
-		left: -6%;
-		right: -6%;
-		bottom: -7px;
-		height: 7px;
-		background: currentColor;
-		-webkit-mask: url('../assets/brush.svg') 0 0 / 100% 100% no-repeat;
-		mask: url('../assets/brush.svg') 0 0 / 100% 100% no-repeat;
-		transform: scaleX(0);
-		transform-origin: left;
-		transition: transform 0.35s var(--ease);
-	}
-	.brush-link:hover::after,
-	.brush-link:focus-visible::after {
-		transform: scaleX(1);
-	}
-
-	/* The seam between a light zone and the dark: the same brush stroke, enlarged, in ink. Inside a
-	   light zone, .edge-down paints its bottom seam and .edge-up its top one. Half of the stroke
-	   overlaps the next block, so the zone needs `relative z-2 isolate` (above its neighbours), and
-	   the neighbour leaves room for half of --edge-height. --edge-color changes the paint when the
-	   neighbour is not ink (the Contacto block's top edge over the ink-2 filming strip, #16). */
-	.edge {
-		position: absolute;
-		left: 0;
-		right: 0;
-		height: var(--edge-height);
-		z-index: 3;
-		pointer-events: none;
-		background: var(--edge-color, var(--color-ink));
-		-webkit-mask: url('../assets/brush.svg') 0 0 / 100% 100% no-repeat;
-		mask: url('../assets/brush.svg') 0 0 / 100% 100% no-repeat;
-	}
-	.edge-down {
-		bottom: 0;
-		transform: translateY(50%);
-	}
-	.edge-up {
-		top: 0;
-		transform: translateY(-50%) scaleX(-1);
-	}
-
-	/* Film grain on the light zones: SVG noise, multiplied. .grain-moving makes it flicker. It
-	   overflows by 60 px so its movement never shows an edge: put it in a clipping layer behind the
-	   content (`absolute inset-0 -z-1 overflow-hidden`), or the page scrolls sideways. */
-	.grain {
-		position: absolute;
-		inset: -60px;
-		pointer-events: none;
-		opacity: 0.35;
-		mix-blend-mode: multiply;
-		background-size: 180px;
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-	}
-	.grain-moving {
-		animation: grain 0.5s steps(3) infinite;
-	}
-}
-
-@keyframes grain {
-	0% {
-		transform: translate(0, 0);
-	}
-	33% {
-		transform: translate(-37px, 21px);
-	}
-	66% {
-		transform: translate(23px, -41px);
-	}
-	100% {
-		transform: translate(0, 0);
 	}
 }
 
 /* Discreet reveal of the sections while scrolling, from a visible resting state. Only what is
    below the screen when the page opens waits faded (.reveal-later, set by the script in
    Base.astro), and fades in when it comes into view; what is already on screen, and everything
-   without JavaScript, simply shows. Waiting starts at once: only showing is animated. */
+   without JavaScript, simply shows. Waiting starts at once: only showing is animated. Whoever
+   asked for less motion sees everything still. */
 @media (prefers-reduced-motion: no-preference) {
 	.reveal:not(.reveal-later) {
 		transition:
@@ -196,15 +164,5 @@
 	.reveal-later {
 		opacity: 0.25;
 		transform: translateY(20px);
-	}
-}
-
-/* Whoever asked for less motion sees everything still. */
-@media (prefers-reduced-motion: reduce) {
-	.brush-link::after {
-		transition: none;
-	}
-	.grain-moving {
-		animation: none;
 	}
 }

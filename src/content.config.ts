@@ -14,16 +14,30 @@ const privacy = defineCollection({
 	}),
 });
 
-// The Sobre section of the home page (#15), one file per language: src/content/about/<language>.md.
-// The text is the Markdown's body (_Efecto Placebo_ in italics shows in the narrow heavy type);
-// the frontmatter holds the image and its alt text, which the build requires.
+// The Sobre section's text, one file per language: src/content/about/<language>.md, the Markdown's
+// body (_Efecto Placebo_ in italics shows in amber). The team beside it is in src/config/team.ts.
 const about = defineCollection({
 	loader: glob({ pattern: '*.md', base: './src/content/about' }),
+});
+
+// The page of Efecto Placebo, one file per language: src/content/efecto-placebo/<language>.md.
+// The body is the synopsis; the frontmatter holds the rest of the page's text and the poster.
+const nonEmpty = z.string().trim().min(1);
+const efectoPlacebo = defineCollection({
+	loader: glob({ pattern: '*.md', base: './src/content/efecto-placebo' }),
 	schema: ({ image }) =>
 		z.object({
-			image: image(),
-			alt: z.string().trim().min(1),
+			/** The series in one sentence, for search engines. */
+			description: nonEmpty,
+			/** The small line under the title: type · genre · episodes · status. */
+			line: nonEmpty,
+			/** What the excerpt's first frame shows. */
+			excerptAlt: nonEmpty,
+			poster: image(),
+			posterAlt: nonEmpty,
+			credits: z.array(z.object({ role: nonEmpty, name: nonEmpty })).min(1),
+			characters: z.array(z.object({ name: nonEmpty, description: nonEmpty })).min(1),
 		}),
 });
 
-export const collections = { privacy, about };
+export const collections = { privacy, about, efectoPlacebo };

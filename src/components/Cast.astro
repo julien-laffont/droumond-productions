@@ -1,0 +1,155 @@
+---
+// The Elenco section: a contact sheet of src/config/cast.ts, each person on a frame of film ringed
+// in grease pencil, with the name and role under it.
+import { Image } from 'astro:assets';
+import { CAST } from '../config/cast';
+import { IMAGE_FILES } from '../config/image-files';
+import type { Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import { castGrid } from '../lib/cast-grid';
+import { sheetFrame } from '../lib/cast-sheet';
+import { sectionAnchor } from '../lib/paths';
+import Film from './Film.astro';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const t = dictionaries[language].cast;
+const anchor = sectionAnchor('cast', language);
+
+// The grid is decided here, at build time, from the number of people (src/lib/cast-grid.ts):
+// how many per row, and the slots a row is divided into. The CSS below only applies it.
+const desktop = castGrid(CAST.length, 5);
+const tablet = castGrid(CAST.length, 3);
+const grid = {
+	'--columns-desktop': desktop.columns,
+	'--slots-desktop': desktop.slots,
+	'--columns-tablet': tablet.columns,
+	'--slots-tablet': tablet.slots,
+};
+---
+
+<section
+	id={anchor}
+	aria-labelledby={`${anchor}-title`}
+	class="border-t border-paper/14 px-gutter py-[clamp(64px,9vw,128px)]"
+>
+	<div class="mb-[clamp(24px,3vw,40px)] flex flex-wrap items-end gap-x-5 gap-y-2.5">
+		<h2 id={`${anchor}-title`} class="type-label">
+			{t.title}
+		</h2>
+		<p class="ml-auto type-code" aria-hidden="true">
+			{t.sheet}
+		</p>
+	</div>
+	{/* Focusable, so that on a phone the strip also slides with the keyboard's arrows. */}
+	<ul class="sheet" style={grid} tabindex="0" aria-labelledby={`${anchor}-title`}>
+		{CAST.map((person, index) => {
+			const frame = sheetFrame(index);
+			return (
+				<li class="reveal grid min-w-0 content-start gap-3.5">
+					<Film top={frame.top} bottom={frame.bottom} side={7}>
+						{/* The sizes match the photo's real width; quality 70 keeps the page under its weight limit. */}
+						<Image
+							src={person.photo}
+							alt={person.alt[language]}
+							{...IMAGE_FILES.portrait}
+							sizes="(max-width: 700px) calc((100vw - 32px) * 0.64 - 14px), (max-width: 960px) 31vw, 18vw"
+							class="block aspect-[4/5] w-full bg-ink object-cover"
+						/>
+						<svg class="pencil" viewBox="0 0 75 100" preserveAspectRatio="none" aria-hidden="true">
+							<path pathLength="1" d={frame.ring} />
+						</svg>
+					</Film>
+					<div class="grid gap-1.5 px-[7px]">
+						<h3 class="text-[clamp(1.25rem,1.8vw,1.75rem)] type-name">{person.name}</h3>
+						<p class="type-meta">{person.role[language]}</p>
+					</div>
+				</li>
+			);
+		})}
+	</ul>
+</section>
+
+<style>
+	/* Each row holds --columns people; a frame is 1/--slots of the width, the films touching. */
+	.sheet {
+		--columns: var(--columns-desktop);
+		--slots: var(--slots-desktop);
+		display: grid;
+		row-gap: 28px;
+		grid-template-columns: repeat(var(--columns), calc(100% / var(--slots)));
+	}
+	@media (width < 960px) {
+		.sheet {
+			--columns: var(--columns-tablet);
+			--slots: var(--slots-tablet);
+		}
+	}
+	/* One strip that slides sideways: it runs under the side margins to the screen's edges, and each
+	   frame (64% of the width between the margins) snaps to the left margin. */
+	@media (width < 700px) {
+		.sheet {
+			--left: max(var(--gutter), env(safe-area-inset-left, 0px));
+			--right: max(var(--gutter), env(safe-area-inset-right, 0px));
+			grid-template-columns: none;
+			grid-auto-flow: column;
+			grid-auto-columns: 64%;
+			overflow-x: auto;
+			scroll-snap-type: x mandatory;
+			scrollbar-width: thin;
+			scrollbar-color: var(--color-amber-dim) transparent;
+			margin-inline: calc(-1 * var(--left)) calc(-1 * var(--right));
+			padding: 0 var(--right) 12px var(--left);
+			scroll-padding-inline: var(--left) var(--right);
+		}
+		.sheet > li {
+			scroll-snap-align: start;
+		}
+		/* At the screen's edges, the focus ring goes inside, or it would not show. */
+		.sheet:focus-visible {
+			outline-offset: -2px;
+		}
+	}
+
+	/* The grease pencil, around the photo and over the bands of the film. */
+	.pencil {
+		position: absolute;
+		inset: 22px 2px;
+		width: calc(100% - 4px);
+		height: calc(100% - 44px);
+		overflow: visible;
+		pointer-events: none;
+	}
+	/* One dash as long as the path: whole at offset 0, gone at offset 1. The width is in the box's
+	   units (about 3.5 px on a desktop); a non-scaling stroke would break the dash's length. */
+	.pencil path {
+		fill: none;
+		stroke: var(--color-grease);
+		stroke-width: 1;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		opacity: 0.92;
+		stroke-dasharray: 1 1;
+		stroke-dashoffset: 0;
+	}
+	li:nth-child(2n) .pencil {
+		transform: rotate(1.2deg);
+	}
+	li:nth-child(3n) .pencil {
+		transform: rotate(-1deg);
+	}
+	/* Only with a real hover: on a touch screen a tap would replay it. */
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		li:hover .pencil path {
+			animation: draw 0.7s var(--ease) both;
+		}
+	}
+	@keyframes draw {
+		from {
+			stroke-dashoffset: 1;
+		}
+	}
+</style>

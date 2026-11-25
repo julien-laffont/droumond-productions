@@ -1,9 +1,12 @@
-// The Projects shown on the home page (#14), in order: the first one takes two thirds of the row.
-// To add or change one, edit this list; its image goes in src/assets/projects/.
-// Every text has both languages; the English ones are provisional until #18.
+// The Projects shown on the home page, in order, on the reel between its leader and tail.
+// To add or change one, edit this list; its excerpt and poster go in src/assets/projects/.
+// Every text has both languages; the English lines and links are reviewed (#18).
 import type { ImageMetadata } from 'astro';
-import efectoPlacebo from '../assets/projects/efecto-placebo.jpg';
-import miniSerie from '../assets/projects/mini-serie.jpg';
+import efectoPlaceboPoster from '../assets/projects/efecto-placebo.jpg';
+import efectoPlacebo from '../assets/projects/efecto-placebo.mp4';
+import residentEvilPoster from '../assets/projects/resident-evil.jpg';
+import residentEvil from '../assets/projects/resident-evil.mp4';
+import type { PageId } from '../lib/paths';
 import { SOCIAL, type Language } from './site';
 
 /** A text in each language. */
@@ -17,46 +20,54 @@ export interface Project {
 	status: Text;
 	/** An optional sentence in small type, only if Julien writes one (#18). */
 	sentence?: Text;
-	image: ImageMetadata;
+	/** The excerpt that loops in the frame: H.264 without sound, under 1.5 MB, 8 to 15 s. */
+	video: string;
+	/** The excerpt's first frame, at the same crop: shown until it plays, and instead of it. */
+	poster: ImageMetadata;
 	alt: Text;
-	/** `wide`: 16:9, two thirds of the row. `tall`: 4:5, one third (square on phones). */
+	/** `wide`: the teaser's picture (~2.36:1). `tall`: 9:16. The frame takes the poster's ratio. */
 	shape: 'wide' | 'tall';
 	/**
-	 * Where the image leads. A YouTube video only loads on click, from youtube-nocookie.com (#3);
-	 * any other link (never an embed) needs its label, read only by screen readers.
+	 * The Project's own page, in the same tab, with → after the label; or another site, in a new
+	 * tab, with ↗. The arrows are hidden from screen readers.
 	 */
-	link: { youtube: string } | { url: string; label: Text };
+	link: { page: PageId; label: Text } | { url: string; label: Text };
 }
 
 export const PROJECTS: Project[] = [
 	{
 		// Spelt as on the teaser's thumbnail, and a mini-series like it says (Julien, #18).
 		title: { pt: 'Efecto Placebo', en: 'Efecto Placebo' },
-		type: { pt: 'Mini-série', en: 'Mini-series' },
+		type: { pt: 'Minissérie', en: 'Mini-series' },
 		genre: { pt: 'Suspense', en: 'Thriller' },
 		status: { pt: 'Em gravação', en: 'In production' },
-		// PROVISIONAL: the YouTube thumbnail, cropped; a clean frame of the teaser comes in #18.
-		image: efectoPlacebo,
+		// From the teaser, without its letterbox.
+		video: efectoPlacebo,
+		poster: efectoPlaceboPoster,
 		alt: {
-			pt: 'Três personagens de Efecto Placebo, vistas de baixo através de uma teia de cordas.',
-			en: 'Three characters from Efecto Placebo, seen from below through a web of ropes.',
+			pt: 'Efecto Placebo: um homem de óculos escuros atrás de uma fita da polícia, num jardim.',
+			en: 'Efecto Placebo: a man in sunglasses behind police tape, in a park.',
 		},
 		shape: 'wide',
-		link: { youtube: 'Y785Re6Cyvk' },
+		link: { page: 'efectoPlacebo', label: { pt: 'Ver o projeto', en: 'View the project' } },
 	},
 	{
-		// The image is cropped above the poster's title, so no text sits over it.
 		title: { pt: 'Resident Evil', en: 'Resident Evil' },
-		type: { pt: 'Mini-série', en: 'Mini-series' },
+		type: { pt: 'Minissérie', en: 'Mini-series' },
 		genre: { pt: 'Terror', en: 'Horror' },
 		// Five episodes, the last one filmed but not released yet (Julien, #18).
 		status: { pt: '5 episódios', en: '5 episodes' },
-		image: miniSerie,
+		// From the first episode.
+		video: residentEvil,
+		poster: residentEvilPoster,
 		alt: {
-			pt: 'Cartaz de Resident Evil: dois olhos brancos a brilhar no escuro.',
-			en: 'The Resident Evil poster: two white eyes glowing in the dark.',
+			pt: 'Resident Evil: dois olhos brancos a brilhar no escuro, atrás de uma figura agachada na estrada.',
+			en: 'Resident Evil: two white eyes glowing in the dark, behind a figure crouching on the road.',
 		},
 		shape: 'tall',
-		link: { url: SOCIAL.instagram, label: { pt: 'Ver no Instagram', en: 'See on Instagram' } },
+		link: {
+			url: SOCIAL.instagram,
+			label: { pt: 'Ver no Instagram', en: 'View on Instagram' },
+		},
 	},
 ];

@@ -1,4 +1,5 @@
-// The interface texts in English. Provisional until Julien and Nal translate them (#18).
+// The interface texts in English, reviewed. Still provisional: the first screen's, the Projects
+// reel's and the Elenco's.
 import type { Dictionary } from './pt';
 
 export const en: Dictionary = {
@@ -7,7 +8,7 @@ export const en: Dictionary = {
 		nav: 'Main',
 		projects: 'Projects',
 		about: 'About',
-		team: 'Team',
+		cast: 'Cast',
 		filming: 'Filming',
 		contact: 'Contact',
 		menu: 'Menu',
@@ -16,39 +17,42 @@ export const en: Dictionary = {
 	footer: {
 		legal: {
 			firm: 'Company name',
-			companyType: 'Company type',
+			companyType: 'Legal form',
 			registeredOffice: 'Registered office',
-			registry: 'Commercial registry',
+			registry: 'Commercial register',
 			nipc: 'Tax number (NIPC)',
 			shareCapital: 'Share capital',
 		},
 		privacy: 'Privacy Policy',
 		founded: 'Est. 2026',
+		reelEnd: 'End of reel',
 		disputes: {
-			before: 'In case of a consumer dispute, you may turn to',
-			more: 'More information on the',
+			before: 'In the event of a consumer dispute, you can turn to',
+			more: 'For more information, see the',
 		},
 	},
 	projects: {
 		title: 'Projects',
-		watchTeaser: 'Watch the teaser',
-		notice:
-			'When you click, the video loads from YouTube: Google receives your IP address and may store data on your device.',
-		privacy: 'Privacy Policy',
-		player: 'teaser on YouTube',
+		hint: { scroll: 'Scroll to advance the film →', swipe: 'Swipe sideways →' },
+		reel: 'Reel 01',
+		end: 'End',
+		pause: 'Pause videos',
+		resume: 'Resume videos',
 	},
 	about: {
 		title: 'About',
+		team: 'Team',
 	},
-	team: {
-		title: 'Team',
-		provisional: 'Provisional: characters in place of the team',
+	cast: {
+		title: 'Cast',
+		sheet: 'Contact sheet · Reel 02',
 	},
 	hero: {
-		logo: 'Droumond Productions logo',
+		code: '35 mm · Droumond 2026 · Leiria · Reel 01',
 		words: ['Series', 'Thriller', 'Horror', 'Filming'],
 		line: 'Audiovisual production company',
-		pause: 'Pause video',
+		pause: 'Pause film',
+		resume: 'Resume film',
 	},
 	contact: {
 		title: 'Contact',
@@ -59,17 +63,26 @@ export const en: Dictionary = {
 	filming: {
 		label: 'Filming service',
 		title: 'Want Droumond Productions on your shoot?',
-		line: 'We bring our crew and our production equipment to your shoot.',
-		button: 'See the service',
-		text: 'We bring the crew and the equipment we make our series with to your shoot. Tell us what you want to film, where and when, and we will reply with what we can do.',
+		line: 'Commercials, brand videos and music videos, shot with the same crew and equipment as our series.',
+		button: 'About the service',
+		text: 'We shoot commercials, brand videos and music videos in the Leiria region, with the same crew and equipment we use for our series. Tell us what you want to film, where and when, and we will tell you what we can do.',
+		slate: { production: 'Prod.', scene: 'Scene', take: 'Take', date: 'Date' },
 		subject: 'Filming service',
 		pageTitle: 'Filming service · Droumond Productions',
 		description:
-			'Filming service of Droumond Productions, Portuguese audiovisual production company.',
+			"Droumond Productions' filming service in Leiria: commercials, brand videos and music videos.",
+	},
+	efectoPlacebo: {
+		code: '35 mm · Efecto Placebo · Leiria',
+		pause: 'Pause video',
+		resume: 'Resume video',
+		fullTeaser: 'Watch the full teaser',
+		synopsis: 'Synopsis',
+		characters: 'Characters',
 	},
 	home: {
 		title: 'Droumond Productions',
 		description:
-			'Droumond Productions, Portuguese audiovisual production company. Site in progress.',
+			'Droumond Productions, an audiovisual production company based in Leiria: fiction series, commercials, brand videos and music videos.',
 	},
 };
