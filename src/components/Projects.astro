@@ -267,10 +267,14 @@ const posterSizes = (project: Project) => {
 			video.addEventListener('playing', () => (video.hidden = false), { once: true });
 			frameWatcher.observe(video.parentElement!);
 		}
+		// Watched again from the load: an earlier report may predate the jump to the URL's anchor.
 		addEventListener('load', () => {
 			pageLoaded = true;
-			syncAllPlayback();
 			layout();
+			for (const video of videos) {
+				frameWatcher.unobserve(video.parentElement!);
+				frameWatcher.observe(video.parentElement!);
+			}
 		});
 		lessMotion.addEventListener('change', syncAllPlayback);
 
