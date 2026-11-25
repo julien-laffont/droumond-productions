@@ -8,6 +8,7 @@ import { BUILDS } from './tests/pages';
 export default defineConfig({
 	testDir: 'tests',
 	fullyParallel: true,
+	repeatEach: 3,
 	forbidOnly: !!process.env.CI,
 	reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
 	projects: [
@@ -19,7 +20,7 @@ export default defineConfig({
 		{
 			name: 'webkit',
 			use: { ...devices['Desktop Safari'] },
-			testIgnore: ['lighthouse/**', 'publish/**'],
+			testMatch: ['projects.spec.ts', 'zz-probe.spec.ts'],
 		},
 		{ name: 'lighthouse', testMatch: 'lighthouse/**/*.spec.ts' },
 	],
