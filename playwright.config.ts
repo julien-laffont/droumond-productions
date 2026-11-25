@@ -8,7 +8,7 @@ import { BUILDS } from './tests/pages';
 export default defineConfig({
 	testDir: 'tests',
 	fullyParallel: true,
-	repeatEach: 3,
+	repeatEach: 5,
 	forbidOnly: !!process.env.CI,
 	reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
 	projects: [
