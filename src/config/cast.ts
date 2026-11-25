@@ -10,8 +10,9 @@ import kimberly from '../assets/cast/kimberly-araujo.jpg';
 import mariaInacio from '../assets/cast/maria-inacio.jpg';
 import mariaInes from '../assets/cast/maria-ines-cabral.jpg';
 import mariaPendeirada from '../assets/cast/maria-pendeirada.jpg';
+import mariaSilva from '../assets/cast/maria-silva.jpg';
 import marisa from '../assets/cast/marisa-tomas.jpg';
-import mateus from '../assets/cast/mateus.jpg';
+import mateus from '../assets/cast/mateus-silva.jpg';
 import sara from '../assets/cast/sara-lucas.jpg';
 import type { Person } from './team';
 
@@ -84,11 +85,19 @@ export const CAST: CastMember[] = [
 		},
 	},
 	{
-		name: 'Mateus',
+		name: 'Maria Silva',
+		photo: mariaSilva,
+		alt: {
+			pt: 'Maria Silva, de casaco cinzento e vestido preto, sorri para a câmara entre redes e cordas, diante de uma parede vermelha.',
+			en: 'Maria Silva, in a grey coat and a black dress, smiles at the camera among nets and ropes, in front of a red wall.',
+		},
+	},
+	{
+		name: 'Mateus Silva',
 		photo: mateus,
 		alt: {
-			pt: 'Mateus, de casaco camuflado, agachado na areia de uma praia, olha para a câmara.',
-			en: 'Mateus, in a camouflage jacket, crouches on the sand of a beach and looks at the camera.',
+			pt: 'Mateus Silva, de camisa branca e casaco aos quadrados verdes, encostado a uma parede de pedra, olha para a câmara.',
+			en: 'Mateus Silva, in a white shirt and a green checked jacket, leans on a stone wall and looks at the camera.',
 		},
 	},
 	{
@@ -100,11 +109,11 @@ export const CAST: CastMember[] = [
 		},
 	},
 	{
-		name: 'Isabel',
+		name: 'Isabel Rodríguez',
 		photo: isabel,
 		alt: {
-			pt: 'Isabel, de top branco e calças cinzentas, junto a uma parede com graffiti, inclina-se para a câmara.',
-			en: 'Isabel, in a white top and grey trousers, by a graffiti wall, leans toward the camera.',
+			pt: 'Isabel Rodríguez, de top branco e calças cinzentas, junto a uma parede com graffiti, inclina-se para a câmara.',
+			en: 'Isabel Rodríguez, in a white top and grey trousers, by a graffiti wall, leans toward the camera.',
 		},
 	},
 	{

@@ -81,7 +81,7 @@ Película, aprovada pelo Carlos a 2026-11-20 na ronda de revisão (#8): "exatame
 
 ## Por decidir
 
-- Os apelidos do Mateus e da Isabel, e se «Tomas» leva acento (Marisa Tomas), no Elenco.
+- Se «Tomas» leva acento (Marisa Tomas), no Elenco.
 - Consentimento de uso de imagem das pessoas das fotos novas do Elenco (o Carlos sabe).
 - Quem é o cliente (o Julien adiou a decisão).
 - Quando fica feito o registo no Livro de Reclamações Eletrónico (obrigatório antes de publicar).

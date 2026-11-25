@@ -33,9 +33,10 @@ const NAMES = [
 	'Bernardo Delgado',
 	'Isabel Frazão',
 	'Kimberly Araújo',
-	'Mateus',
+	'Maria Silva',
+	'Mateus Silva',
 	'Marisa Tomas',
-	'Isabel',
+	'Isabel Rodríguez',
 	'Sara Lucas',
 	'Maria Pendeirada',
 ];
