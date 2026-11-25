@@ -39,10 +39,10 @@ The second command downloads the browsers the tests use. On a Linux machine that
 ## Branches
 
 - `main` only receives releases: each merge into it publishes the site (see Publishing).
-- `develop` is where work lands. Start each branch from it and open the PR into it. Those PRs run the quick checks: Playwright on Chromium only, no Lighthouse run.
+- `develop` is where work lands. Start each branch from it and open the PR into it. Those PRs run no CI, to save CI minutes: run `npm run verify` locally before each push, and on a Dependabot PR's branch before merging it.
 - Release: a PR from `develop` into `main`, which runs every check. Merge it with a merge commit, never a squash, so both branches keep the same history.
 - Hotfix: a branch from `main`, a PR into `main`, then a PR from `main` into `develop`.
-- Branch rules on `main` and `develop`: changes only arrive through a PR whose Checks passed, merged with a merge commit; no direct push, force push or deletion, for anyone. They live in Settings › Rules.
+- Branch rules on `main` and `develop`: changes only arrive through a PR, merged with a merge commit (into `main`, only once its Checks passed); no direct push, force push or deletion, for anyone. They live in Settings › Rules. In a private repository, the organisation's free plan does not enforce them: they then hold only by agreement (`CLAUDE.md`).
 
 ## Publishing
 
@@ -70,6 +70,6 @@ The second command downloads the browsers the tests use. On a Linux machine that
 - `src/assets/`: the fonts, Big Shoulders Display and Space Mono 400 and 700 (`fonts/`, with their OFL licences), the logo symbol, the official Livro de Reclamações icon and the excerpts and posters of Projects (`projects/`) and the portraits of the team and the Elenco (`team/`, `cast/`): Carlos's originals cropped to 4:5, at most 2400 px on the long side, in sRGB and without metadata (the originals stay out of the repo). Julien's and Bruno Moreira's are still screenshots. `public/`: the site icons and `.htaccess`, read only by the host's Apache: HTTPS, cache, compression and the 404 page for unknown addresses.
 - `tests/`: the Playwright suite, over both builds. `all-pages.spec.ts` runs axe (WCAG A and AA) on every page found in `dist/` and `dist-en/`, at rest (every section shown, the first screen's animations over), so a new page is checked without touching the tests. `assets.spec.ts` checks the image files themselves: at most 2400 px on the long side, and no EXIF, XMP or IPTC, where cameras write the place.
 - `tests/lighthouse/`: Lighthouse in mobile mode, over every page of `dist/`. SEO, page weight (400 KB, videos apart), each video (1.5 MB), JS weight (75 KB), fonts (at most 3, in woff2) and requests to other domains block. Performance, LCP and TBT only warn; CLS, accessibility and best practices only show in the summary. The HTML reports go to `lighthouse-report/`. `check.spec.ts` tests the checker itself on pages made to fail each target.
-- `.github/workflows/ci.yml`: the `Checks` workflow, on each PR, documentation-only ones too. Into `main`: Chromium in 1 job, WebKit in 3, and Lighthouse. Into any other branch: Chromium in 4 jobs. The steps live in `.github/actions/verify/`.
+- `.github/workflows/ci.yml`: the `Checks` workflow, only on PRs into `main` (releases and hotfixes), documentation-only ones too: Chromium in 1 job, WebKit in 3, and Lighthouse. The steps live in `.github/actions/verify/`.
 - `.github/workflows/publish.yml`: the `Publish` workflow, after each merge into `main` (see Publishing). `publish/`: the SFTP upload (`publish.sh`, with the site's folder) and the server key (`known_hosts`). `tests/publish/`: the confirmation, against the published site.
 - `.github/dependabot.yml`: once a month, a PR into `develop` for the actions and another for npm.
