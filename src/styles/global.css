@@ -25,12 +25,12 @@
 	--color-grease: #d63a2f;
 }
 
-/* Names and titles in Big Shoulders Display (font-name), everything else in Space Mono, the
+/* Names and titles in Bebas Neue (font-name), everything else in Space Mono, the
    page's font. The variables come from the Astro fonts API (astro.config.mjs), with their
    fallback fonts. */
 @theme inline {
 	--font-*: initial;
-	--font-name: var(--font-big-shoulders);
+	--font-name: var(--font-bebas-neue);
 	--default-font-family: var(--font-space-mono);
 }
 
@@ -46,16 +46,16 @@
 	font-family: var(--font-name);
 	font-size: clamp(1.9rem, 3vw, 2.8rem);
 	line-height: 0.9;
-	font-weight: 800;
+	font-weight: 400;
 	letter-spacing: 0.02em;
 	text-transform: uppercase;
 }
 
-/* Names in large type (the company, Projects, people): condensed, heavy, uppercase. Each use sets
+/* Names in large type (the company, Projects, people): condensed, uppercase. Each use sets
    the size. */
 @utility type-name {
 	font-family: var(--font-name);
-	font-weight: 800;
+	font-weight: 400;
 	line-height: 0.92;
 	letter-spacing: 0.01em;
 	text-transform: uppercase;
