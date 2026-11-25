@@ -21,20 +21,35 @@ async function record(page: Page) {
 			for (const r of records) {
 				const el = r.target as HTMLElement;
 				if (el.tagName !== 'VIDEO') continue;
-				if (r.attributeName === 'src') note(`video src ${el.getAttribute('src')?.split('/').pop()}`);
+				if (r.attributeName === 'src')
+					note(`video src ${el.getAttribute('src')?.split('/').pop()}`);
 			}
 		}).observe(document, { subtree: true, attributes: true, attributeFilter: ['src'] });
-		document.addEventListener('play', (e) => note(`play ${(e.target as HTMLVideoElement).dataset.src?.split('/').pop()}`), true);
-		document.addEventListener('pause', (e) => note(`pause ${(e.target as HTMLVideoElement).dataset.src?.split('/').pop()}`), true);
+		document.addEventListener(
+			'play',
+			(e) => note(`play ${(e.target as HTMLVideoElement).dataset.src?.split('/').pop()}`),
+			true,
+		);
+		document.addEventListener(
+			'pause',
+			(e) => note(`pause ${(e.target as HTMLVideoElement).dataset.src?.split('/').pop()}`),
+			true,
+		);
 	});
 }
-const log = (page: Page) => page.evaluate(() => (window as unknown as { probeLog: string[] }).probeLog.join('\n'));
+const log = (page: Page) =>
+	page.evaluate(() => (window as unknown as { probeLog: string[] }).probeLog.join('\n'));
 const note = (page: Page, what: string) =>
-	page.evaluate((what) => (window as unknown as { probeNote: (w: string) => void }).probeNote(what), what);
-const playing = (page: Page) =>
-	page.locator('section#projetos video').evaluateAll((all: HTMLVideoElement[]) =>
-		all.map((video) => !!video.getAttribute('src') && !video.paused),
+	page.evaluate(
+		(what) => (window as unknown as { probeNote: (w: string) => void }).probeNote(what),
+		what,
 	);
+const playing = (page: Page) =>
+	page
+		.locator('section#projetos video')
+		.evaluateAll((all: HTMLVideoElement[]) =>
+			all.map((video) => !!video.getAttribute('src') && !video.paused),
+		);
 
 test('probe /#contacto', async ({ page }) => {
 	await record(page);
@@ -54,7 +69,14 @@ test('probe /#projetos, then the footer', async ({ page }) => {
 	const box = (selector: string) => page.locator(selector).first().boundingBox();
 	const separate = `video ${JSON.stringify(await box('section#projetos video'))} img ${JSON.stringify(await box('section#projetos .frame img'))}`;
 	await note(page, `boxes apart: ${separate}`);
-	const together = await page.locator('section#projetos video').first().evaluate((video) => [video, video.parentElement!.querySelector('img')!].map((e) => Math.round(e.getBoundingClientRect().y * 100) / 100));
+	const together = await page
+		.locator('section#projetos video')
+		.first()
+		.evaluate((video) =>
+			[video, video.parentElement!.querySelector('img')!].map(
+				(e) => Math.round(e.getBoundingClientRect().y * 100) / 100,
+			),
+		);
 	await note(page, `boxes at once (video y, img y): ${JSON.stringify(together)}`);
 	await page.getByRole('contentinfo').scrollIntoViewIfNeeded();
 	await note(page, 'toFooter done');
