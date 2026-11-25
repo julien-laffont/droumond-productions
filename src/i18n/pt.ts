@@ -111,6 +111,15 @@ export const pt = {
 		synopsis: 'Sinopse',
 		characters: 'Personagens',
 	},
+	/** The page of Resident Evil; its texts are in src/content/resident-evil/. */
+	residentEvil: {
+		/** Decorative: the code line above the title, printed as on the film. */
+		code: '35 mm · Resident Evil · Marinha Grande',
+		episodes: 'Episódios',
+		episode: 'Episódio 1',
+		moreEpisodes: 'Ver mais episódios no Instagram',
+		comingSoon: '5.º episódio: em breve',
+	},
 	home: {
 		title: 'Droumond Productions',
 		description:

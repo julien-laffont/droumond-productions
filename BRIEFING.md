@@ -1,6 +1,6 @@
 # Briefing: website da Droumond Productions
 
-Documento de direção inicial. Última atualização: 2026-11-24. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
+Documento de direção inicial. Última atualização: 2026-11-25. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
 
 ## Contexto
 
@@ -23,8 +23,9 @@ Documento de direção inicial. Última atualização: 2026-11-24. Tudo o que es
 ## Âmbito
 
 - O site é da empresa, não só da série.
-- Em Projetos, excertos curtos e sem som do teaser de _Efecto Placebo_ e de um episódio de _Resident Evil_, alojados no site. Não aloja episódios completos.
+- Em Projetos, excertos curtos e sem som do teaser de _Efecto Placebo_ e de um episódio de _Resident Evil_, alojados no site. Só aloja um episódio completo, o primeiro de _Resident Evil_, na página do projeto.
 - Página de _Efecto Placebo_ (`/efecto-placebo/`, #33), aberta pelo seu quadro em Projetos: outro excerto do teaser, o link para o teaser completo no YouTube, a sinopse com o cartaz, a ficha (realização e produção) e 12 personagens. Os textos param no que se sabe no fim do episódio 1: sem spoilers. Sem atores até o Julien enviar os nomes completos.
+- Página de _Resident Evil_ (`/resident-evil/`, #42), aberta pelo seu quadro em Projetos: o episódio 1 alojado no site (carrega só ao carregar em play), o texto, a ficha (realização e produção) e um link para o Instagram com os restantes; o 5.º aparece como "em breve". O texto só tem factos que se veem nos episódios: sem enredo nem personagens, até haver roteiro.
 - Secções obrigatórias: Sobre, Equipa, Contacto. A equipa são os dois cofundadores, Carlos Droumond e Julien Laffont, e aparece no Sobre. Quem representa nos projetos fica à parte, no Elenco (#41).
 - Outros projetos: a minissérie _Resident Evil_ do Instagram, além de _Efecto Placebo_.
 - Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?").

@@ -80,6 +80,13 @@ export const en: Dictionary = {
 		synopsis: 'Synopsis',
 		characters: 'Characters',
 	},
+	residentEvil: {
+		code: '35 mm · Resident Evil · Marinha Grande',
+		episodes: 'Episodes',
+		episode: 'Episode 1',
+		moreEpisodes: 'See more episodes on Instagram',
+		comingSoon: 'Episode 5: coming soon',
+	},
 	home: {
 		title: 'Droumond Productions',
 		description:
