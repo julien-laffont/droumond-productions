@@ -75,7 +75,10 @@ inEachBuild((build) => {
 			}));
 			// Astro adds a suffix to each family's name, so only the start is fixed.
 			expect(fonts.body).toMatch(/^"?Space Mono/);
-			expect(fonts.title).toMatch(/^"?Big Shoulders Display/);
+			// The home page draws its name as SVG instead (hero.spec.ts).
+			if (path !== '/' && path !== '/en/') {
+				expect(fonts.title).toMatch(/^"?Big Shoulders Display/);
+			}
 			expect(await oldVisual(page)).toEqual([]);
 		});
 

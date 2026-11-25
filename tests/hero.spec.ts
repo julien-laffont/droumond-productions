@@ -53,8 +53,8 @@ const FRAME_CODES = [
 ];
 
 const SCREENS = [
-	{ name: 'phone', width: 390, height: 844 },
-	{ name: 'desktop', width: 1440, height: 900 },
+	{ name: 'phone', width: 390, height: 844, titleLines: 2 },
+	{ name: 'desktop', width: 1440, height: 900, titleLines: 1 },
 ];
 
 // Exact: the filming band's title also holds the name ("Quer a Droumond Productions para gravação?").
@@ -268,6 +268,26 @@ inEachBuild((build) => {
 					await page.emulateMedia({ reducedMotion: 'reduce' });
 					await expect(firstScreen(page).getByRole('button')).toHaveCount(0);
 					expect((await projects.boundingBox())!.y).toBe(withButton);
+				});
+
+				test(`${home.path}: the name is drawn on ${screen.titleLines} line(s), inside the side margins`, async ({
+					page,
+				}) => {
+					await page.goto(home.path);
+					// The letters are SVG in the text colour, hidden: the heading's name is its hidden text.
+					const words = page.getByRole('heading', { level: 1 }).locator('svg');
+					await expect(words).toHaveCount(2);
+					for (const word of await words.all()) {
+						await expect(word).toHaveAttribute('fill', 'currentColor');
+						await expect(word).toHaveAttribute('aria-hidden', 'true');
+					}
+					const [droumond, productions] = await Promise.all(
+						(await words.all()).map(async (word) => (await word.boundingBox())!),
+					);
+					const lines = productions.y >= droumond.y + droumond.height ? 2 : 1;
+					expect(lines).toBe(screen.titleLines);
+					expect(droumond.x).toBeGreaterThanOrEqual(16);
+					expect(productions.x + productions.width).toBeLessThanOrEqual(screen.width - 16);
 				});
 
 				test(`${home.path}: the first screen fits the screen, under the header`, async ({

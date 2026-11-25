@@ -1,6 +1,8 @@
 ---
 // The home page's first screen: the name, a looping film strip and the cue to Projects.
 import { Image } from 'astro:assets';
+import TitleDroumond from '../assets/hero/title-droumond.svg';
+import TitleProductions from '../assets/hero/title-productions.svg';
 import { STRIP_PHOTOS } from '../config/hero';
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
@@ -40,13 +42,12 @@ const frameSizes = ({ width, height }: { width: number; height: number }) => {
 		<p class="type-code" aria-hidden="true">
 			{t.code}
 		</p>
-		{/* Slightly transparent, at Carlos's request (#37): the colour, not the element, so the title
-		    in Shree Devanagari 714 (an SVG in currentColor) will take it too. */}
-		<h1
-			id="hero-title"
-			class="text-[clamp(3.1rem,9.6vw,9.8rem)] leading-[0.84] font-black tracking-[0.005em] text-paper/85 type-name"
-		>
-			Droumond Productions
+		{/* The name in Shree Devanagari 714, drawn as SVG because the font cannot be hosted. Slightly
+		    transparent through the colour, which the letters take as currentColor. */}
+		<h1 id="hero-title" class="title text-paper/85">
+			<span class="sr-only">Droumond Productions</span>
+			<TitleDroumond aria-hidden="true" class="droumond" />
+			<TitleProductions aria-hidden="true" class="productions" />
 		</h1>
 	</div>
 	{/* The frames twice, so the loop has no seam. */}
@@ -127,6 +128,42 @@ const frameSizes = ({ width, height }: { width: number; height: number }) => {
 </script>
 
 <style>
+	/* One line, as wide as the block but no wider than the old title; widths in the font's units
+	   (the SVGs' widths and the space between the words), so the words scale as one. */
+	.title {
+		--droumond: 4551;
+		--space: 414;
+		--productions: 5465;
+		--line: calc(var(--droumond) + var(--space) + var(--productions));
+		display: flex;
+		align-items: flex-start;
+		max-width: 94rem;
+	}
+	.title svg {
+		display: block;
+		height: auto;
+	}
+	.title .droumond {
+		width: calc(100% * var(--droumond) / var(--line));
+	}
+	.title .productions {
+		width: calc(100% * var(--productions) / var(--line));
+		margin-left: calc(100% * var(--space) / var(--line));
+	}
+	/* Two lines on phones, PRODUCTIONS across the block, 130 units apart. */
+	@media (max-width: 700px) {
+		.title {
+			flex-direction: column;
+		}
+		.title .droumond {
+			width: calc(100% * var(--droumond) / var(--productions));
+		}
+		.title .productions {
+			width: 100%;
+			margin-left: 0;
+			margin-top: calc(100% * 130 / var(--productions));
+		}
+	}
 	/* Room above and below for the tilt. */
 	.window {
 		align-self: center;
