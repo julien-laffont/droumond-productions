@@ -10,6 +10,6 @@ credits:
     name: Droumond Productions
 ---
 
-_Resident Evil_ is a horror mini-series by Droumond Productions, shot vertically and published on Instagram. It has five episodes of about two to three minutes each: four are out and the fifth is coming soon.
+_Resident Evil_ is a horror mini-series by Droumond Productions, shot vertically and published on Instagram. It has five episodes of between two and three and a half minutes each: four are out and the fifth is coming soon.
 
 The first one opens at night, on a road in Marinha Grande. You can watch it here; the rest are on our Instagram.

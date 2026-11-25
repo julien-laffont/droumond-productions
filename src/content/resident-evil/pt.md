@@ -10,6 +10,6 @@ credits:
     name: Droumond Productions
 ---
 
-_Resident Evil_ é uma minissérie de terror da Droumond Productions, filmada na vertical e publicada no Instagram. São cinco episódios de cerca de dois a três minutos cada: quatro já estão no ar e o quinto estreia em breve.
+_Resident Evil_ é uma minissérie de terror da Droumond Productions, filmada na vertical e publicada no Instagram. São cinco episódios de entre dois e três minutos e meio cada: quatro já estão no ar e o quinto estreia em breve.
 
 O primeiro abre de noite, numa estrada da Marinha Grande. Pode vê-lo aqui; os restantes estão no nosso Instagram.
