@@ -105,18 +105,18 @@ test('compressed JS stays within 75 KB', async () => {
 	});
 });
 
-test('compressed page stays within 400 KB', async () => {
+test('compressed page stays within 450 KB', async () => {
 	const folder = createSite({
 		'heavy/index.html': testPage({ head: '<link rel="stylesheet" href="/styles.css" />' }),
-		'styles.css': `/* ${randomText(420)} */`,
+		'styles.css': `/* ${randomText(470)} */`,
 	});
 	expect(await failuresByPage(folder)).toEqual({
-		'/heavy/': [expect.stringMatching(/^page weighs \d+\.\d KB, max 400\.0 KB$/)],
+		'/heavy/': [expect.stringMatching(/^page weighs \d+\.\d KB, max 450\.0 KB$/)],
 	});
 });
 
 test('each video weighs apart from the page, within 1.5 MB', async () => {
-	// Two under the limit: more than 400 KB, and more than 1.5 MB together.
+	// Two under the limit: more than 450 KB, and more than 1.5 MB together.
 	const player = (src: string) =>
 		`<video src="${src}" muted autoplay loop playsinline width="320" height="180"></video>`;
 	const folder = createSite({

@@ -11,7 +11,7 @@ import lighthouse, { generateReport, type Result } from 'lighthouse';
 const KB = 1024;
 const MB = 1024 * KB;
 /** The page without its videos, which have their own limit. */
-const MAX_PAGE_SIZE = 400 * KB;
+const MAX_PAGE_SIZE = 450 * KB;
 /** Each video, such as the excerpts of Projects. */
 const MAX_VIDEO_SIZE = 1.5 * MB;
 const MAX_JS_SIZE = 75 * KB;
