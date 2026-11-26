@@ -21,8 +21,8 @@ export const TEAM: Person[] = [
 	{
 		name: 'Carlos Droumond',
 		role: {
-			pt: 'Cofundador · Realizador · Ator · Produtor',
-			en: 'Co-founder · Director · Actor · Producer',
+			pt: 'Realizador · Produtor · Ator',
+			en: 'Director · Producer · Actor',
 		},
 		photo: carlos,
 		alt: {
@@ -33,8 +33,8 @@ export const TEAM: Person[] = [
 	{
 		name: 'Julien Laffont',
 		role: {
-			pt: 'Cofundador · Ator · Gerente · Direção de atores',
-			en: 'Co-founder · Actor · Managing director · Director of actors',
+			pt: 'Gerente · Ator · Direção de atores',
+			en: 'Managing director · Actor · Director of actors',
 		},
 		photo: julien,
 		alt: {

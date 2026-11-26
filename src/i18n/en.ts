@@ -41,7 +41,7 @@ export const en: Dictionary = {
 	},
 	about: {
 		title: 'About',
-		team: 'Team',
+		founders: 'Co-founders',
 	},
 	cast: {
 		title: 'Cast',

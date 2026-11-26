@@ -47,24 +47,29 @@ const frame = (index: number) => {
 			<Content />
 		</div>
 	</div>
-	<ul class="reveal grid min-w-0 grid-cols-2 items-start" aria-label={t.team}>
-		{TEAM.map((person, index) => (
-			<li class="grid min-w-0 content-start gap-3.5">
-				<Film {...frame(index)} side={12}>
-					{/* The sizes match the photo's real width; quality 55 keeps the page under its weight limit. */}
-					<Image
-						src={person.photo}
-						alt={person.alt[language]}
-						{...IMAGE_FILES.portrait}
-						sizes="(max-width: 960px) calc(50vw - 40px), 26vw"
-						class="block aspect-[4/5] w-full bg-ink object-cover"
-					/>
-				</Film>
-				<div class="grid gap-1.5 px-3">
-					<h3 class="text-[clamp(1.25rem,1.8vw,1.75rem)] type-name">{person.name}</h3>
-					<p class="type-meta">{person.role[language]}</p>
-				</div>
-			</li>
-		))}
-	</ul>
+	<div class="reveal grid min-w-0 gap-4">
+		<p id={`${anchor}-founders`} class="type-meta">
+			{t.founders}
+		</p>
+		<ul class="grid min-w-0 grid-cols-2 items-start" aria-labelledby={`${anchor}-founders`}>
+			{TEAM.map((person, index) => (
+				<li class="grid min-w-0 content-start gap-3.5">
+					<Film {...frame(index)} side={12}>
+						{/* The sizes match the photo's real width; quality 55 keeps the page under its weight limit. */}
+						<Image
+							src={person.photo}
+							alt={person.alt[language]}
+							{...IMAGE_FILES.portrait}
+							sizes="(max-width: 960px) calc(50vw - 40px), 26vw"
+							class="block aspect-[4/5] w-full bg-ink object-cover"
+						/>
+					</Film>
+					<div class="grid gap-1.5 px-3">
+						<h3 class="text-[clamp(1.25rem,1.8vw,1.75rem)] type-name">{person.name}</h3>
+						<p class="type-meta">{person.role[language]}</p>
+					</div>
+				</li>
+			))}
+		</ul>
+	</div>
 </section>
