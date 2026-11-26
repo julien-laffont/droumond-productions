@@ -9,6 +9,8 @@ export const PAGES = {
 	filming: { pt: '/filmagens/', en: '/en/filming/' },
 	/** The page of the Project Efecto Placebo, whose title is never translated. */
 	efectoPlacebo: { pt: '/efecto-placebo/', en: '/en/efecto-placebo/' },
+	/** The page of the Project Resident Evil, whose title is never translated. */
+	residentEvil: { pt: '/resident-evil/', en: '/en/resident-evil/' },
 	/** The Privacy Policy, made in #17. */
 	privacy: { pt: '/politica-de-privacidade/', en: '/en/privacy-policy/' },
 } satisfies Record<string, Record<Language, string>>;
@@ -20,6 +22,7 @@ const SECTIONS = {
 	projects: { pt: 'projetos', en: 'projects' },
 	about: { pt: 'sobre', en: 'about' },
 	cast: { pt: 'elenco', en: 'cast' },
+	crew: { pt: 'equipa', en: 'crew' },
 	contact: { pt: 'contacto', en: 'contact' },
 } satisfies Record<string, Record<Language, string>>;
 

@@ -1,6 +1,6 @@
 # Briefing: website da Droumond Productions
 
-Documento de direção inicial. Última atualização: 2026-11-24. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
+Documento de direção inicial. Última atualização: 2026-11-25. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
 
 ## Contexto
 
@@ -23,8 +23,10 @@ Documento de direção inicial. Última atualização: 2026-11-24. Tudo o que es
 ## Âmbito
 
 - O site é da empresa, não só da série.
-- Em Projetos, excertos curtos e sem som do teaser de _Efecto Placebo_ e de um episódio de _Resident Evil_, alojados no site. Não aloja episódios completos.
+- Em Projetos, excertos curtos e sem som do teaser de _Efecto Placebo_ e de um episódio de _Resident Evil_, alojados no site. Só aloja um episódio completo, o primeiro de _Resident Evil_, na página do projeto.
 - Página de _Efecto Placebo_ (`/efecto-placebo/`, #33), aberta pelo seu quadro em Projetos: outro excerto do teaser, o link para o teaser completo no YouTube, a sinopse com o cartaz, a ficha (realização e produção) e 12 personagens. Os textos param no que se sabe no fim do episódio 1: sem spoilers. Sem atores até o Julien enviar os nomes completos.
+- Secções obrigatórias: Sobre, Equipa, Contacto. Os dois cofundadores, Carlos Droumond e Julien Laffont, aparecem no Sobre; a Equipa é uma grelha de fotos com toda a equipa e a função de cada pessoa, abaixo do Elenco (#62). Quem representa nos projetos fica à parte, no Elenco (#41).
+- Página de _Resident Evil_ (`/resident-evil/`, #42), aberta pelo seu quadro em Projetos: o episódio 1 alojado no site (carrega só ao carregar em play), o texto, a ficha (realização e produção) e um link para o Instagram com os restantes; o 5.º aparece como "em breve". O texto só tem factos que se veem nos episódios: sem enredo nem personagens, até haver roteiro.
 - Secções obrigatórias: Sobre, Equipa, Contacto. A equipa são os dois cofundadores, Carlos Droumond e Julien Laffont, e aparece no Sobre. Quem representa nos projetos fica à parte, no Elenco (#41).
 - Outros projetos: a minissérie _Resident Evil_ do Instagram, além de _Efecto Placebo_.
 - Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?").
@@ -40,20 +42,20 @@ Película, aprovada pelo Carlos a 2026-11-20 na ronda de revisão (#8): "exatame
 - Ideia: uma bobina de 35 mm desenrolada pela página. Fitas de película atravessam o ecrã, com perfurações em cima e em baixo e códigos de borda em âmbar. Um só mundo escuro.
 - Seguir o protótipo de perto. Melhorias (acessibilidade, telemóvel, desempenho) propõem-se ao Nal antes de as fazer. Os textos do site (#18) prevalecem sobre os do protótipo.
 - Paleta: fundo `#0c0b09`, película `#1b1813`, claquete `#151411`, texto `#ece5d8` (16:1 sobre o fundo), secundário `#a59d8f` (7,3:1), âmbar `#e8a43a` e `#b5802e` (códigos de borda, números, timecode). O lápis vermelho `#d63a2f` é só para marcas à mão, nunca texto.
-- Tipografia: Big Shoulders Display, condensada, para nomes e títulos; Space Mono (400 e 700) para tudo o resto. Ambas de licença aberta e alojadas no próprio site (sem Google Fonts, por causa do RGPD). Letra grande só para nomes e títulos das secções; a descrição da empresa fica sempre pequena e em segundo plano. Só o título do primeiro ecrã usa a Shree Devanagari 714, levemente transparente, como imagem SVG (#37).
+- Tipografia: Bebas Neue (escolha do Carlos), condensada, para nomes e títulos; Space Mono (400 e 700) para tudo o resto. Ambas de licença aberta e alojadas no próprio site (sem Google Fonts, por causa do RGPD). Letra grande só para nomes e títulos das secções; a descrição da empresa fica sempre pequena e em segundo plano. Só o título do primeiro ecrã usa a Shree Devanagari 714, levemente transparente, como imagem SVG (#37).
 - Cabeçalho: o símbolo, um timecode que corre com o scroll (decorativo), as secções, a língua e o Contacto, que no telemóvel passa para dentro do Menu.
 - Primeiro ecrã: a linha de código "35 mm · Droumond 2026 · Leiria · Rolo 01", o nome, uma fita inclinada que passa sozinha, com botão de pausa (#37), "Produtora audiovisual" e as palavras (Séries, Suspense, Terror, Filmagens).
-- Projetos: uma fita que avança para o lado com o scroll, do líder com contagem à ponta final, com os vídeos sem som sempre a passar (#38). Sobre: o texto ao lado da equipa, um fotograma por pessoa. Elenco: uma folha de contactos, cada pessoa rodeada a lápis vermelho (#39, #41). Filmagens: uma claquete. Contacto: o endereço em letra grande (#40). Página de _Efecto Placebo_: o título grande, o excerto numa fita, a sinopse ao lado do cartaz, as personagens numeradas (#33).
+- Projetos: uma fita que avança para o lado com o scroll, do líder com contagem à ponta final, com os vídeos sem som sempre a passar (#38). Sobre: o texto ao lado da equipa, um fotograma por pessoa. Elenco: uma fita que corre sozinha com todos os atores, cada um rodeado a lápis vermelho, só com o nome (#39, #41). Filmagens: uma claquete. Contacto: o endereço em letra grande (#40). Página de _Efecto Placebo_: o título grande, o excerto numa fita, a sinopse ao lado do cartaz, as personagens numeradas (#33).
 - Rodapé: a ponta da bobina ("Fim da bobina"), depois a identificação legal.
-- Logótipo: só o símbolo (círculo e monograma), claro sobre o escuro; o nome aparece em texto. Por agora, o JPEG do Carlos convertido para transparência; o SVG pede-se na #8.
+- Logótipo: só o símbolo (círculo e monograma), claro sobre o escuro; o nome aparece em texto. O símbolo é o PNG que o Carlos enviou, recortado e em 800 px; o SVG continua por receber (#8).
 - Movimento: só CSS e JavaScript simples (as fitas, o timecode, o lápis e a claquete no hover, o aparecimento discreto das secções). Quem pediu menos movimento vê tudo parado.
 
 ## Materiais
 
 - Fotografias originais, o master do teaser e episódios de _Resident Evil_: enviados pelo Carlos a 2026-11-20. Os originais não entram no repo; as fotos do site são cortes preparados a partir deles (#41).
-- Equipa: Carlos e Julien. A foto do Julien ainda é uma captura de ecrã; ele envia uma (#18).
+- Equipa: Carlos e Julien, com as fotos originais de cada um.
 - As pessoas das fotos do protótipo (as personagens do Instagram, com o Julien e o Bruno Moreira) deram o consentimento de uso de imagem.
-- Elenco: personagens de _Efecto Placebo_, com fotos do Carlos. Só se sabem os nomes do Miguel Figueiredo e do Bruno Moreira; a foto do Bruno ainda é uma captura de ecrã.
+- Elenco: todos os atores menos os cofundadores, uma foto e o nome de cada um. O Natan e a Lada não são atores: ficam para a secção da equipa.
 - Textos (Sobre, Equipa): escrevem o Julien e o autor.
 - A pedir ao Carlos na #8: o símbolo do logótipo em SVG e uma foto de bastidores para a faixa de filmagens. O fotograma limpo do teaser deixou de ser preciso: os posters de Projetos são o primeiro fotograma de cada excerto.
 
@@ -80,7 +82,7 @@ Película, aprovada pelo Carlos a 2026-11-20 na ronda de revisão (#8): "exatame
 
 ## Por decidir
 
-- Os nomes do Elenco que faltam.
+- Se «Tomas» leva acento (Marisa Tomas), no Elenco.
 - Consentimento de uso de imagem das pessoas das fotos novas do Elenco (o Carlos sabe).
 - Quem é o cliente (o Julien adiou a decisão).
 - Quando fica feito o registo no Livro de Reclamações Eletrónico (obrigatório antes de publicar).

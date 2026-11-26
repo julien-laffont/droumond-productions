@@ -17,12 +17,13 @@ export interface Person {
 	alt: Text;
 }
 
-const CO_FOUNDER = { pt: 'Cofundador · Ator', en: 'Co-founder · Actor' };
-
 export const TEAM: Person[] = [
 	{
 		name: 'Carlos Droumond',
-		role: CO_FOUNDER,
+		role: {
+			pt: 'Realizador · Produtor · Ator',
+			en: 'Director · Producer · Actor',
+		},
 		photo: carlos,
 		alt: {
 			pt: 'Carlos Droumond, de casaco castanho e camisola preta, encostado a um vidro que o reflete, numa rua de calçada.',
@@ -31,7 +32,10 @@ export const TEAM: Person[] = [
 	},
 	{
 		name: 'Julien Laffont',
-		role: CO_FOUNDER,
+		role: {
+			pt: 'Gerente · Ator · Direção de atores',
+			en: 'Managing director · Actor · Director of actors',
+		},
 		photo: julien,
 		alt: {
 			pt: 'Julien Laffont, de óculos escuros e casaco de cabedal.',

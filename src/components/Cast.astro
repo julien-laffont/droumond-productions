@@ -1,12 +1,12 @@
 ---
-// The Elenco section: a contact sheet of src/config/cast.ts, each person on a frame of film ringed
-// in grease pencil, with the name and role under it.
+// The Elenco section: a film strip of every Cast member (src/config/cast.ts) that runs by itself,
+// each person on a frame of film ringed in grease pencil, with the name under it.
 import { Image } from 'astro:assets';
 import { CAST } from '../config/cast';
+import { sizesOnStrip } from '../config/hero';
 import { IMAGE_FILES } from '../config/image-files';
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
-import { castGrid } from '../lib/cast-grid';
 import { sheetFrame } from '../lib/cast-sheet';
 import { sectionAnchor } from '../lib/paths';
 import Film from './Film.astro';
@@ -19,16 +19,8 @@ const { language } = Astro.props;
 const t = dictionaries[language].cast;
 const anchor = sectionAnchor('cast', language);
 
-// The grid is decided here, at build time, from the number of people (src/lib/cast-grid.ts):
-// how many per row, and the slots a row is divided into. The CSS below only applies it.
-const desktop = castGrid(CAST.length, 5);
-const tablet = castGrid(CAST.length, 3);
-const grid = {
-	'--columns-desktop': desktop.columns,
-	'--slots-desktop': desktop.slots,
-	'--columns-tablet': tablet.columns,
-	'--slots-tablet': tablet.slots,
-};
+/** The strip crosses its own length in this time: the same speed whatever the number of people. */
+const loop = `${CAST.length * 6}s`;
 ---
 
 <section
@@ -36,81 +28,153 @@ const grid = {
 	aria-labelledby={`${anchor}-title`}
 	class="border-t border-paper/14 px-gutter py-[clamp(64px,9vw,128px)]"
 >
-	<div class="mb-[clamp(24px,3vw,40px)] flex flex-wrap items-end gap-x-5 gap-y-2.5">
+	<div class="mb-[clamp(24px,3vw,40px)] flex flex-wrap items-center gap-x-5 gap-y-2.5">
 		<h2 id={`${anchor}-title`} class="type-label">
 			{t.title}
 		</h2>
 		<p class="ml-auto type-code" aria-hidden="true">
 			{t.sheet}
 		</p>
+		{/* Shown by the script below, only while the strip runs (WCAG 2.2.2). The label changes, so no aria-pressed. */}
+		<button
+			type="button"
+			data-cast-toggle
+			data-pause={t.pause}
+			data-resume={t.resume}
+			hidden
+			class="cursor-pointer border border-paper/14 px-2.5 py-2 text-[11px] leading-none tracking-[0.12em] uppercase hover:border-paper"
+		>
+			{t.pause}
+		</button>
 	</div>
-	{/* Focusable, so that on a phone the strip also slides with the keyboard's arrows. */}
-	<ul class="sheet" style={grid} tabindex="0" aria-labelledby={`${anchor}-title`}>
-		{CAST.map((person, index) => {
-			const frame = sheetFrame(index);
-			return (
-				<li class="reveal grid min-w-0 content-start gap-3.5">
-					<Film top={frame.top} bottom={frame.bottom} side={7}>
-						{/* The sizes match the photo's real width; quality 70 keeps the page under its weight limit. */}
-						<Image
-							src={person.photo}
-							alt={person.alt[language]}
-							{...IMAGE_FILES.portrait}
-							sizes="(max-width: 700px) calc((100vw - 32px) * 0.64 - 14px), (max-width: 960px) 31vw, 18vw"
-							class="block aspect-[4/5] w-full bg-ink object-cover"
-						/>
-						<svg class="pencil" viewBox="0 0 75 100" preserveAspectRatio="none" aria-hidden="true">
-							<path pathLength="1" d={frame.ring} />
-						</svg>
-					</Film>
-					<div class="grid gap-1.5 px-[7px]">
-						<h3 class="text-[clamp(1.25rem,1.8vw,1.75rem)] type-name">{person.name}</h3>
-						<p class="type-meta">{person.role[language]}</p>
-					</div>
-				</li>
-			);
-		})}
-	</ul>
+	{/* With no script or less motion it is a strip to scroll, so it takes the keyboard's focus. */}
+	<div
+		class="window"
+		data-cast-window
+		style={`--loop: ${loop}`}
+		role="group"
+		tabindex="0"
+		aria-labelledby={`${anchor}-title`}
+	>
+		<div class="track">
+			{/* The list, then the same frames again, hidden: the loop has no seam. */}
+			{[false, true].map((copy) => (
+				<ul class:list={['sheet', { copy }]} aria-hidden={copy ? 'true' : undefined} inert={copy}>
+					{CAST.map((person, index) => {
+						const frame = sheetFrame(index);
+						return (
+							<li class="grid min-w-0 content-start gap-3.5">
+								<Film top={frame.top} bottom={frame.bottom} side={7}>
+									{/* The sizes are the card's width (--card below) minus the film's 7 px on each side,
+									    or the first screen strip's for a photo it shows too: the same file, loaded once. */}
+									<Image
+										src={person.photo}
+										alt={copy ? '' : person.alt[language]}
+										{...IMAGE_FILES.portrait}
+										sizes={sizesOnStrip(person.photo) ?? 'calc(clamp(220px, 19vw, 300px) - 14px)'}
+										class="block aspect-[4/5] w-full bg-ink object-cover"
+									/>
+									<svg
+										class="pencil"
+										viewBox="0 0 75 100"
+										preserveAspectRatio="none"
+										aria-hidden="true"
+									>
+										<path pathLength="1" d={frame.ring} />
+									</svg>
+								</Film>
+								<h3 class="px-[7px] text-[clamp(1.25rem,1.8vw,1.75rem)] type-name">
+									{person.name}
+								</h3>
+							</li>
+						);
+					})}
+				</ul>
+			))}
+		</div>
+	</div>
 </section>
 
+<script>
+	// Runs the strip only with JavaScript and without a preference for less motion, also when the
+	// preference changes with the page open.
+	const view = document.querySelector<HTMLElement>('[data-cast-window]');
+	const toggle = document.querySelector<HTMLButtonElement>('[data-cast-toggle]');
+	if (view && toggle) {
+		const motion = matchMedia('(prefers-reduced-motion: no-preference)');
+		const sync = () => {
+			view.classList.toggle('running', motion.matches);
+			toggle.hidden = !motion.matches;
+			// Nothing to scroll or focus while it runs by itself.
+			view.scrollLeft = 0;
+			if (motion.matches) view.removeAttribute('tabindex');
+			else view.tabIndex = 0;
+		};
+		motion.addEventListener('change', sync);
+		sync();
+		toggle.addEventListener('click', () => {
+			const paused = view.classList.toggle('paused');
+			toggle.textContent = (paused ? toggle.dataset.resume : toggle.dataset.pause) ?? '';
+		});
+		// Rests off screen; a manual pause stays.
+		if ('IntersectionObserver' in window) {
+			new IntersectionObserver(([entry]) => {
+				view.classList.toggle('resting', !entry.isIntersecting);
+			}).observe(view);
+		}
+	}
+</script>
+
 <style>
-	/* Each row holds --columns people; a frame is 1/--slots of the width, the films touching. */
+	/* Out to the screen's edges. Without the script it scrolls sideways, from the left margin. */
+	.window {
+		--card: clamp(220px, 19vw, 300px);
+		--left: max(var(--gutter), env(safe-area-inset-left, 0px));
+		--right: max(var(--gutter), env(safe-area-inset-right, 0px));
+		margin-inline: calc(-1 * var(--left)) calc(-1 * var(--right));
+		overflow-x: auto;
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-amber-dim) transparent;
+		padding-bottom: 12px;
+		scroll-padding-inline: var(--left) var(--right);
+	}
+	.window:focus-visible {
+		outline-offset: -2px;
+	}
+	.track {
+		display: flex;
+		width: max-content;
+		padding-inline: var(--left) var(--right);
+	}
+	/* The films touch. */
 	.sheet {
-		--columns: var(--columns-desktop);
-		--slots: var(--slots-desktop);
-		display: grid;
-		row-gap: 28px;
-		grid-template-columns: repeat(var(--columns), calc(100% / var(--slots)));
+		display: flex;
+		flex: none;
 	}
-	@media (width < 960px) {
-		.sheet {
-			--columns: var(--columns-tablet);
-			--slots: var(--slots-tablet);
-		}
+	.sheet > li {
+		flex: none;
+		width: var(--card);
 	}
-	/* One strip that slides sideways: it runs under the side margins to the screen's edges, and each
-	   frame (64% of the width between the margins) snaps to the left margin. */
-	@media (width < 700px) {
-		.sheet {
-			--left: max(var(--gutter), env(safe-area-inset-left, 0px));
-			--right: max(var(--gutter), env(safe-area-inset-right, 0px));
-			grid-template-columns: none;
-			grid-auto-flow: column;
-			grid-auto-columns: 64%;
-			overflow-x: auto;
-			scroll-snap-type: x mandatory;
-			scrollbar-width: thin;
-			scrollbar-color: var(--color-amber-dim) transparent;
-			margin-inline: calc(-1 * var(--left)) calc(-1 * var(--right));
-			padding: 0 var(--right) 12px var(--left);
-			scroll-padding-inline: var(--left) var(--right);
-		}
-		.sheet > li {
-			scroll-snap-align: start;
-		}
-		/* At the screen's edges, the focus ring goes inside, or it would not show. */
-		.sheet:focus-visible {
-			outline-offset: -2px;
+	.copy {
+		display: none;
+	}
+	.window.running {
+		overflow: hidden;
+	}
+	.running .track {
+		padding-inline: 0;
+		animation: run var(--loop) linear infinite;
+	}
+	.running .copy {
+		display: flex;
+	}
+	.running.paused .track,
+	.running.resting .track {
+		animation-play-state: paused;
+	}
+	@keyframes run {
+		to {
+			transform: translate3d(-50%, 0, 0);
 		}
 	}
 
