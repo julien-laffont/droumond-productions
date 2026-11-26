@@ -42,6 +42,14 @@ export const SOCIAL = {
 /** Efecto Placebo's full teaser on YouTube: only ever a link, never a player. */
 export const EFECTO_PLACEBO_TEASER = 'https://www.youtube.com/watch?v=Y785Re6Cyvk';
 
+/** Resident Evil's episodes on Instagram, in order: links only, never embeds. */
+export const RESIDENT_EVIL_EPISODES = [
+	'https://www.instagram.com/reel/DeXEyA6saok/',
+	'https://www.instagram.com/reel/DezdFUHsaEK/',
+	'https://www.instagram.com/reel/DfILJSmsRWk/',
+	'https://www.instagram.com/reel/Dfh50ywMd3c/',
+];
+
 /**
  * The site's address, without a final slash. The hreflang links use it (only when English is
  * published), and the Publishing confirmation (`npm run confirm`) checks the site there.

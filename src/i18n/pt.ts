@@ -122,8 +122,10 @@ export const pt = {
 		/** Decorative: the code line above the title, printed as on the film. */
 		code: '35 mm · Resident Evil · Marinha Grande',
 		episodes: 'Episódios',
-		episode: 'Episódio 1',
-		moreEpisodes: 'Ver mais episódios no Instagram',
+		/** Followed by the episode's number. */
+		episode: 'Episódio',
+		opensOnInstagram: 'Os episódios abrem no Instagram, num separador novo.',
+		follow: 'Seguir no Instagram',
 		comingSoon: '5.º episódio: em breve',
 	},
 	home: {

@@ -88,8 +88,9 @@ export const en: Dictionary = {
 	residentEvil: {
 		code: '35 mm · Resident Evil · Marinha Grande',
 		episodes: 'Episodes',
-		episode: 'Episode 1',
-		moreEpisodes: 'See more episodes on Instagram',
+		episode: 'Episode',
+		opensOnInstagram: 'The episodes open on Instagram, in a new tab.',
+		follow: 'Follow on Instagram',
 		comingSoon: 'Episode 5: coming soon',
 	},
 	home: {

@@ -49,8 +49,6 @@ const residentEvil = defineCollection({
 		description: nonEmpty,
 		/** The small line under the title: type · genre · episodes · status. */
 		line: nonEmpty,
-		/** What the first episode's poster shows. */
-		posterAlt: nonEmpty,
 		credits: z.array(z.object({ role: nonEmpty, name: nonEmpty })).min(1),
 	}),
 });
