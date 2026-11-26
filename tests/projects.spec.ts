@@ -234,10 +234,7 @@ inEachBuild((build) => {
 	}
 
 	test('every excerpt in the build weighs less than 1.5 MB', () => {
-		// Resident Evil's first episode, shown whole on its page, is not an excerpt.
-		const excerpts = globSync(`${build.dist}/_astro/*.mp4`).filter(
-			(file) => !file.includes('/episode-'),
-		);
+		const excerpts = globSync(`${build.dist}/_astro/*.mp4`);
 		expect(excerpts.length).toBeGreaterThan(0);
 		for (const excerpt of excerpts) {
 			expect(statSync(excerpt).size, excerpt).toBeLessThan(1.5 * 1024 * 1024);
