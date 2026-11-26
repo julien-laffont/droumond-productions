@@ -267,10 +267,17 @@ const posterSizes = (project: Project) => {
 			video.addEventListener('playing', () => (video.hidden = false), { once: true });
 			frameWatcher.observe(video.parentElement!);
 		}
-		addEventListener('load', () => {
-			pageLoaded = true;
-			syncAllPlayback();
+		// WebKit may jump to the URL's anchor only after the load, once the fonts are in: the frames
+		// are watched again after that, so an excerpt far from the anchor stays unloaded.
+		addEventListener('load', async () => {
 			layout();
+			await document.fonts.ready;
+			await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+			pageLoaded = true;
+			for (const video of videos) {
+				frameWatcher.unobserve(video.parentElement!);
+				frameWatcher.observe(video.parentElement!);
+			}
 		});
 		lessMotion.addEventListener('change', syncAllPlayback);
 

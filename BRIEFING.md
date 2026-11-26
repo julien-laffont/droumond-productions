@@ -46,7 +46,7 @@ Película, aprovada pelo Carlos a 2026-11-20 na ronda de revisão (#8): "exatame
 - Primeiro ecrã: a linha de código "35 mm · Droumond 2026 · Leiria · Rolo 01", o nome, uma fita inclinada que passa sozinha, com botão de pausa (#37), "Produtora audiovisual" e as palavras (Séries, Suspense, Terror, Filmagens).
 - Projetos: uma fita que avança para o lado com o scroll, do líder com contagem à ponta final, com os vídeos sem som sempre a passar (#38). Sobre: o texto ao lado da equipa, um fotograma por pessoa. Elenco: uma folha de contactos, cada pessoa rodeada a lápis vermelho (#39, #41). Filmagens: uma claquete. Contacto: o endereço em letra grande (#40). Página de _Efecto Placebo_: o título grande, o excerto numa fita, a sinopse ao lado do cartaz, as personagens numeradas (#33).
 - Rodapé: a ponta da bobina ("Fim da bobina"), depois a identificação legal.
-- Logótipo: só o símbolo (círculo e monograma), claro sobre o escuro; o nome aparece em texto. Por agora, o JPEG do Carlos convertido para transparência; o SVG pede-se na #8.
+- Logótipo: só o símbolo (círculo e monograma), claro sobre o escuro; o nome aparece em texto. O símbolo é o PNG que o Carlos enviou, recortado e em 800 px; o SVG continua por receber (#8).
 - Movimento: só CSS e JavaScript simples (as fitas, o timecode, o lápis e a claquete no hover, o aparecimento discreto das secções). Quem pediu menos movimento vê tudo parado.
 
 ## Materiais
@@ -63,7 +63,7 @@ Película, aprovada pelo Carlos a 2026-11-20 na ronda de revisão (#8): "exatame
 - Mesma stack que a landing page do Julien (https://github.com/julien-laffont/julien-devops-lp): Astro 7, React 19 (ilhas), Tailwind CSS 4, TypeScript, Node 24 (`.nvmrc`), npm.
 - Qualidade na landing page: Playwright (testes), axe-core (acessibilidade), Lighthouse, Prettier, `astro check`. Script `npm run verify` corre tudo.
 - Alojamento: Infomaniak, no Hébergement Web (com PHP), o mesmo da landing page do Julien. Domínio: `droumondproductions.com`, registado na Infomaniak, com HTTPS (Let's Encrypt); escolhido para a publicação (#11), o Julien confirma-o antes da primeira release em `main`. O email do domínio está no Google Workspace.
-- CI/CD, como na landing page: workflow `Checks` em cada PR (testes em 4 jobs + Lighthouse para `main`) e workflow `Publish` a cada merge em `main`, que publica na Infomaniak e confirma que cada página responde com o commit publicado. Os segredos de publicação existem desde 2026-11-18, com uma conta FTP + SSH só para a publicação.
+- CI/CD, como na landing page: workflow `Checks` só nos PR para `main` (testes em 4 jobs + Lighthouse; para poupar minutos de CI, os PR para `develop` não correm a CI e o `npm run verify` corre localmente antes de cada push) e workflow `Publish` a cada merge em `main`, que publica na Infomaniak e confirma que cada página responde com o commit publicado. Os segredos de publicação existem desde 2026-11-18, com uma conta FTP + SSH só para a publicação.
 - Branches, como na landing page: o trabalho parte de `develop` e os PR vão para `develop`; `main` só recebe releases (PR de `develop`) e hotfixes, e cada merge em `main` publica o site.
 - Convenção da landing page: tudo no repo em inglês (código, comentários, docs), issues e PR em português de Portugal. Confirmar se se mantém aqui.
 - Quem atualiza o site depois de publicado: o Julien.

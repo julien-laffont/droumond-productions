@@ -368,8 +368,13 @@ inEachBuild((build) => {
 				inline: true,
 				hidden: 'true',
 			});
-			// Exactly over the poster.
-			expect(await teaser.boundingBox()).toEqual(await posters(page).first().boundingBox());
+			// Exactly over the poster, both measured at once: the page may still be moving.
+			const [over, under] = await teaser.evaluate((video) =>
+				[video, video.parentElement!.querySelector('img')!].map((element) =>
+					element.getBoundingClientRect().toJSON(),
+				),
+			);
+			expect(over).toEqual(under);
 			// Its frames pass. Not checked in WebKit: on Linux its player (GStreamer) sometimes stalls
 			// under load; Safari plays with another one.
 			if (browserName === 'chromium') {
