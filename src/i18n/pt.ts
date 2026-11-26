@@ -63,6 +63,10 @@ export const pt = {
 		pause: 'Pausar elenco',
 		resume: 'Retomar elenco',
 	},
+	/** The Equipa section of the home page; the people are in src/config/crew.ts. */
+	crew: {
+		title: 'Equipa',
+	},
 	/** The first screen of the home page (#13). */
 	hero: {
 		/** The code line above the name, printed as on the film (#36): decorative, hidden from screen readers. */

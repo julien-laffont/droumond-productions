@@ -22,6 +22,7 @@ const SECTIONS = {
 	projects: { pt: 'projetos', en: 'projects' },
 	about: { pt: 'sobre', en: 'about' },
 	cast: { pt: 'elenco', en: 'cast' },
+	crew: { pt: 'equipa', en: 'crew' },
 	contact: { pt: 'contacto', en: 'contact' },
 } satisfies Record<string, Record<Language, string>>;
 

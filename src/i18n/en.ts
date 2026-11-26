@@ -49,6 +49,9 @@ export const en: Dictionary = {
 		pause: 'Pause cast',
 		resume: 'Resume cast',
 	},
+	crew: {
+		title: 'Crew',
+	},
 	hero: {
 		code: '35 mm · Droumond 2026 · Leiria · Reel 01',
 		words: ['Series', 'Thriller', 'Horror', 'Filming'],
