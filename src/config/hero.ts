@@ -1,8 +1,9 @@
-// The first screen strip's photos, in order, after the title card.
+// The first screen strip's photos, in order.
 import type { ImageMetadata } from 'astro';
-import mg1914 from '../assets/cast/mg-1914.jpg';
-import mg1947 from '../assets/cast/mg-1947.jpg';
-import miguel from '../assets/cast/miguel-figueiredo.jpg';
+import anaIsabel from '../assets/cast/ana-isabel.jpg';
+import goncalo from '../assets/cast/goncalo-espirito-santo.jpg';
+import mariaInacio from '../assets/cast/maria-inacio.jpg';
+import mariaInes from '../assets/cast/maria-ines-cabral.jpg';
 import efectoPlacebo from '../assets/projects/efecto-placebo.jpg';
 import residentEvil from '../assets/projects/resident-evil.jpg';
 import carlos from '../assets/team/carlos-droumond.jpg';
@@ -18,12 +19,13 @@ export interface StripPhoto {
 }
 
 export const STRIP_PHOTOS: StripPhoto[] = [
+	{ image: anaIsabel, files: IMAGE_FILES.portrait, focus: '50% 35%' },
 	{ image: efectoPlacebo, files: IMAGE_FILES.project.wide },
-	{ image: miguel, files: IMAGE_FILES.portrait, focus: '50% 60%' },
+	{ image: goncalo, files: IMAGE_FILES.portrait, focus: '50% 35%' },
 	// The eyes and the figure under them.
 	{ image: residentEvil, files: IMAGE_FILES.project.tall, focus: '50% 40%' },
 	{ image: carlos, files: IMAGE_FILES.portrait, focus: '50% 15%' },
-	{ image: mg1947, files: IMAGE_FILES.portrait, focus: '50% 45%' },
-	{ image: mg1914, files: IMAGE_FILES.portrait, focus: '50% 25%' },
+	{ image: mariaInacio, files: IMAGE_FILES.portrait, focus: '50% 45%' },
+	{ image: mariaInes, files: IMAGE_FILES.portrait, focus: '50% 25%' },
 	{ image: julien, files: IMAGE_FILES.portrait, focus: '50% 26%' },
 ];

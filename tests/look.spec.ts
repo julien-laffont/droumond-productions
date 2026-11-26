@@ -1,5 +1,5 @@
-// The Película base (#36), on every page of both builds: one dark world, names in Big Shoulders
-// Display and the rest in Space Mono, both hosted on the site itself. Nothing of the old visual
+// The Película base (#36), on every page of both builds: one dark world, names in Bebas Neue
+// and the rest in Space Mono, both hosted on the site itself. Nothing of the old visual
 // (#12) stays: no Archivo, no light canvas, no brush stroke.
 import { expect, test, type Page } from '@playwright/test';
 import { inEachBuild, pagesOf } from './pages';
@@ -65,7 +65,7 @@ inEachBuild((build) => {
 			expect(contrast(colors.secondary, colors.background)).toBeCloseTo(7.3, 1);
 		});
 
-		test(`${path}: names in Big Shoulders Display, the rest in Space Mono, nothing of the old visual`, async ({
+		test(`${path}: names in Bebas Neue, the rest in Space Mono, nothing of the old visual`, async ({
 			page,
 		}) => {
 			await page.goto(path);
@@ -75,7 +75,7 @@ inEachBuild((build) => {
 			}));
 			// Astro adds a suffix to each family's name, so only the start is fixed.
 			expect(fonts.body).toMatch(/^"?Space Mono/);
-			expect(fonts.title).toMatch(/^"?Big Shoulders Display/);
+			expect(fonts.title).toMatch(/^"?Bebas Neue/);
 			expect(await oldVisual(page)).toEqual([]);
 		});
 

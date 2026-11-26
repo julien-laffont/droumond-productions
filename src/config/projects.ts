@@ -7,7 +7,7 @@ import efectoPlacebo from '../assets/projects/efecto-placebo.mp4';
 import residentEvilPoster from '../assets/projects/resident-evil.jpg';
 import residentEvil from '../assets/projects/resident-evil.mp4';
 import type { PageId } from '../lib/paths';
-import { SOCIAL, type Language } from './site';
+import type { Language } from './site';
 
 /** A text in each language. */
 type Text = Record<Language, string>;
@@ -65,9 +65,6 @@ export const PROJECTS: Project[] = [
 			en: 'Resident Evil: two white eyes glowing in the dark, behind a figure crouching on the road.',
 		},
 		shape: 'tall',
-		link: {
-			url: SOCIAL.instagram,
-			label: { pt: 'Ver no Instagram', en: 'View on Instagram' },
-		},
+		link: { page: 'residentEvil', label: { pt: 'Ver o projeto', en: 'View the project' } },
 	},
 ];

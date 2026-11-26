@@ -40,7 +40,7 @@ const HOMES = [
 	},
 ];
 
-/** The top edge code of each frame: the title card, then the 7 photos. */
+/** The top edge code of each frame: the 8 photos. */
 const FRAME_CODES = [
 	'Droumond 2026 ▸ 14',
 	'▸ 15',
@@ -105,11 +105,11 @@ inEachBuild((build) => {
 			page,
 		}) => {
 			await page.goto(home.path);
-			// The title card and the 7 photos, then the same again: the loop has no seam.
+			// The 8 photos, then the same again: the loop has no seam.
 			const codes = firstScreen(page).getByText(/▸ \d\d$/);
 			await expect(codes).toHaveText([...FRAME_CODES, ...FRAME_CODES]);
 			const photos = firstScreen(page).locator('img');
-			await expect(photos).toHaveCount(14);
+			await expect(photos).toHaveCount(16);
 			await expect
 				.poll(() =>
 					photos.evaluateAll((imgs) =>
@@ -123,8 +123,8 @@ inEachBuild((build) => {
 			const sources = await photos.evaluateAll((imgs) =>
 				imgs.map((img) => new URL((img as HTMLImageElement).currentSrc).pathname),
 			);
-			expect(new Set(sources).size).toBe(7);
-			expect(sources.slice(7)).toEqual(sources.slice(0, 7));
+			expect(new Set(sources).size).toBe(8);
+			expect(sources.slice(8)).toEqual(sources.slice(0, 8));
 			for (const frame of [...(await codes.all()), ...(await photos.all())]) {
 				expect(await frame.evaluate((el) => el.closest('[aria-hidden="true"]') !== null)).toBe(
 					true,

@@ -15,7 +15,7 @@ const MAX_PAGE_SIZE = 450 * KB;
 /** Each video, such as the excerpts of Projects. */
 const MAX_VIDEO_SIZE = 1.5 * MB;
 const MAX_JS_SIZE = 75 * KB;
-/** Película's three (#36): Big Shoulders Display, Space Mono 400 and 700. */
+/** Película's three (#36): Bebas Neue, Space Mono 400 and 700. */
 const MAX_FONTS = 3;
 
 /** A target that varies from run to run: shown in the summary, as a median. It never blocks. */

@@ -40,4 +40,19 @@ const efectoPlacebo = defineCollection({
 		}),
 });
 
-export const collections = { privacy, about, efectoPlacebo };
+// The page of Resident Evil, one file per language: src/content/resident-evil/<language>.md. The
+// body is the text; the frontmatter holds the rest of the page's text.
+const residentEvil = defineCollection({
+	loader: glob({ pattern: '*.md', base: './src/content/resident-evil' }),
+	schema: z.object({
+		/** The series in one sentence, for search engines. */
+		description: nonEmpty,
+		/** The small line under the title: type · genre · episodes · status. */
+		line: nonEmpty,
+		/** What the first episode's poster shows. */
+		posterAlt: nonEmpty,
+		credits: z.array(z.object({ role: nonEmpty, name: nonEmpty })).min(1),
+	}),
+});
+
+export const collections = { privacy, about, efectoPlacebo, residentEvil };

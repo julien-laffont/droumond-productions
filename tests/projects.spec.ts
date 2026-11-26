@@ -1,11 +1,9 @@
 // Projects, a reel of film driven by the scroll on a desktop and swiped elsewhere: each excerpt
 // loops muted in its frame, hosted on the site, and nothing comes from another site. Efecto
-// Placebo leads to its own page; Resident Evil to Instagram.
+// Placebo and Resident Evil each lead to their own page.
 import { globSync, statSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
 import { inEachBuild } from './pages';
-
-const INSTAGRAM_PROFILE = 'https://www.instagram.com/droumond_productions';
 
 /** What the section shows in each language. The reel's English is provisional. */
 const HOMES = [
@@ -16,8 +14,8 @@ const HOMES = [
 		pause: 'Pausar vídeos',
 		resume: 'Retomar vídeos',
 		links: [
-			{ name: 'Ver o projeto', href: '/efecto-placebo/', newTab: false },
-			{ name: 'Ver no Instagram', href: INSTAGRAM_PROFILE, newTab: true },
+			{ name: 'Ver o projeto', href: '/efecto-placebo/' },
+			{ name: 'Ver o projeto', href: '/resident-evil/' },
 		],
 		snapshot: `
 			- region "Projetos":
@@ -34,7 +32,7 @@ const HOMES = [
 			      - 'img "Resident Evil: dois olhos brancos a brilhar no escuro, atrás de uma figura agachada na estrada."'
 			      - heading "Resident Evil" [level=3]
 			      - paragraph: Minissérie · Terror · 5 episódios
-			      - link "Ver no Instagram"
+			      - link "Ver o projeto"
 		`,
 	},
 	{
@@ -44,8 +42,8 @@ const HOMES = [
 		pause: 'Pause videos',
 		resume: 'Resume videos',
 		links: [
-			{ name: 'View the project', href: '/en/efecto-placebo/', newTab: false },
-			{ name: 'View on Instagram', href: INSTAGRAM_PROFILE, newTab: true },
+			{ name: 'View the project', href: '/en/efecto-placebo/' },
+			{ name: 'View the project', href: '/en/resident-evil/' },
 		],
 		snapshot: `
 			- region "Projects":
@@ -62,7 +60,7 @@ const HOMES = [
 			      - 'img "Resident Evil: two white eyes glowing in the dark, behind a figure crouching on the road."'
 			      - heading "Resident Evil" [level=3]
 			      - paragraph: Mini-series · Horror · 5 episodes
-			      - link "View on Instagram"
+			      - link "View the project"
 		`,
 	},
 ];
@@ -183,51 +181,46 @@ inEachBuild((build) => {
 			await expect(page.locator(`section#${home.anchor}`)).toMatchAriaSnapshot(home.snapshot);
 		});
 
-		test(`${home.path}: Efecto Placebo's link opens its page; Instagram opens in a new tab`, async ({
-			page,
-		}) => {
+		test(`${home.path}: each Project's link opens its page in the same tab`, async ({ page }) => {
 			await page.goto(home.path);
 			const section = page.locator(`section#${home.anchor}`);
-			for (const { name, href, newTab } of home.links) {
-				const link = section.getByRole('link', { name, exact: true });
+			for (const [index, { name, href }] of home.links.entries()) {
+				const link = section.getByRole('link', { name, exact: true }).nth(index);
 				await expect(link).toBeVisible();
 				await expect(link).toHaveAttribute('href', href);
-				if (newTab) {
-					await expect(link).toHaveAttribute('target', '_blank');
-					await expect(link).toHaveAttribute('rel', 'noopener');
-				} else {
-					await expect(link).not.toHaveAttribute('target');
-				}
+				await expect(link).not.toHaveAttribute('target');
 			}
 		});
 
-		test(`${home.path}: a click on Efecto Placebo's frame opens its page in the same tab`, async ({
-			page,
-		}) => {
-			const [toPage] = home.links;
-			// Clicked where a visitor sees the frame: the link covers the whole cell.
-			await page.goto(home.path);
-			await scrubTo(page, 0);
-			const frame = await page
-				.locator(`section#${home.anchor}`)
-				.getByRole('img')
-				.first()
-				.boundingBox();
-			if (!frame) throw new Error("Efecto Placebo's frame is not displayed");
-			await page.mouse.click(frame.x + frame.width / 2, frame.y + frame.height / 2);
-			await expect(page).toHaveURL(toPage.href);
-			await expect(page.getByRole('heading', { level: 1 })).toHaveText('Efecto Placebo');
-		});
+		for (const [index, title] of ['Efecto Placebo', 'Resident Evil'].entries()) {
+			test(`${home.path}: a click on ${title}'s frame opens its page in the same tab`, async ({
+				page,
+			}) => {
+				const toPage = home.links[index];
+				// Clicked where a visitor sees the frame: the link covers the whole cell.
+				await page.goto(home.path);
+				await scrubTo(page, index);
+				const frame = await page
+					.locator(`section#${home.anchor}`)
+					.getByRole('img')
+					.nth(index)
+					.boundingBox();
+				if (!frame) throw new Error(`${title}'s frame is not displayed`);
+				await page.mouse.click(frame.x + frame.width / 2, frame.y + frame.height / 2);
+				await expect(page).toHaveURL(toPage.href);
+				await expect(page.getByRole('heading', { level: 1 })).toHaveText(title);
+			});
 
-		test(`${home.path}: Enter on Efecto Placebo's link opens its page in the same tab`, async ({
-			page,
-		}) => {
-			const [toPage] = home.links;
-			await page.goto(home.path);
-			await page.getByRole('link', { name: toPage.name, exact: true }).focus();
-			await page.keyboard.press('Enter');
-			await expect(page).toHaveURL(toPage.href);
-		});
+			test(`${home.path}: Enter on ${title}'s link opens its page in the same tab`, async ({
+				page,
+			}) => {
+				const toPage = home.links[index];
+				await page.goto(home.path);
+				await page.getByRole('link', { name: toPage.name, exact: true }).nth(index).focus();
+				await page.keyboard.press('Enter');
+				await expect(page).toHaveURL(toPage.href);
+			});
+		}
 
 		test(`${home.path}: the pause button says what it does, in the page's language`, async ({
 			page,
@@ -241,7 +234,10 @@ inEachBuild((build) => {
 	}
 
 	test('every excerpt in the build weighs less than 1.5 MB', () => {
-		const excerpts = globSync(`${build.dist}/_astro/*.mp4`);
+		// Resident Evil's first episode, shown whole on its page, is not an excerpt.
+		const excerpts = globSync(`${build.dist}/_astro/*.mp4`).filter(
+			(file) => !file.includes('/episode-'),
+		);
 		expect(excerpts.length).toBeGreaterThan(0);
 		for (const excerpt of excerpts) {
 			expect(statSync(excerpt).size, excerpt).toBeLessThan(1.5 * 1024 * 1024);
@@ -422,7 +418,7 @@ inEachBuild((build) => {
 			await page.goto('/');
 			await scrubTo(page, 0);
 			for (const [index, { name }] of HOME.links.entries()) {
-				await reel(page).getByRole('link', { name, exact: true }).focus();
+				await reel(page).getByRole('link', { name, exact: true }).nth(index).focus();
 				await settle(page);
 				await expect(posters(page).nth(index)).toBeInViewport({ ratio: 1 });
 			}
@@ -479,7 +475,7 @@ inEachBuild((build) => {
 		test('/: each link, focused, brings its frame into view', async ({ page }) => {
 			await page.goto('/#projetos');
 			for (const [index, { name }] of HOME.links.entries()) {
-				await reel(page).getByRole('link', { name, exact: true }).focus();
+				await reel(page).getByRole('link', { name, exact: true }).nth(index).focus();
 				await settle(page);
 				await expect(posters(page).nth(index)).toBeInViewport({ ratio: 1 });
 			}
@@ -556,11 +552,10 @@ inEachBuild((build) => {
 			await expect(videos(page).first()).toBeHidden();
 			await expect(reel(page).getByRole('button')).toBeHidden();
 			expect(await sweepTurns(page)).toBe(false);
-			for (const { name, href } of HOME.links) {
-				await expect(reel(page).getByRole('link', { name, exact: true })).toHaveAttribute(
-					'href',
-					href,
-				);
+			for (const [index, { name, href }] of HOME.links.entries()) {
+				await expect(
+					reel(page).getByRole('link', { name, exact: true }).nth(index),
+				).toHaveAttribute('href', href);
 			}
 			// Swiped by hand: without JavaScript the page runs no frame callbacks to settle on.
 			await reel(page)

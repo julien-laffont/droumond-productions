@@ -11,20 +11,20 @@ export default defineConfig({
 	integrations: [localizedPages()],
 
 	// The fonts of Película (#36), self-hosted (no Google Fonts, for the GDPR), licences next to
-	// them: Big Shoulders Display for names and titles (variable in weight), Space Mono 400 and 700
+	// them: Bebas Neue for names and titles (one weight), Space Mono 400 and 700
 	// for everything else. Astro creates each fallback font with size-adjust, so the text does not
 	// jump when the font arrives.
 	fonts: [
 		{
 			provider: fontProviders.local(),
-			name: 'Big Shoulders Display',
-			cssVariable: '--font-big-shoulders',
+			name: 'Bebas Neue',
+			cssVariable: '--font-bebas-neue',
 			fallbacks: ['Arial Narrow', 'sans-serif'],
 			options: {
 				variants: [
 					{
-						src: ['./src/assets/fonts/big-shoulders-display.woff2'],
-						weight: '100 900',
+						src: ['./src/assets/fonts/bebas-neue.woff2'],
+						weight: '400',
 						style: 'normal',
 					},
 				],
