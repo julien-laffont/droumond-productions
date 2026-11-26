@@ -21,8 +21,8 @@ export const CAST: Person[] = [
 		role: CHARACTER_OF_EFECTO_PLACEBO,
 		photo: miguel,
 		alt: {
-			pt: 'Miguel Figueiredo, de fato, bebe um copo de vinho tinto num bar, à noite.',
-			en: 'Miguel Figueiredo, in a suit, drinks a glass of red wine in a bar at night.',
+			pt: 'Miguel Figueiredo, de fato, de pé contra a luz de uma janela, olha para a câmara.',
+			en: 'Miguel Figueiredo, in a suit, stands against the light of a window and looks at the camera.',
 		},
 	},
 	{

@@ -41,7 +41,7 @@ export const en: Dictionary = {
 	},
 	about: {
 		title: 'About',
-		team: 'Team',
+		founders: 'Co-founders',
 	},
 	cast: {
 		title: 'Cast',
@@ -79,6 +79,13 @@ export const en: Dictionary = {
 		fullTeaser: 'Watch the full teaser',
 		synopsis: 'Synopsis',
 		characters: 'Characters',
+	},
+	residentEvil: {
+		code: '35 mm · Resident Evil · Marinha Grande',
+		episodes: 'Episodes',
+		episode: 'Episode 1',
+		moreEpisodes: 'See more episodes on Instagram',
+		comingSoon: 'Episode 5: coming soon',
 	},
 	home: {
 		title: 'Droumond Productions',

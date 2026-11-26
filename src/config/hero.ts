@@ -1,5 +1,6 @@
-// The first screen strip's photos, in order, after the title card.
+// The first screen strip's photos, in order.
 import type { ImageMetadata } from 'astro';
+import dsc07395 from '../assets/cast/dsc07395.jpg';
 import mg1914 from '../assets/cast/mg-1914.jpg';
 import mg1947 from '../assets/cast/mg-1947.jpg';
 import miguel from '../assets/cast/miguel-figueiredo.jpg';
@@ -18,8 +19,9 @@ export interface StripPhoto {
 }
 
 export const STRIP_PHOTOS: StripPhoto[] = [
+	{ image: dsc07395, files: IMAGE_FILES.portrait, focus: '50% 35%' },
 	{ image: efectoPlacebo, files: IMAGE_FILES.project.wide },
-	{ image: miguel, files: IMAGE_FILES.portrait, focus: '50% 60%' },
+	{ image: miguel, files: IMAGE_FILES.portrait, focus: '50% 35%' },
 	// The eyes and the figure under them.
 	{ image: residentEvil, files: IMAGE_FILES.project.tall, focus: '50% 40%' },
 	{ image: carlos, files: IMAGE_FILES.portrait, focus: '50% 15%' },

@@ -1,0 +1,123 @@
+---
+// The page of Resident Evil in one language. Its texts come from
+// src/content/resident-evil/<language>.md, so Julien can change them without touching code.
+import { getEntry, render } from 'astro:content';
+import poster from '../assets/resident-evil/episode-1.jpg';
+import episode from '../assets/resident-evil/episode-1.mp4';
+import { SOCIAL, type Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import Base from '../layouts/Base.astro';
+import Film from './Film.astro';
+
+interface Props {
+	language: Language;
+}
+
+/** Project titles are never translated. */
+const TITLE = 'Resident Evil';
+
+const { language } = Astro.props;
+const t = dictionaries[language].residentEvil;
+const entry = await getEntry('residentEvil', language);
+if (!entry) {
+	throw new Error(
+		`Missing src/content/resident-evil/${language}.md: the page exists in every language.`,
+	);
+}
+const { data } = entry;
+const { Content } = await render(entry);
+---
+
+<Base
+	language={language}
+	page="residentEvil"
+	title={`${TITLE} · Droumond Productions`}
+	description={data.description}
+>
+	<main class="mx-auto grid max-w-[1600px] gap-[clamp(24px,3vw,36px)] px-gutter pt-[clamp(40px,5vw,72px)] pb-[clamp(64px,9vw,128px)]">
+		<div class="grid gap-3">
+			<p class="type-code" aria-hidden="true">
+				{t.code}
+			</p>
+			<h1 class="text-[clamp(3rem,9vw,7.5rem)] type-name">{TITLE}</h1>
+			<p class="type-meta text-balance">{data.line}</p>
+		</div>
+
+		<section aria-labelledby="episodes-title" class="episodes">
+			<h2 id="episodes-title" class="title type-label">
+				{t.episodes}
+			</h2>
+			<figure class="player min-w-0">
+				<Film top={`▸ 01 · ${TITLE}`} bottom="01A">
+					{/* The file waits behind its still until played. */}
+					<video
+						controls
+						playsinline
+						preload="none"
+						poster={poster.src}
+						aria-label={`${t.episode} · ${TITLE}`}
+						class="block aspect-[9/16] w-full bg-ink object-cover"
+					>
+						<source src={episode} type="video/mp4" />
+					</video>
+				</Film>
+				<figcaption class="mt-3 type-meta">{t.episode}</figcaption>
+			</figure>
+			<div class="text grid max-w-[62ch] min-w-0 content-start gap-[clamp(24px,3vw,36px)]">
+				{/* The Project's name, in italics in the Markdown, shows upright in amber. */}
+				<div class="grid gap-[1em] text-[clamp(1rem,1.2vw,1.1rem)] leading-[1.7] [&_em]:text-amber [&_em]:not-italic">
+					<Content />
+				</div>
+				<dl class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 border-t border-paper/14 pt-4">
+					{data.credits.map(({ role, name }) => (
+						<>
+							<dt class="type-meta leading-[1.9]">{role}</dt>
+							<dd>{name}</dd>
+						</>
+					))}
+				</dl>
+				<div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+					<a href={SOCIAL.instagram} target="_blank" rel="noopener" class="cta">
+						{t.moreEpisodes}
+						<span aria-hidden="true"> ↗</span>
+					</a>
+					<p class="type-meta">{t.comingSoon}</p>
+				</div>
+			</div>
+		</section>
+	</main>
+</Base>
+
+<style>
+	/* Desktop: the vertical player on the left, the title and the text on the right. Phone: one column. */
+	.episodes {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+		grid-template-areas:
+			'player title'
+			'player text';
+		grid-template-rows: auto 1fr;
+		gap: clamp(20px, 2.4vw, 32px) clamp(28px, 5vw, 80px);
+		align-items: start;
+	}
+	.title {
+		grid-area: title;
+	}
+	.player {
+		grid-area: player;
+		max-width: 420px;
+	}
+	.text {
+		grid-area: text;
+	}
+	@media (max-width: 760px) {
+		.episodes {
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-areas: 'title' 'player' 'text';
+			grid-template-rows: none;
+		}
+		.player {
+			max-width: 70%;
+		}
+	}
+</style>

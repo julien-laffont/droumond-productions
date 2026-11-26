@@ -52,8 +52,8 @@ export const pt = {
 	/** The Sobre section of the home page; its text is in src/content/about/, the team in src/config/team.ts. */
 	about: {
 		title: 'Sobre',
-		/** The name of the team's list, for screen readers. */
-		team: 'Equipa',
+		/** Above the team's photos; also the name of their list. */
+		founders: 'Cofundadores',
 	},
 	/** The Elenco section of the home page; the people are in src/config/cast.ts. */
 	cast: {
@@ -110,6 +110,15 @@ export const pt = {
 		fullTeaser: 'Ver o teaser completo',
 		synopsis: 'Sinopse',
 		characters: 'Personagens',
+	},
+	/** The page of Resident Evil; its texts are in src/content/resident-evil/. */
+	residentEvil: {
+		/** Decorative: the code line above the title, printed as on the film. */
+		code: '35 mm · Resident Evil · Marinha Grande',
+		episodes: 'Episódios',
+		episode: 'Episódio 1',
+		moreEpisodes: 'Ver mais episódios no Instagram',
+		comingSoon: '5.º episódio: em breve',
 	},
 	home: {
 		title: 'Droumond Productions',

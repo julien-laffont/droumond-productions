@@ -8,6 +8,7 @@ const PAIRS = [
 	{ pt: '/', en: '/en/' },
 	{ pt: '/filmagens/', en: '/en/filming/' },
 	{ pt: '/efecto-placebo/', en: '/en/efecto-placebo/' },
+	{ pt: '/resident-evil/', en: '/en/resident-evil/' },
 	{ pt: '/politica-de-privacidade/', en: '/en/privacy-policy/' },
 ];
 
