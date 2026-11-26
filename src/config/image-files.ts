@@ -17,7 +17,7 @@ export const IMAGE_FILES = {
 	/** A series' poster on its page, 2:3. */
 	seriesPoster: { widths: [360, 540, 800], quality: 70 },
 	/** The 4:5 portraits of the team (Sobre) and of the Elenco. */
-	portrait: { widths: [320, 480, 640], quality: 70 },
+	portrait: { widths: [320, 480, 640], quality: 55 },
 } satisfies {
 	project: Record<Project['shape'], ImageFiles>;
 	seriesPoster: ImageFiles;

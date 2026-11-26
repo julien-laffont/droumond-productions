@@ -60,6 +60,8 @@ export const pt = {
 		title: 'Elenco',
 		/** Above the contact sheet, printed as on the film: decorative, hidden from screen readers. */
 		sheet: 'Folha de contactos · Rolo 02',
+		pause: 'Pausar elenco',
+		resume: 'Retomar elenco',
 	},
 	/** The first screen of the home page (#13). */
 	hero: {
