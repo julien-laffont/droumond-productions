@@ -1,7 +1,7 @@
 ---
 // The home page's first screen: the name, a looping film strip and the cue to Projects.
 import { Image } from 'astro:assets';
-import { STRIP_PHOTOS } from '../config/hero';
+import { STRIP_PHOTOS, stripSizes } from '../config/hero';
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import { sectionAnchor } from '../lib/paths';
@@ -22,12 +22,6 @@ const edgeCodes = (index: number) => {
 		top: index % 2 ? `▸ ${number}` : `Droumond 2026 ▸ ${number}`,
 		bottom: `${number}A`,
 	};
-};
-
-/** A photo's width in its 3:2 frame, for `sizes`. The heights match --frame-height below. */
-const frameSizes = ({ width, height }: { width: number; height: number }) => {
-	const ratio = Math.max(width / height, 3 / 2).toFixed(3);
-	return `(max-width: 700px) calc(${ratio} * clamp(120px, 26vh, 240px)), calc(${ratio} * clamp(120px, 28vh, 300px))`;
 };
 ---
 
@@ -60,7 +54,7 @@ const frameSizes = ({ width, height }: { width: number; height: number }) => {
 								<Image
 									src={photo.image}
 									{...photo.files}
-									sizes={frameSizes(photo.image)}
+									sizes={stripSizes(photo.image)}
 									alt=""
 									loading="eager"
 									class="frame"

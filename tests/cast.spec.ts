@@ -328,6 +328,54 @@ inEachBuild(() => {
 		});
 	}
 
+	// Lighthouse's phone, where the page weight is measured, and a desktop.
+	for (const screen of [
+		{ name: 'Lighthouse phone', width: 412, height: 823, scale: 1.75 },
+		{ name: 'desktop', width: 1440, height: 900, scale: 1 },
+	]) {
+		test.describe(`on a ${screen.name} (${screen.width} px at ${screen.scale}x)`, () => {
+			test.use({
+				viewport: { width: screen.width, height: screen.height },
+				deviceScaleFactor: screen.scale,
+			});
+
+			test('/: a photo the first screen strip shows too comes as the same file, not a second one', async ({
+				page,
+			}) => {
+				await page.goto('/');
+				const strip = page.locator('[data-strip] img');
+				const cast = page.locator('section#elenco ul:not([inert]) img');
+				await cast.evaluateAll((imgs) =>
+					imgs.forEach((img) => ((img as HTMLImageElement).loading = 'eager')),
+				);
+				const loaded = (imgs: Element[]) =>
+					imgs.every(
+						(img) => (img as HTMLImageElement).complete && (img as HTMLImageElement).currentSrc,
+					);
+				await expect.poll(() => strip.evaluateAll(loaded)).toBe(true);
+				await expect.poll(() => cast.evaluateAll(loaded)).toBe(true);
+
+				// The same srcset: the same original in the same files. The browser must pick the same one.
+				const picks = (imgs: Locator) =>
+					imgs.evaluateAll((all) =>
+						all.map((img) => ({
+							srcset: img.getAttribute('srcset'),
+							file: new URL((img as HTMLImageElement).currentSrc).pathname,
+						})),
+					);
+				const onStrip = new Map((await picks(strip)).map(({ srcset, file }) => [srcset, file]));
+				const shared = (await picks(cast)).filter(({ srcset }) => onStrip.has(srcset));
+				expect(shared.map(({ file }) => file.split('/').pop()!.split('.')[0]).sort()).toEqual([
+					'ana-isabel',
+					'goncalo-espirito-santo',
+					'maria-inacio',
+					'maria-ines-cabral',
+				]);
+				for (const { srcset, file } of shared) expect(file).toBe(onStrip.get(srcset));
+			});
+		});
+	}
+
 	test('/: the pencil ring stays drawn, and is drawn again in 0.7 s on hover', async ({ page }) => {
 		await page.emulateMedia({ reducedMotion: 'no-preference' });
 		await page.goto('/');

@@ -3,6 +3,7 @@
 // each person on a frame of film ringed in grease pencil, with the name under it.
 import { Image } from 'astro:assets';
 import { CAST } from '../config/cast';
+import { sizesOnStrip } from '../config/hero';
 import { IMAGE_FILES } from '../config/image-files';
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
@@ -64,12 +65,13 @@ const loop = `${CAST.length * 6}s`;
 						return (
 							<li class="grid min-w-0 content-start gap-3.5">
 								<Film top={frame.top} bottom={frame.bottom} side={7}>
-									{/* The sizes are the card's width (--card below) minus the film's 7 px on each side. */}
+									{/* The sizes are the card's width (--card below) minus the film's 7 px on each side,
+									    or the first screen strip's for a photo it shows too: the same file, loaded once. */}
 									<Image
 										src={person.photo}
 										alt={copy ? '' : person.alt[language]}
 										{...IMAGE_FILES.portrait}
-										sizes="calc(clamp(220px, 19vw, 300px) - 14px)"
+										sizes={sizesOnStrip(person.photo) ?? 'calc(clamp(220px, 19vw, 300px) - 14px)'}
 										class="block aspect-[4/5] w-full bg-ink object-cover"
 									/>
 									<svg
