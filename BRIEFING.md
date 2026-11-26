@@ -52,7 +52,7 @@ Película, aprovada pelo Carlos a 2026-11-20 na ronda de revisão (#8): "exatame
 ## Materiais
 
 - Fotografias originais, o master do teaser e episódios de _Resident Evil_: enviados pelo Carlos a 2026-11-20. Os originais não entram no repo; as fotos do site são cortes preparados a partir deles (#41).
-- Equipa: Carlos e Julien. A foto do Julien ainda é uma captura de ecrã; ele envia uma (#18).
+- Equipa: Carlos e Julien, com as fotos originais de cada um.
 - As pessoas das fotos do protótipo (as personagens do Instagram, com o Julien e o Bruno Moreira) deram o consentimento de uso de imagem.
 - Elenco: personagens de _Efecto Placebo_, com fotos do Carlos. Só se sabem os nomes do Miguel Figueiredo e do Bruno Moreira.
 - Textos (Sobre, Equipa): escrevem o Julien e o autor.
