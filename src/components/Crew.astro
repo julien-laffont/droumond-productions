@@ -1,0 +1,49 @@
+---
+// The Equipa section: a grid of src/config/crew.ts, each person's photo with the name and the role
+// under it.
+import { Image } from 'astro:assets';
+import { CREW } from '../config/crew';
+import { IMAGE_FILES } from '../config/image-files';
+import type { Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import { sectionAnchor } from '../lib/paths';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const t = dictionaries[language].crew;
+const anchor = sectionAnchor('crew', language);
+---
+
+<section
+	id={anchor}
+	aria-labelledby={`${anchor}-title`}
+	class="border-t border-paper/14 px-gutter py-[clamp(64px,9vw,128px)]"
+>
+	<h2 id={`${anchor}-title`} class="type-label mb-[clamp(24px,3vw,40px)]">
+		{t.title}
+	</h2>
+	<ul
+		class="grid grid-cols-2 gap-x-[clamp(14px,2vw,28px)] gap-y-[clamp(28px,4vw,48px)] min-[700px]:grid-cols-4"
+		aria-labelledby={`${anchor}-title`}
+	>
+		{CREW.map((person) => (
+			<li class="reveal grid min-w-0 content-start gap-3.5">
+				{/* The sizes match the photo's real width; quality 70 keeps the page under its weight limit. */}
+				<Image
+					src={person.photo}
+					alt={person.alt[language]}
+					{...IMAGE_FILES.portrait}
+					sizes="(max-width: 699px) calc(50vw - 24px), 22vw"
+					class="block aspect-[4/5] w-full bg-ink object-cover"
+				/>
+				<div class="grid gap-1.5">
+					<h3 class="text-[clamp(1.25rem,1.8vw,1.75rem)] type-name">{person.name}</h3>
+					<p class="type-meta">{person.role[language]}</p>
+				</div>
+			</li>
+		))}
+	</ul>
+</section>

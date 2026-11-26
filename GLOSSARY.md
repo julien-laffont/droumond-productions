@@ -16,6 +16,10 @@ _Avoid_: recording, shoot, hire, gravação
 One of the company's two co-founders, Carlos Droumond and Julien Laffont. They also act in the Projects, but stay Team members.
 _Avoid_: staff, crew, cast
 
+**Crew member**:
+A person in the Equipa section, with the role they have in the company's productions. They include the two Team members, who are therefore shown twice: in Sobre as co-founders and in Equipa with their roles.
+_Avoid_: staff, team member (that is only the two co-founders)
+
 **Cast member**:
 A person who plays a Character in a Project and is not a Team member. Together they are the Elenco.
 _Avoid_: team member, actor list

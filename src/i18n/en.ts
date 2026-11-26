@@ -47,6 +47,9 @@ export const en: Dictionary = {
 		title: 'Cast',
 		sheet: 'Contact sheet · Reel 02',
 	},
+	crew: {
+		title: 'Crew',
+	},
 	hero: {
 		code: '35 mm · Droumond 2026 · Leiria · Reel 01',
 		words: ['Series', 'Thriller', 'Horror', 'Filming'],

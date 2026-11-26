@@ -61,6 +61,10 @@ export const pt = {
 		/** Above the contact sheet, printed as on the film: decorative, hidden from screen readers. */
 		sheet: 'Folha de contactos · Rolo 02',
 	},
+	/** The Equipa section of the home page; the people are in src/config/crew.ts. */
+	crew: {
+		title: 'Equipa',
+	},
 	/** The first screen of the home page (#13). */
 	hero: {
 		/** The code line above the name, printed as on the film (#36): decorative, hidden from screen readers. */

@@ -25,7 +25,7 @@ Documento de direção inicial. Última atualização: 2026-11-24. Tudo o que es
 - O site é da empresa, não só da série.
 - Em Projetos, excertos curtos e sem som do teaser de _Efecto Placebo_ e de um episódio de _Resident Evil_, alojados no site. Não aloja episódios completos.
 - Página de _Efecto Placebo_ (`/efecto-placebo/`, #33), aberta pelo seu quadro em Projetos: outro excerto do teaser, o link para o teaser completo no YouTube, a sinopse com o cartaz, a ficha (realização e produção) e 12 personagens. Os textos param no que se sabe no fim do episódio 1: sem spoilers. Sem atores até o Julien enviar os nomes completos.
-- Secções obrigatórias: Sobre, Equipa, Contacto. A equipa são os dois cofundadores, Carlos Droumond e Julien Laffont, e aparece no Sobre. Quem representa nos projetos fica à parte, no Elenco (#41).
+- Secções obrigatórias: Sobre, Equipa, Contacto. Os dois cofundadores, Carlos Droumond e Julien Laffont, aparecem no Sobre; a Equipa é uma grelha de fotos com toda a equipa e a função de cada pessoa, abaixo do Elenco (#62). Quem representa nos projetos fica à parte, no Elenco (#41).
 - Outros projetos: a minissérie _Resident Evil_ do Instagram, além de _Efecto Placebo_.
 - Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?").
 - Sem loja, apoio nem newsletter na v1.
