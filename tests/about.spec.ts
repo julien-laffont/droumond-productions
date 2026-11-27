@@ -13,6 +13,8 @@ const HOMES = [
 		heading: 'Sobre',
 		founders: 'Cofundadores',
 		text: 'A Droumond Productions é uma produtora audiovisual de Leiria, fundada em 2026.',
+		forOthers:
+			'Com a mesma equipa e o mesmo material, também filmamos para outros: vídeos para artistas e projetos de cinema, na região de Leiria.',
 		roles: ['Realizador · Produtor · Ator', 'Gerente · Ator · Direção de atores'],
 		alts: [
 			'Carlos Droumond, de casaco castanho e camisola preta, encostado a um vidro que o reflete, numa rua de calçada.',
@@ -26,6 +28,8 @@ const HOMES = [
 		heading: 'About',
 		founders: 'Co-founders',
 		text: 'Droumond Productions is an audiovisual production company based in Leiria, founded in 2026.',
+		forOthers:
+			'With the same crew and equipment, we also film for clients: videos for artists and film projects, in the Leiria region.',
 		roles: ['Director · Producer · Actor', 'Managing director · Actor · Director of actors'],
 		alts: [
 			'Carlos Droumond, in a brown jacket and a black top, leaning on a glass wall that reflects him, on a cobbled street.',
@@ -55,6 +59,12 @@ for (const home of HOMES) {
 			await expect(name).toHaveCSS('color', AMBER);
 			await expect(name).toHaveCSS('font-style', 'normal');
 		}
+	});
+
+	test(`${home.path}: Sobre says what the company also films for others`, async ({ page }) => {
+		await page.goto(home.path);
+		const section = page.locator(`section#${home.anchor}`);
+		await expect(section.getByText(home.forOthers, { exact: true })).toBeVisible();
 	});
 
 	test(`${home.path}: Sobre shows the team, each with photo, name and role`, async ({
