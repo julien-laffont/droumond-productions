@@ -1,5 +1,4 @@
-// The interface texts in English, reviewed. Still provisional: the first screen's, the Projects
-// reel's and the Elenco's.
+// The interface texts in English.
 import type { Dictionary } from './pt';
 
 export const en: Dictionary = {

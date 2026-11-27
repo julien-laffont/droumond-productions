@@ -1,6 +1,6 @@
 # Read only by the Infomaniak Apache: astro preview and the Playwright suite ignore it.
 # Checked on the host by the confirmation after each Publishing (npm run confirm): HTTPS,
-# the 404 of an unpublished language, and every page answering 200.
+# the 404 of a missing address, and every page answering 200.
 # The rewrite and the headers are required: if Apache lacks them, the site returns 500
 # and the confirmation turns red. Compression only applies if Apache has it.
 

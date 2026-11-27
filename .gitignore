@@ -1,6 +1,5 @@
-# build output: the published build and the test build with English
+# build output
 dist/
-dist-en/
 
 # generated types
 .astro/
