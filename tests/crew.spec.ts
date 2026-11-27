@@ -22,7 +22,7 @@ const HOMES = [
 		heading: 'Equipa',
 		roles: [
 			'Realizador · Produtor · Ator',
-			'Gerente · Ator · Direção de atores',
+			'Ator · Gerente · Direção de atores',
 			'Ator · Guionista',
 			'Atriz · Figurinista',
 			'Atriz · Assistente de direção dos atores',
@@ -38,7 +38,7 @@ const HOMES = [
 		heading: 'Crew',
 		roles: [
 			'Director · Producer · Actor',
-			'Managing director · Actor · Director of actors',
+			'Actor · Managing director · Director of actors',
 			'Actor · Screenwriter',
 			'Actress · Costume designer',
 			'Actress · Assistant director of actors',

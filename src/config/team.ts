@@ -33,8 +33,8 @@ export const TEAM: Person[] = [
 	{
 		name: 'Julien Laffont',
 		role: {
-			pt: 'Gerente · Ator · Direção de atores',
-			en: 'Managing director · Actor · Director of actors',
+			pt: 'Ator · Gerente · Direção de atores',
+			en: 'Actor · Managing director · Director of actors',
 		},
 		photo: julien,
 		alt: {
