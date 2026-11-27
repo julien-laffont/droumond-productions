@@ -93,8 +93,19 @@ export const en: Dictionary = {
 		episodes: 'Episodes',
 		episode: 'Episode',
 		opensOnInstagram: 'The episodes open on Instagram, in a new tab.',
+		comingSoon: 'Episode 5: coming soon, on Instagram.',
+	},
+	instagram: {
+		line: 'Episodes, behind the scenes and what we are filming right now.',
 		follow: 'Follow on Instagram',
-		comingSoon: 'Episode 5: coming soon',
+		residentEvil: {
+			lead: 'Want to see more?',
+			before: 'Behind-the-scenes footage of',
+			after: 'is on our Instagram.',
+			button: 'View on Instagram',
+		},
+		efectoPlacebo: 'Follow the shoot on Instagram',
+		filming: 'See our work on Instagram',
 	},
 	home: {
 		title: 'Droumond Productions',

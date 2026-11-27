@@ -1,0 +1,27 @@
+---
+// An invitation to the Instagram profile: a short sentence (the slot) and a button that opens the
+// profile in a new tab, outlined like the filming band's.
+import { SOCIAL } from '../config/site';
+
+interface Props {
+	/** The button's text. */
+	button: string;
+}
+
+const { button } = Astro.props;
+---
+
+<div class="grid justify-items-start gap-4">
+	<p class="max-w-[52ch] text-[14px] text-muted">
+		<slot />
+	</p>
+	<a
+		href={SOCIAL.instagram}
+		target="_blank"
+		rel="noopener"
+		class="border border-paper px-[18px] py-3 text-xs font-bold tracking-[0.16em] uppercase hover:bg-paper hover:text-ink motion-safe:transition-colors motion-safe:duration-250 motion-safe:ease-(--ease)"
+	>
+		{button}
+		<span aria-hidden="true"> ↗</span>
+	</a>
+</div>

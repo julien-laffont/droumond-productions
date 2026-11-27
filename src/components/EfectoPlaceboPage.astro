@@ -6,7 +6,7 @@ import { getEntry, render } from 'astro:content';
 import excerptFrame from '../assets/efecto-placebo/excerpt.jpg';
 import excerpt from '../assets/efecto-placebo/excerpt.mp4';
 import { IMAGE_FILES } from '../config/image-files';
-import { EFECTO_PLACEBO_TEASER, type Language } from '../config/site';
+import { EFECTO_PLACEBO_TEASER, SOCIAL, type Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import Base from '../layouts/Base.astro';
 import Film from './Film.astro';
@@ -20,6 +20,7 @@ const TITLE = 'Efecto Placebo';
 
 const { language } = Astro.props;
 const t = dictionaries[language].efectoPlacebo;
+const instagramText = dictionaries[language].instagram.efectoPlacebo;
 const entry = await getEntry('efectoPlacebo', language);
 if (!entry) {
 	throw new Error(
@@ -81,11 +82,18 @@ const { Content } = await render(entry);
 					>
 						{t.pause}
 					</button>
-					<a href={EFECTO_PLACEBO_TEASER} target="_blank" rel="noopener" class="ml-auto cta">
-						<span aria-hidden="true">▶ </span>
-						{t.fullTeaser}
-						<span aria-hidden="true"> ↗</span>
-					</a>
+					{/* Kept together on the right, also when they wrap on a phone. */}
+					<div class="ml-auto flex flex-wrap justify-end gap-x-6 gap-y-3">
+						<a href={EFECTO_PLACEBO_TEASER} target="_blank" rel="noopener" class="cta">
+							<span aria-hidden="true">▶ </span>
+							{t.fullTeaser}
+							<span aria-hidden="true"> ↗</span>
+						</a>
+						<a href={SOCIAL.instagram} target="_blank" rel="noopener" class="cta">
+							{instagramText}
+							<span aria-hidden="true"> ↗</span>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
