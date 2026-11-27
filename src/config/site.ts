@@ -1,5 +1,5 @@
 // The site's settings in one place: the contact email, the company's legal data and social
-// profiles, the address, the languages and which of them this build publishes.
+// profiles, the address and the languages.
 
 /**
  * The contact email: the footer, the Contacto block and the Privacy Policy all read it here, so
@@ -42,30 +42,36 @@ export const SOCIAL = {
 /** Efecto Placebo's full teaser on YouTube: only ever a link, never a player. */
 export const EFECTO_PLACEBO_TEASER = 'https://www.youtube.com/watch?v=Y785Re6Cyvk';
 
+/** Blanco y Negro, Carlos Droumond's music video: the filming page's example, only ever a link. */
+export const BLANCO_Y_NEGRO_VIDEO = 'https://www.youtube.com/watch?v=7VFBRzF9ni8';
+
+/** Resident Evil's episodes on Instagram, in order: links only, never embeds. */
+export const RESIDENT_EVIL_EPISODES = [
+	'https://www.instagram.com/reel/DeXEyA6saok/',
+	'https://www.instagram.com/reel/DezdFUHsaEK/',
+	'https://www.instagram.com/reel/DfILJSmsRWk/',
+	'https://www.instagram.com/reel/Dfh50ywMd3c/',
+];
+
 /**
- * The site's address, without a final slash. The hreflang links use it (only when English is
- * published), and the Publishing confirmation (`npm run confirm`) checks the site there.
+ * The site's address, without a final slash. The hreflang links use it, and the Publishing
+ * confirmation (`npm run confirm`) checks the site there.
  */
 export const SITE = 'https://droumondproductions.com';
 
-export const LANGUAGES = ['pt', 'en'] as const;
+export const LANGUAGES = ['pt', 'en', 'es', 'fr'] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 /** The start of each language's addresses. Portuguese, the default language, sits at `/`. */
-export const PREFIXES: Record<Language, string> = { pt: '/', en: '/en/' };
+export const PREFIXES: Record<Language, string> = { pt: '/', en: '/en/', es: '/es/', fr: '/fr/' };
 
 /** The value of `<html lang>` in each language. */
-export const HTML_CODES: Record<Language, string> = { pt: 'pt-PT', en: 'en' };
+export const HTML_CODES: Record<Language, string> = { pt: 'pt-PT', en: 'en', es: 'es', fr: 'fr' };
 
 /** Each language's name, written in that language, as the language button shows it. */
-export const LANGUAGE_NAMES: Record<Language, string> = { pt: 'Português', en: 'English' };
-
-/** English is only published once its texts are translated (#18): then this becomes `true`. */
-const ENGLISH_PUBLISHED = false;
-
-/**
- * The languages this build generates: only they get pages. The test build (`ENGLISH=1`, see
- * `npm run build:english`) adds English, to check now what only exists with both languages.
- */
-export const PUBLISHED_LANGUAGES: readonly Language[] =
-	ENGLISH_PUBLISHED || process.env.ENGLISH === '1' ? LANGUAGES : ['pt'];
+export const LANGUAGE_NAMES: Record<Language, string> = {
+	pt: 'Português',
+	en: 'English',
+	es: 'Español',
+	fr: 'Français',
+};

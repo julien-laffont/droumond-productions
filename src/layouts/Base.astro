@@ -1,12 +1,12 @@
 ---
 // The HTML shell shared by every page: <html>, <head> and the global styles.
 // Each page passes its language, its id in PAGES, its title and description; its content goes into the <slot />.
-// A page without an id (the 404, which holds both languages) has no hreflang and no language button.
+// A page without an id (the 404, which holds every language) has no hreflang and no language button.
 import '../styles/global.css';
 import { Font } from 'astro:assets';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { HTML_CODES, PUBLISHED_LANGUAGES, SITE, type Language } from '../config/site';
+import { HTML_CODES, LANGUAGES, SITE, type Language } from '../config/site';
 import { commit } from '../lib/commit';
 import { PAGES, type PageId } from '../lib/paths';
 
@@ -18,8 +18,6 @@ interface Props {
 }
 
 const { language, page, title, description } = Astro.props;
-/** The languages of the hreflang links: every published one, only when there is more than one. */
-const hreflangLanguages = PUBLISHED_LANGUAGES.length > 1 ? PUBLISHED_LANGUAGES : [];
 ---
 
 <!doctype html>
@@ -30,9 +28,7 @@ const hreflangLanguages = PUBLISHED_LANGUAGES.length > 1 ? PUBLISHED_LANGUAGES :
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		{page &&
-			hreflangLanguages.map((l) => (
-				<link rel="alternate" hreflang={l} href={`${SITE}${PAGES[page][l]}`} />
-			))}
+			LANGUAGES.map((l) => <link rel="alternate" hreflang={l} href={`${SITE}${PAGES[page][l]}`} />)}
 		{/* The commit of this build: the Publishing confirmation checks the site serves it. */}
 		<meta name="commit" content={commit} />
 		{/* The logo symbol, light on dark in the colours of the first direction (#5), made from

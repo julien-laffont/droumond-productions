@@ -1,10 +1,12 @@
 // The page of Efecto Placebo: a hosted excerpt of the teaser, muted and looping, the link to the
-// full teaser on YouTube, the synopsis next to the poster, the credits and the Characters.
+// full teaser on YouTube and the one to Instagram, the synopsis next to the poster, the credits and
+// the Characters.
 import { expect, test, type Page } from '@playwright/test';
-import { inEachBuild, languageOf, openExisting } from './pages';
+import { openExisting } from './pages';
 
 const PAGE = '/efecto-placebo/';
 const TEASER_ON_YOUTUBE = 'https://www.youtube.com/watch?v=Y785Re6Cyvk';
+const INSTAGRAM_PROFILE = 'https://www.instagram.com/droumond_productions';
 
 /** What the page shows in each language. The English texts are provisional. */
 const EFECTO_PLACEBO = [
@@ -20,6 +22,7 @@ const EFECTO_PLACEBO = [
 			  - 'img "Efecto Placebo: uma fita da polícia sobre um chão de terra e raízes, onde uma mão agarra um ramo."'
 			  - button "Pausar vídeo"
 			  - link "Ver o teaser completo"
+			  - link "Acompanhe a gravação no Instagram"
 			  - region "Sinopse":
 			    - heading "Sinopse" [level=2]
 			    - img /^Cartaz de Efecto Placebo/
@@ -82,6 +85,7 @@ const EFECTO_PLACEBO = [
 			  - 'img "Efecto Placebo: police tape over a floor of earth and roots, where a hand grips a branch."'
 			  - button "Pause video"
 			  - link "Watch the full teaser"
+			  - link "Follow the shoot on Instagram"
 			  - region "Synopsis":
 			    - heading "Synopsis" [level=2]
 			    - img /^Efecto Placebo poster/
@@ -132,25 +136,147 @@ const EFECTO_PLACEBO = [
 			        - paragraph
 		`,
 	},
+	{
+		path: '/es/efecto-placebo/',
+		pageTitle: 'Efecto Placebo · Droumond Productions',
+		description:
+			'Cuando el músico Carlos Droumond desaparece, su mejor amigo, Julien, miente a la policía sobre el cuaderno que le dejó: partituras que nunca debieron tocarse.',
+		snapshot: `
+			- main:
+			  - heading "Efecto Placebo" [level=1]
+			  - paragraph: Miniserie · Suspense · 7 episodios · En rodaje
+			  - 'img "Efecto Placebo: una cinta policial sobre un suelo de tierra y raíces, donde una mano agarra una rama."'
+			  - button "Pausar vídeo"
+			  - link "Ver el teaser completo"
+			  - link "Siga el rodaje en Instagram"
+			  - region "Sinopsis":
+			    - heading "Sinopsis" [level=2]
+			    - img /^Cartel de Efecto Placebo/
+			    - paragraph: /^Leiria se despierta con la noticia/
+			    - paragraph: /aquello en lo que elegimos creer\\.$/
+			    - term: Dirección
+			    - definition: Carlos Droumond
+			    - term: Producción
+			    - definition: Droumond Productions
+			  - region "Personajes":
+			    - heading "Personajes" [level=2]
+			    - list:
+			      - listitem:
+			        - heading "Carlos Droumond" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Julien Laffont" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Inara Pereira" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Miguel Figueiredo" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Ana Simões" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Marta Ferreira" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Rita Santos" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Sara Ribeiro" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Sónia Costa" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Filipa Gonçalves" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Raul de Valverde" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Bruno Moreira" [level=3]
+			        - paragraph
+		`,
+	},
+	{
+		path: '/fr/efecto-placebo/',
+		pageTitle: 'Efecto Placebo · Droumond Productions',
+		description:
+			'Quand le musicien Carlos Droumond disparaît, son meilleur ami, Julien, ment à la police au sujet du carnet qu’il lui a laissé\u00a0: des partitions qui n’auraient jamais dû être jouées.',
+		snapshot: `
+			- main:
+			  - heading "Efecto Placebo" [level=1]
+			  - paragraph: Mini-série · Thriller · 7 épisodes · En tournage
+			  - 'img "Efecto Placebo\u00a0: un ruban de police sur un sol de terre et de racines, où une main agrippe une branche."'
+			  - button "Mettre la vidéo en pause"
+			  - link "Voir le teaser complet"
+			  - link "Suivez le tournage sur Instagram"
+			  - region "Synopsis":
+			    - heading "Synopsis" [level=2]
+			    - img /^Affiche d’Efecto Placebo/
+			    - paragraph: /^Leiria se réveille avec la nouvelle/
+			    - paragraph: /ce que nous choisissons de croire\\.$/
+			    - term: Réalisation
+			    - definition: Carlos Droumond
+			    - term: Production
+			    - definition: Droumond Productions
+			  - region "Personnages":
+			    - heading "Personnages" [level=2]
+			    - list:
+			      - listitem:
+			        - heading "Carlos Droumond" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Julien Laffont" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Inara Pereira" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Miguel Figueiredo" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Ana Simões" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Marta Ferreira" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Rita Santos" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Sara Ribeiro" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Sónia Costa" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Filipa Gonçalves" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Raul de Valverde" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Bruno Moreira" [level=3]
+			        - paragraph
+		`,
+	},
 ];
 
-inEachBuild((build) => {
-	for (const expected of EFECTO_PLACEBO.filter(
-		({ path }) => build.english || languageOf(path) === 'pt',
-	)) {
-		test(`${expected.path}: the title, the small line, the excerpt, the synopsis with the poster and credits, the Characters`, async ({
-			page,
-		}) => {
-			await openExisting(page, expected.path);
-			await expect(page).toHaveTitle(expected.pageTitle);
-			await expect(page.locator('meta[name="description"]')).toHaveAttribute(
-				'content',
-				expected.description,
-			);
-			await expect(page.getByRole('main')).toMatchAriaSnapshot(expected.snapshot);
-		});
-	}
-});
+for (const expected of EFECTO_PLACEBO) {
+	test(`${expected.path}: the title, the small line, the excerpt, the synopsis with the poster and credits, the Characters`, async ({
+		page,
+	}) => {
+		await openExisting(page, expected.path);
+		await expect(page).toHaveTitle(expected.pageTitle);
+		await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+			'content',
+			expected.description,
+		);
+		await expect(page.getByRole('main')).toMatchAriaSnapshot(expected.snapshot);
+	});
+}
 
 const excerpt = (page: Page) => page.locator('main video');
 const firstFrame = (page: Page) => page.getByRole('main').getByRole('img').first();
@@ -171,123 +297,135 @@ function recordVideos(page: Page) {
 }
 
 // The behaviour, checked on the Portuguese page.
-inEachBuild(() => {
-	test.describe('the excerpt', () => {
-		test(`${PAGE}: waits for the page to load, then plays muted, looping and inline, from the site, over its first frame`, async ({
-			page,
-			baseURL,
-			browserName,
-		}) => {
-			// Notes the page's state when a script gives the video its source.
-			await page.addInitScript(() => {
-				const states: string[] = [];
-				Object.assign(window, { sourceStates: states });
-				new MutationObserver(() => states.push(document.readyState)).observe(document, {
-					subtree: true,
-					attributeFilter: ['src'],
-				});
-			});
-			await page.goto(PAGE);
-			await expect.poll(() => playing(page)).toBe(true);
-			const states = await page.evaluate(
-				() => (window as unknown as { sourceStates: string[] }).sourceStates,
-			);
-			expect(states).toEqual(['complete']);
-
-			await expect(excerpt(page)).toBeVisible();
-			const video = await excerpt(page).evaluate((video: HTMLVideoElement) => ({
-				origin: new URL(video.currentSrc).origin,
-				muted: video.muted,
-				loop: video.loop,
-				inline: video.playsInline,
-				hidden: video.getAttribute('aria-hidden'),
-			}));
-			expect(video).toEqual({
-				origin: baseURL,
-				muted: true,
-				loop: true,
-				inline: true,
-				hidden: 'true',
-			});
-			expect(await excerpt(page).boundingBox()).toEqual(await firstFrame(page).boundingBox());
-			// Its frames pass. Not checked in WebKit: on Linux its player sometimes stalls under load.
-			if (browserName === 'chromium') {
-				const time = () => excerpt(page).evaluate((video: HTMLVideoElement) => video.currentTime);
-				const start = await time();
-				await expect.poll(time).toBeGreaterThan(start + 0.5);
-			}
-		});
-
-		test(`${PAGE}: the first frame comes from the site itself, in several sizes`, async ({
-			page,
-			baseURL,
-		}) => {
-			await page.goto(PAGE);
-			const src = await firstFrame(page).evaluate((img: HTMLImageElement) => img.currentSrc);
-			expect(new URL(src).origin).toBe(baseURL);
-			const srcset = (await firstFrame(page).getAttribute('srcset')) ?? '';
-			expect(srcset.split(',').length, srcset).toBeGreaterThan(1);
-		});
-
-		test(`${PAGE}: "Pausar vídeo" stops the excerpt until "Retomar vídeo"`, async ({ page }) => {
-			await page.goto(PAGE);
-			await expect.poll(() => playing(page)).toBe(true);
-
-			await pauseButton(page).click();
-			await expect.poll(() => playing(page)).toBe(false);
-			await page.waitForTimeout(300);
-			expect(await playing(page)).toBe(false);
-
-			await page.getByRole('button', { name: 'Retomar vídeo' }).click();
-			await expect.poll(() => playing(page)).toBe(true);
-		});
-
-		test.describe('with less motion', () => {
-			test(`${PAGE}: only the first frame: no excerpt loads, no button`, async ({ page }) => {
-				await page.emulateMedia({ reducedMotion: 'reduce' });
-				const videos = recordVideos(page);
-				await page.goto(PAGE);
-				await expect(firstFrame(page)).toBeVisible();
-				await expect(page.getByRole('main').getByRole('button')).toBeHidden();
-				await page.waitForLoadState('networkidle');
-				expect(videos).toEqual([]);
-				await expect(excerpt(page)).toBeHidden();
-			});
-
-			test(`${PAGE}: asked with the page open, the excerpt stops and its first frame returns`, async ({
-				page,
-			}) => {
-				await page.goto(PAGE);
-				await expect.poll(() => playing(page)).toBe(true);
-				await page.emulateMedia({ reducedMotion: 'reduce' });
-				await expect.poll(() => playing(page)).toBe(false);
-				await expect(excerpt(page)).toBeHidden();
-				await expect(firstFrame(page)).toBeVisible();
-				await expect(page.getByRole('main').getByRole('button')).toBeHidden();
-			});
-		});
-	});
-
-	test(`${PAGE}: asks nothing of another site, excerpt included`, async ({ page, baseURL }) => {
-		const otherSites: string[] = [];
-		page.on('request', (request) => {
-			if (new URL(request.url()).origin !== baseURL) otherSites.push(request.url());
-		});
-		const videos = recordVideos(page);
-		await page.goto(PAGE);
-		await expect.poll(() => videos.length).toBe(1);
-		await page.getByRole('contentinfo').scrollIntoViewIfNeeded();
-		await page.waitForLoadState('networkidle');
-		expect(otherSites).toEqual([]);
-	});
-
-	test(`${PAGE}: "Ver o teaser completo" opens the teaser on YouTube in a new tab`, async ({
+test.describe('the excerpt', () => {
+	test(`${PAGE}: waits for the page to load, then plays muted, looping and inline, from the site, over its first frame`, async ({
 		page,
+		baseURL,
+		browserName,
+	}) => {
+		// Notes the page's state when a script gives the video its source.
+		await page.addInitScript(() => {
+			const states: string[] = [];
+			Object.assign(window, { sourceStates: states });
+			new MutationObserver(() => states.push(document.readyState)).observe(document, {
+				subtree: true,
+				attributeFilter: ['src'],
+			});
+		});
+		await page.goto(PAGE);
+		await expect.poll(() => playing(page)).toBe(true);
+		const states = await page.evaluate(
+			() => (window as unknown as { sourceStates: string[] }).sourceStates,
+		);
+		expect(states).toEqual(['complete']);
+
+		await expect(excerpt(page)).toBeVisible();
+		const video = await excerpt(page).evaluate((video: HTMLVideoElement) => ({
+			origin: new URL(video.currentSrc).origin,
+			muted: video.muted,
+			loop: video.loop,
+			inline: video.playsInline,
+			hidden: video.getAttribute('aria-hidden'),
+		}));
+		expect(video).toEqual({
+			origin: baseURL,
+			muted: true,
+			loop: true,
+			inline: true,
+			hidden: 'true',
+		});
+		expect(await excerpt(page).boundingBox()).toEqual(await firstFrame(page).boundingBox());
+		// Its frames pass. Not checked in WebKit: on Linux its player sometimes stalls under load.
+		if (browserName === 'chromium') {
+			const time = () => excerpt(page).evaluate((video: HTMLVideoElement) => video.currentTime);
+			const start = await time();
+			await expect.poll(time).toBeGreaterThan(start + 0.5);
+		}
+	});
+
+	test(`${PAGE}: the first frame comes from the site itself, in several sizes`, async ({
+		page,
+		baseURL,
 	}) => {
 		await page.goto(PAGE);
-		const link = page.getByRole('link', { name: 'Ver o teaser completo', exact: true });
-		await expect(link).toHaveAttribute('href', TEASER_ON_YOUTUBE);
-		await expect(link).toHaveAttribute('target', '_blank');
-		await expect(link).toHaveAttribute('rel', 'noopener');
+		const src = await firstFrame(page).evaluate((img: HTMLImageElement) => img.currentSrc);
+		expect(new URL(src).origin).toBe(baseURL);
+		const srcset = (await firstFrame(page).getAttribute('srcset')) ?? '';
+		expect(srcset.split(',').length, srcset).toBeGreaterThan(1);
 	});
+
+	test(`${PAGE}: "Pausar vídeo" stops the excerpt until "Retomar vídeo"`, async ({ page }) => {
+		await page.goto(PAGE);
+		await expect.poll(() => playing(page)).toBe(true);
+
+		await pauseButton(page).click();
+		await expect.poll(() => playing(page)).toBe(false);
+		await page.waitForTimeout(300);
+		expect(await playing(page)).toBe(false);
+
+		await page.getByRole('button', { name: 'Retomar vídeo' }).click();
+		await expect.poll(() => playing(page)).toBe(true);
+	});
+
+	test.describe('with less motion', () => {
+		test(`${PAGE}: only the first frame: no excerpt loads, no button`, async ({ page }) => {
+			await page.emulateMedia({ reducedMotion: 'reduce' });
+			const videos = recordVideos(page);
+			await page.goto(PAGE);
+			await expect(firstFrame(page)).toBeVisible();
+			await expect(page.getByRole('main').getByRole('button')).toBeHidden();
+			await page.waitForLoadState('networkidle');
+			expect(videos).toEqual([]);
+			await expect(excerpt(page)).toBeHidden();
+		});
+
+		test(`${PAGE}: asked with the page open, the excerpt stops and its first frame returns`, async ({
+			page,
+		}) => {
+			await page.goto(PAGE);
+			await expect.poll(() => playing(page)).toBe(true);
+			await page.emulateMedia({ reducedMotion: 'reduce' });
+			await expect.poll(() => playing(page)).toBe(false);
+			await expect(excerpt(page)).toBeHidden();
+			await expect(firstFrame(page)).toBeVisible();
+			await expect(page.getByRole('main').getByRole('button')).toBeHidden();
+		});
+	});
+});
+
+test(`${PAGE}: asks nothing of another site, excerpt included`, async ({ page, baseURL }) => {
+	const otherSites: string[] = [];
+	page.on('request', (request) => {
+		if (new URL(request.url()).origin !== baseURL) otherSites.push(request.url());
+	});
+	const videos = recordVideos(page);
+	await page.goto(PAGE);
+	await expect.poll(() => videos.length).toBe(1);
+	await page.getByRole('contentinfo').scrollIntoViewIfNeeded();
+	await page.waitForLoadState('networkidle');
+	expect(otherSites).toEqual([]);
+});
+
+test(`${PAGE}: "Ver o teaser completo" opens the teaser on YouTube in a new tab`, async ({
+	page,
+}) => {
+	await page.goto(PAGE);
+	const link = page.getByRole('link', { name: 'Ver o teaser completo', exact: true });
+	await expect(link).toHaveAttribute('href', TEASER_ON_YOUTUBE);
+	await expect(link).toHaveAttribute('target', '_blank');
+	await expect(link).toHaveAttribute('rel', 'noopener');
+});
+
+test(`${PAGE}: "Acompanhe a gravação no Instagram" opens the profile in a new tab, right after the teaser's link`, async ({
+	page,
+}) => {
+	await page.goto(PAGE);
+	const teaser = page.getByRole('link', { name: 'Ver o teaser completo', exact: true });
+	const link = page.getByRole('link', { name: 'Acompanhe a gravação no Instagram', exact: true });
+	await expect(link).toHaveAttribute('href', INSTAGRAM_PROFILE);
+	await expect(link).toHaveAttribute('target', '_blank');
+	await expect(link).toHaveAttribute('rel', 'noopener');
+	const [teaserBox, linkBox] = [await teaser.boundingBox(), await link.boundingBox()];
+	expect(linkBox!.y).toBeCloseTo(teaserBox!.y, 0);
+	expect(linkBox!.x).toBeGreaterThan(teaserBox!.x + teaserBox!.width);
 });

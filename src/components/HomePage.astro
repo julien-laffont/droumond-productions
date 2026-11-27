@@ -1,6 +1,6 @@
 ---
-// The home page, in one language (/ and /en/): the first screen, Projects, Sobre, Elenco, Equipa, the filming
-// band, then Contacto.
+// The home page, in one language (/ and /en/): the first screen, Projects, the Instagram band,
+// Sobre, Elenco, Equipa, the filming band, then Contacto.
 import type { Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import Base from '../layouts/Base.astro';
@@ -10,6 +10,7 @@ import Contact from './Contact.astro';
 import Crew from './Crew.astro';
 import FilmingBand from './FilmingBand.astro';
 import Hero from './Hero.astro';
+import InstagramBand from './InstagramBand.astro';
 import Projects from './Projects.astro';
 
 interface Props {
@@ -24,6 +25,7 @@ const t = dictionaries[language].home;
 	<main>
 		<Hero language={language} />
 		<Projects language={language} />
+		<InstagramBand language={language} />
 		<About language={language} />
 		<Cast language={language} />
 		<Crew language={language} />

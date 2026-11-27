@@ -2,7 +2,7 @@
 // and the rest in Space Mono, both hosted on the site itself. Nothing of the old visual
 // (#12) stays: no Archivo, no light canvas, no brush stroke.
 import { expect, test, type Page } from '@playwright/test';
-import { inEachBuild, pagesOf } from './pages';
+import { builtPages } from './pages';
 
 /** The page's background (#0c0b09), as browsers report it. */
 const BACKGROUND = 'rgb(12, 11, 9)';
@@ -45,55 +45,53 @@ async function oldVisual(page: Page) {
 	}, OLD_CANVAS);
 }
 
-inEachBuild((build) => {
-	for (const path of pagesOf(build)) {
-		test(`${path}: one dark world, with the text at 16:1 and the secondary text at 7.3:1`, async ({
-			page,
-		}) => {
-			await page.goto(path);
-			const colors = await page.evaluate(() => {
-				const footer = document.querySelector('footer')!;
-				return {
-					background: getComputedStyle(document.body).backgroundColor,
-					text: getComputedStyle(document.body).color,
-					secondary: getComputedStyle(footer).color,
-				};
-			});
-			expect(colors.background).toBe(BACKGROUND);
-			// The ratios of the prototype, rounded as it states them.
-			expect(contrast(colors.text, colors.background)).toBeCloseTo(16, 0);
-			expect(contrast(colors.secondary, colors.background)).toBeCloseTo(7.3, 1);
+for (const path of builtPages()) {
+	test(`${path}: one dark world, with the text at 16:1 and the secondary text at 7.3:1`, async ({
+		page,
+	}) => {
+		await page.goto(path);
+		const colors = await page.evaluate(() => {
+			const footer = document.querySelector('footer')!;
+			return {
+				background: getComputedStyle(document.body).backgroundColor,
+				text: getComputedStyle(document.body).color,
+				secondary: getComputedStyle(footer).color,
+			};
 		});
+		expect(colors.background).toBe(BACKGROUND);
+		// The ratios of the prototype, rounded as it states them.
+		expect(contrast(colors.text, colors.background)).toBeCloseTo(16, 0);
+		expect(contrast(colors.secondary, colors.background)).toBeCloseTo(7.3, 1);
+	});
 
-		test(`${path}: names in Bebas Neue, the rest in Space Mono, nothing of the old visual`, async ({
-			page,
-		}) => {
-			await page.goto(path);
-			const fonts = await page.evaluate(() => ({
-				body: getComputedStyle(document.body).fontFamily,
-				title: getComputedStyle(document.querySelector('h1')!).fontFamily,
-			}));
-			// Astro adds a suffix to each family's name, so only the start is fixed.
-			expect(fonts.body).toMatch(/^"?Space Mono/);
-			expect(fonts.title).toMatch(/^"?Bebas Neue/);
-			expect(await oldVisual(page)).toEqual([]);
-		});
+	test(`${path}: names in Bebas Neue, the rest in Space Mono, nothing of the old visual`, async ({
+		page,
+	}) => {
+		await page.goto(path);
+		const fonts = await page.evaluate(() => ({
+			body: getComputedStyle(document.body).fontFamily,
+			title: getComputedStyle(document.querySelector('h1')!).fontFamily,
+		}));
+		// Astro adds a suffix to each family's name, so only the start is fixed.
+		expect(fonts.body).toMatch(/^"?Space Mono/);
+		expect(fonts.title).toMatch(/^"?Bebas Neue/);
+		expect(await oldVisual(page)).toEqual([]);
+	});
 
-		test(`${path}: the fonts come from the site, in woff2, and nothing from another domain`, async ({
-			page,
-			baseURL,
-		}) => {
-			const elsewhere: string[] = [];
-			const fonts: string[] = [];
-			page.on('request', (request) => {
-				const url = new URL(request.url());
-				if (url.origin !== baseURL) elsewhere.push(request.url());
-				else if (request.resourceType() === 'font') fonts.push(url.pathname);
-			});
-			await page.goto(path, { waitUntil: 'networkidle' });
-			expect(elsewhere).toEqual([]);
-			expect(fonts.length).toBeGreaterThanOrEqual(2);
-			for (const font of fonts) expect(font).toMatch(/\.woff2$/);
+	test(`${path}: the fonts come from the site, in woff2, and nothing from another domain`, async ({
+		page,
+		baseURL,
+	}) => {
+		const elsewhere: string[] = [];
+		const fonts: string[] = [];
+		page.on('request', (request) => {
+			const url = new URL(request.url());
+			if (url.origin !== baseURL) elsewhere.push(request.url());
+			else if (request.resourceType() === 'font') fonts.push(url.pathname);
 		});
-	}
-});
+		await page.goto(path, { waitUntil: 'networkidle' });
+		expect(elsewhere).toEqual([]);
+		expect(fonts.length).toBeGreaterThanOrEqual(2);
+		for (const font of fonts) expect(font).toMatch(/\.woff2$/);
+	});
+}

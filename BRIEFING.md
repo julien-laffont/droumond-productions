@@ -1,6 +1,6 @@
 # Briefing: website da Droumond Productions
 
-Documento de direção inicial. Última atualização: 2026-11-25. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
+Documento de direção inicial. Última atualização: 2026-11-27. Tudo o que está em "Por decidir" ainda não está fechado: perguntar antes de assumir.
 
 ## Contexto
 
@@ -16,20 +16,21 @@ Documento de direção inicial. Última atualização: 2026-11-25. Tudo o que es
 ## Objetivo
 
 - Mostrar o trabalho da empresa e ganhar audiência.
+- Levar visitantes ao Instagram (@droumond_productions), onde estão os episódios e os bastidores (#73): ícones no cabeçalho, uma faixa só de texto a seguir a Projetos, um convite no fim da página de _Resident Evil_ e links nas páginas de _Efecto Placebo_ e de Filmagens. O bloco Contacto não leva o Instagram.
 - Métrica de sucesso: contactos de clientes. Conta toda a mensagem real (não spam) que chega pelo site, venha de quem vier; quem recebe os emails conta-os à mão, fora do site (ver issue #7).
 - Público: adultos, sobretudo em Portugal, e também pessoas de outras nacionalidades.
-- Idiomas do site: português de Portugal (principal) e inglês. As páginas em inglês só são publicadas quando os textos estiverem traduzidos. A confirmar com o Julien (ver issue #6).
+- Idiomas do site: português de Portugal (principal), inglês (`/en/`), espanhol (`/es/`) e francês (`/fr/`).
 
 ## Âmbito
 
 - O site é da empresa, não só da série.
-- Em Projetos, excertos curtos e sem som do teaser de _Efecto Placebo_ e de um episódio de _Resident Evil_, alojados no site. Só aloja um episódio completo, o primeiro de _Resident Evil_, na página do projeto.
-- Página de _Efecto Placebo_ (`/efecto-placebo/`, #33), aberta pelo seu quadro em Projetos: outro excerto do teaser, o link para o teaser completo no YouTube, a sinopse com o cartaz, a ficha (realização e produção) e 12 personagens. Os textos param no que se sabe no fim do episódio 1: sem spoilers. Sem atores até o Julien enviar os nomes completos.
+- Em Projetos, excertos curtos e sem som do teaser de _Efecto Placebo_ e de um episódio de _Resident Evil_, alojados no site. Não aloja nenhum episódio completo.
+- Página de _Efecto Placebo_ (`/efecto-placebo/`, #33), aberta pelo seu quadro em Projetos: outro excerto do teaser, o link para o teaser completo no YouTube e outro para acompanhar a gravação no Instagram, a sinopse com o cartaz, a ficha (realização e produção) e 12 personagens. Os textos param no que se sabe no fim do episódio 1: sem spoilers. Sem atores até o Julien enviar os nomes completos.
 - Secções obrigatórias: Sobre, Equipa, Contacto. Os dois cofundadores, Carlos Droumond e Julien Laffont, aparecem no Sobre; a Equipa é uma grelha de fotos com toda a equipa e a função de cada pessoa, abaixo do Elenco (#62). Quem representa nos projetos fica à parte, no Elenco (#41).
-- Página de _Resident Evil_ (`/resident-evil/`, #42), aberta pelo seu quadro em Projetos: o episódio 1 alojado no site (carrega só ao carregar em play), o texto, a ficha (realização e produção) e um link para o Instagram com os restantes; o 5.º aparece como "em breve". O texto só tem factos que se veem nos episódios: sem enredo nem personagens, até haver roteiro.
+- Página de _Resident Evil_ (`/resident-evil/`, #42, #65), aberta pelo seu quadro em Projetos: os 4 episódios em capas, e cada uma abre o seu reel no Instagram num separador novo (o embed do Instagram não os reproduz no site; o leitor do YouTube fica para a #68), o texto, a ficha (realização e produção) e, no fim, o convite para os bastidores no Instagram ("Quer ver mais?"); o 5.º aparece como "em breve, no Instagram". O texto só tem factos que se veem nos episódios: sem enredo nem personagens, até haver roteiro.
 - Secções obrigatórias: Sobre, Equipa, Contacto. A equipa são os dois cofundadores, Carlos Droumond e Julien Laffont, e aparece no Sobre. Quem representa nos projetos fica à parte, no Elenco (#41).
 - Outros projetos: a minissérie _Resident Evil_ do Instagram, além de _Efecto Placebo_.
-- Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?").
+- Secção pedida pelo Julien: contratar a Droumond Productions para filmagens ("Quer a Droumond Productions para gravação?"). O serviço é para artistas (videoclipes e outros vídeos) e para projetos de cinema, não para publicidade nem para marcas (#72). A página de Filmagens mostra um exemplo: a capa de _Blanco y Negro_, videoclipe do Carlos Droumond, alojada no site, que abre o vídeo no YouTube num separador novo (sem leitor do YouTube).
 - Sem loja, apoio nem newsletter na v1.
 - Qualquer outra secção (portfólio, notícias, loja, newsletter) só entra se for pedida.
 - Email de contacto: contact@droumondproductions.com, desde 2026-11-19 (#18), com a caixa no Google Workspace. Pode ainda mudar.
@@ -43,9 +44,9 @@ Película, aprovada pelo Carlos a 2026-11-20 na ronda de revisão (#8): "exatame
 - Seguir o protótipo de perto. Melhorias (acessibilidade, telemóvel, desempenho) propõem-se ao Nal antes de as fazer. Os textos do site (#18) prevalecem sobre os do protótipo.
 - Paleta: fundo `#0c0b09`, película `#1b1813`, claquete `#151411`, texto `#ece5d8` (16:1 sobre o fundo), secundário `#a59d8f` (7,3:1), âmbar `#e8a43a` e `#b5802e` (códigos de borda, números, timecode). O lápis vermelho `#d63a2f` é só para marcas à mão, nunca texto.
 - Tipografia: Bebas Neue (escolha do Carlos), condensada, para nomes e títulos; Space Mono (400 e 700) para tudo o resto. Ambas de licença aberta e alojadas no próprio site (sem Google Fonts, por causa do RGPD). Letra grande só para nomes e títulos das secções; a descrição da empresa fica sempre pequena e em segundo plano. Só o título do primeiro ecrã usa a Shree Devanagari 714, levemente transparente, como imagem SVG (#37).
-- Cabeçalho: o símbolo, um timecode que corre com o scroll (decorativo), as secções, a língua e o Contacto, que no telemóvel passa para dentro do Menu.
+- Cabeçalho: o símbolo, um timecode que corre com o scroll (decorativo), as secções, a língua, os ícones do Instagram e do YouTube e o Contacto. Os ícones são os oficiais, numa só cor, como pedem as regras das marcas: no hover só aparece a linha âmbar. No telemóvel, o YouTube e o Contacto passam para dentro do Menu; o Instagram fica na barra.
 - Primeiro ecrã: a linha de código "35 mm · Droumond 2026 · Leiria · Rolo 01", o nome, uma fita inclinada que passa sozinha, com botão de pausa (#37), "Produtora audiovisual" e as palavras (Séries, Suspense, Terror, Filmagens).
-- Projetos: uma fita que avança para o lado com o scroll, do líder com contagem à ponta final, com os vídeos sem som sempre a passar (#38). Sobre: o texto ao lado da equipa, um fotograma por pessoa. Elenco: uma fita que corre sozinha com todos os atores, cada um rodeado a lápis vermelho, só com o nome (#39, #41). Filmagens: uma claquete. Contacto: o endereço em letra grande (#40). Página de _Efecto Placebo_: o título grande, o excerto numa fita, a sinopse ao lado do cartaz, as personagens numeradas (#33).
+- Projetos: uma fita que avança para o lado com o scroll, do líder com contagem à ponta final, com os vídeos sem som sempre a passar (#38). Sobre: o texto ao lado da equipa, um fotograma por pessoa. Elenco: uma fita que corre sozinha com todos os atores, cada um rodeado a lápis vermelho, só com o nome (#39, #41). Filmagens: uma claquete e, na página, o exemplo numa fita por baixo dela. Contacto: o endereço em letra grande (#40). Página de _Efecto Placebo_: o título grande, o excerto numa fita, a sinopse ao lado do cartaz, as personagens numeradas (#33).
 - Rodapé: a ponta da bobina ("Fim da bobina"), depois a identificação legal.
 - Logótipo: só o símbolo (círculo e monograma), claro sobre o escuro; o nome aparece em texto. O símbolo é o PNG que o Carlos enviou, recortado e em 800 px; o SVG continua por receber (#8).
 - Movimento: só CSS e JavaScript simples (as fitas, o timecode, o lápis e a claquete no hover, o aparecimento discreto das secções). Quem pediu menos movimento vê tudo parado.

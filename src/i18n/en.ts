@@ -1,5 +1,4 @@
-// The interface texts in English, reviewed. Still provisional: the first screen's, the Projects
-// reel's and the Elenco's.
+// The interface texts in English.
 import type { Dictionary } from './pt';
 
 export const en: Dictionary = {
@@ -68,14 +67,18 @@ export const en: Dictionary = {
 	filming: {
 		label: 'Filming service',
 		title: 'Want Droumond Productions on your shoot?',
-		line: 'Commercials, brand videos and music videos, shot with the same crew and equipment as our series.',
+		line: 'Videos for artists and film projects, shot with the same crew and equipment as our series.',
 		button: 'About the service',
-		text: 'We shoot commercials, brand videos and music videos in the Leiria region, with the same crew and equipment we use for our series. Tell us what you want to film, where and when, and we will tell you what we can do.',
+		text: 'We shoot music videos and other videos for artists, and film projects, in the Leiria region, with the same crew and equipment we use for our series. Tell us what you want to film, where and when, and we will tell you what we can do.',
 		slate: { production: 'Prod.', scene: 'Scene', take: 'Take', date: 'Date' },
 		subject: 'Filming service',
 		pageTitle: 'Filming service · Droumond Productions',
 		description:
-			"Droumond Productions' filming service in Leiria: commercials, brand videos and music videos.",
+			"Droumond Productions' filming service in Leiria: videos for artists and film projects.",
+		example: {
+			title: 'Example',
+			note: 'Music video by Carlos Droumond. Opens on YouTube, in a new tab.',
+		},
 	},
 	efectoPlacebo: {
 		code: '35 mm · Efecto Placebo · Leiria',
@@ -88,13 +91,25 @@ export const en: Dictionary = {
 	residentEvil: {
 		code: '35 mm · Resident Evil · Marinha Grande',
 		episodes: 'Episodes',
-		episode: 'Episode 1',
-		moreEpisodes: 'See more episodes on Instagram',
-		comingSoon: 'Episode 5: coming soon',
+		episode: 'Episode',
+		opensOnInstagram: 'The episodes open on Instagram, in a new tab.',
+		comingSoon: 'Episode 5: coming soon, on Instagram.',
+	},
+	instagram: {
+		line: 'Episodes, behind the scenes and what we are filming right now.',
+		follow: 'Follow on Instagram',
+		residentEvil: {
+			lead: 'Want to see more?',
+			before: 'Behind-the-scenes footage of',
+			after: 'is on our Instagram.',
+			button: 'View on Instagram',
+		},
+		efectoPlacebo: 'Follow the shoot on Instagram',
+		filming: 'See our work on Instagram',
 	},
 	home: {
 		title: 'Droumond Productions',
 		description:
-			'Droumond Productions, an audiovisual production company based in Leiria: fiction series, commercials, brand videos and music videos.',
+			'Droumond Productions, an audiovisual production company based in Leiria: fiction series, videos for artists and film projects.',
 	},
 };

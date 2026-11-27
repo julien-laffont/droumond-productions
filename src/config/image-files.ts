@@ -16,10 +16,16 @@ export const IMAGE_FILES = {
 	},
 	/** A series' poster on its page, 2:3. */
 	seriesPoster: { widths: [360, 540, 800], quality: 70 },
+	/** The 9:16 covers of Resident Evil's episodes, 540 px wide at most. */
+	episodeCover: { widths: [320, 540], quality: 70 },
+	/** The cover of the filming page's example, 1264 × 566: as wide as its source at most. */
+	videoCover: { widths: [640, 1264], quality: 70 },
 	/** The 4:5 portraits of the team (Sobre) and of the Elenco. */
 	portrait: { widths: [320, 480, 640], quality: 55 },
 } satisfies {
 	project: Record<Project['shape'], ImageFiles>;
 	seriesPoster: ImageFiles;
+	episodeCover: ImageFiles;
+	videoCover: ImageFiles;
 	portrait: ImageFiles;
 };
