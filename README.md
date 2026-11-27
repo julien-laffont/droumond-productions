@@ -20,7 +20,7 @@ The second command downloads the browsers the tests use. On a Linux machine that
 | `npm run dev`        | Development server on `localhost:4321`, reloads on each change              |
 | `npm run check`      | Checks the types (`astro check`)                                            |
 | `npm run format`     | Formats the code with Prettier                                              |
-| `npm run build`      | Builds the site into `dist/`: plain HTML, CSS and images, in both languages |
+| `npm run build`      | Builds the site into `dist/`: plain HTML, CSS and images, in every language |
 | `npm run preview`    | Serves `dist/` on `localhost:4321`, as the hosting would                    |
 | `npm test`           | Playwright suite over `dist/`, which must already exist                     |
 | `npm run lighthouse` | Lighthouse in mobile mode over every page of `dist/` (see below)            |
@@ -31,7 +31,7 @@ The second command downloads the browsers the tests use. On a Linux machine that
 
 ## Languages and settings
 
-- European Portuguese at `/`, English at `/en/`, with translated addresses and anchors (`/filmagens/` and `/en/filming/`, `#projetos` and `#projects`). No redirection by the browser's language.
+- European Portuguese at `/`, English at `/en/`, Spanish at `/es/` and French at `/fr/`, with translated addresses and anchors (`/filmagens/`, `/en/filming/`, `/es/rodajes/`, `/fr/tournages/`; `#projetos`, `#projects`, `#proyectos`, `#projets`). No redirection by the browser's language.
 - The contact email and the company's legal data live in `src/config/site.ts`: changing the email there changes it on the whole site. `SITE` is the site's address, `https://droumondproductions.com`: the hreflang links use it, and so does the Publishing confirmation.
 
 ## Branches
@@ -51,11 +51,11 @@ The second command downloads the browsers the tests use. On a Linux machine that
 
 ## Where things live
 
-- `src/localized-pages/<language>/`: one thin file per page and language; `src/integrations/localized-pages.ts` gives each its address (`pt/index.astro` is `/`, `en/index.astro` is `/en/`), only for the published languages. `src/pages/` is for pages without a language: the 404 (`404.astro`), which holds both.
-- `src/lib/paths.ts`: each page's address and each section's anchor in both languages. A new page goes there too.
-- `src/config/site.ts`: the contact email, the legal data, the consumer arbitration centre (it depends on the seat), the profiles, the languages and which ones are published.
-- `src/config/projects.ts`: the Projects of the home page, in order, on a reel of film, with their texts in both languages, excerpt, poster, frame shape and link. The excerpts and posters live in `src/assets/projects/`: 8 to 15 s of H.264 without sound, under 1.5 MB, and the excerpt's first frame, both cut from the originals with an ffmpeg kept outside the repo. They loop muted in the frames; nothing comes from YouTube or Meta. A Project's link leads to its own page (`page`) or to another site in a new tab (`url`).
-- `src/config/team.ts`: the Team members, the co-founders, shown in Sobre, each with name, role in both languages, photo (4:5, in `src/assets/team/`) and alt text.
+- `src/localized-pages/<language>/`: one thin file per page and language; `src/integrations/localized-pages.ts` gives each its address (`pt/index.astro` is `/`, `en/index.astro` is `/en/`), for every language. `src/pages/` is for pages without a language: the 404 (`404.astro`), which holds all four.
+- `src/lib/paths.ts`: each page's address and each section's anchor in each language. A new page goes there too.
+- `src/config/site.ts`: the contact email, the legal data, the consumer arbitration centre (it depends on the seat), the profiles and the languages.
+- `src/config/projects.ts`: the Projects of the home page, in order, on a reel of film, with their texts in each language, excerpt, poster, frame shape and link. The excerpts and posters live in `src/assets/projects/`: 8 to 15 s of H.264 without sound, under 1.5 MB, and the excerpt's first frame, both cut from the originals with an ffmpeg kept outside the repo. They loop muted in the frames; nothing comes from YouTube or Meta. A Project's link leads to its own page (`page`) or to another site in a new tab (`url`).
+- `src/config/team.ts`: the Team members, the co-founders, shown in Sobre, each with name, role in each language, photo (4:5, in `src/assets/team/`) and alt text.
 - `src/config/crew.ts`: the Equipa, everyone in the crew with their role (photos in `src/assets/crew/`, 4:5, at most 800 px wide): a plain grid, 4 per row from 700 px and 2 below, rendered by `Crew.astro`. The two co-founders are in it too, with the roles they have in the crew.
 - `src/config/cast.ts`: the Elenco, the people who play the Characters of the Projects, by name alone (photos in `src/assets/cast/`, 4:5). `Cast.astro` runs them on a strip of film, as the first screen's strip runs, with a pause button; with less motion or without JavaScript it stands still and scrolls sideways. Adding or removing a person needs nothing else. Each person's edge codes and grease-pencil ring come from `src/lib/cast-sheet.ts` (five hand-drawn rings, in turn).
 - `src/config/hero.ts`: the photos of the strip that runs across the first screen, in order, after the title card with the logo symbol, and the part of each one its 3:2 frame keeps. Each photo names the files it uses: `src/config/image-files.ts` holds the widths and quality of each section's images, which the strip shares, so its photos add almost nothing to the page's weight.

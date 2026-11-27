@@ -1,6 +1,5 @@
 // The Filming service (#16): the band on the home page, right before Contacto, and the page it
-// leads to. The texts are Julien's and Nal's, in both languages (#18). Both sit on a
-// clapperboard, whose fields are decorative.
+// leads to. Both sit on a clapperboard, whose fields are decorative.
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { openExisting } from './pages';
 
@@ -58,6 +57,52 @@ const FILMING = [
 		example: {
 			title: 'Example',
 			note: 'Music video by Carlos Droumond. Opens on YouTube, in a new tab.',
+		},
+	},
+	{
+		home: '/es/',
+		page: '/es/rodajes/',
+		contact: 'contacto',
+		label: 'Servicio de rodaje',
+		title: '¿Quiere a Droumond Productions en su rodaje?',
+		line: 'Vídeos para artistas y proyectos de cine, rodados con el equipo y el material de nuestras series.',
+		button: 'Ver el servicio',
+		text: 'Rodamos videoclips y otros vídeos para artistas, y proyectos de cine, en la región de Leiria, con el mismo equipo y el mismo material con que hacemos nuestras series. Díganos qué quiere grabar, dónde y cuándo, y le contestaremos con lo que podemos hacer.',
+		pageTitle: 'Servicio de rodaje · Droumond Productions',
+		description:
+			'Servicio de rodaje de Droumond Productions en Leiria: vídeos para artistas y proyectos de cine.',
+		fields: [
+			['Prod.', 'Droumond Productions'],
+			['Escena', '01'],
+			['Toma', '01'],
+			['Fecha', '26.02.2026'],
+		],
+		example: {
+			title: 'Ejemplo',
+			note: 'Videoclip de Carlos Droumond. Se abre en YouTube, en una pestaña nueva.',
+		},
+	},
+	{
+		home: '/fr/',
+		page: '/fr/tournages/',
+		contact: 'contact',
+		label: 'Service de tournage',
+		title: 'Vous voulez Droumond Productions sur votre tournage\u00a0?',
+		line: 'Vidéos pour artistes et projets de cinéma, tournés avec l’équipe et le matériel de nos séries.',
+		button: 'Voir le service',
+		text: 'Nous tournons des clips musicaux et d’autres vidéos pour des artistes, ainsi que des projets de cinéma, dans la région de Leiria, avec l’équipe et le matériel de nos séries. Dites-nous ce que vous voulez filmer, où et quand, et nous vous dirons ce que nous pouvons faire.',
+		pageTitle: 'Service de tournage · Droumond Productions',
+		description:
+			'Le service de tournage de Droumond Productions à Leiria\u00a0: vidéos pour artistes et projets de cinéma.',
+		fields: [
+			['Prod.', 'Droumond Productions'],
+			['Scène', '01'],
+			['Prise', '01'],
+			['Date', '26.02.2026'],
+		],
+		example: {
+			title: 'Exemple',
+			note: 'Clip musical de Carlos Droumond. S’ouvre sur YouTube, dans un nouvel onglet.',
 		},
 	},
 ];
@@ -153,6 +198,7 @@ for (const expected of FILMING) {
 				...expected.fields.flat(),
 			]
 				.join(' ')
+				.replace(/\s+/g, ' ')
 				.toLowerCase(),
 		);
 		await expectSlateFields(top, expected.fields);

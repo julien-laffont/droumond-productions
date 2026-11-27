@@ -8,14 +8,13 @@ const NAMES = ['Carlos Droumond', 'Julien Laffont'];
 const HOMES = [
 	{
 		path: '/',
-		english: false,
 		anchor: 'sobre',
 		heading: 'Sobre',
 		founders: 'Cofundadores',
 		text: 'A Droumond Productions é uma produtora audiovisual de Leiria, fundada em 2026.',
 		forOthers:
 			'Com a mesma equipa e o mesmo material, também filmamos para outros: vídeos para artistas e projetos de cinema, na região de Leiria.',
-		roles: ['Realizador · Produtor · Ator', 'Gerente · Ator · Direção de atores'],
+		roles: ['Realizador · Produtor · Ator', 'Ator · Gerente · Direção de atores'],
 		alts: [
 			'Carlos Droumond, de casaco castanho e camisola preta, encostado a um vidro que o reflete, numa rua de calçada.',
 			'Julien Laffont, de óculos escuros e casaco de cabedal.',
@@ -23,17 +22,44 @@ const HOMES = [
 	},
 	{
 		path: '/en/',
-		english: true,
 		anchor: 'about',
 		heading: 'About',
 		founders: 'Co-founders',
 		text: 'Droumond Productions is an audiovisual production company based in Leiria, founded in 2026.',
 		forOthers:
 			'With the same crew and equipment, we also film for clients: videos for artists and film projects, in the Leiria region.',
-		roles: ['Director · Producer · Actor', 'Managing director · Actor · Director of actors'],
+		roles: ['Director · Producer · Actor', 'Actor · Managing director · Director of actors'],
 		alts: [
 			'Carlos Droumond, in a brown jacket and a black top, leaning on a glass wall that reflects him, on a cobbled street.',
 			'Julien Laffont, in sunglasses and a leather jacket.',
+		],
+	},
+	{
+		path: '/es/',
+		anchor: 'nosotros',
+		heading: 'Nosotros',
+		founders: 'Cofundadores',
+		text: 'Droumond Productions es una productora audiovisual de Leiria, fundada en 2026.',
+		forOthers:
+			'Con el mismo equipo y el mismo material, también rodamos para otros: vídeos para artistas y proyectos de cine, en la región de Leiria.',
+		roles: ['Director · Productor · Actor', 'Actor · Gerente · Dirección de actores'],
+		alts: [
+			'Carlos Droumond, con chaqueta marrón y jersey negro, apoyado en un cristal que lo refleja, en una calle empedrada.',
+			'Julien Laffont, con gafas de sol y chaqueta de cuero.',
+		],
+	},
+	{
+		path: '/fr/',
+		anchor: 'a-propos',
+		heading: 'À propos',
+		founders: 'Cofondateurs',
+		text: 'Droumond Productions est une société de production audiovisuelle basée à Leiria, fondée en 2026.',
+		forOthers:
+			'Avec la même équipe et le même matériel, nous tournons aussi pour d’autres\u00a0: vidéos pour artistes et projets de cinéma, dans la région de Leiria.',
+		roles: ['Réalisateur · Producteur · Acteur', 'Acteur · Gérant · Direction d’acteurs'],
+		alts: [
+			'Carlos Droumond, en veste marron et haut noir, appuyé contre une vitre qui le reflète, dans une rue pavée.',
+			'Julien Laffont, en lunettes de soleil et blouson de cuir.',
 		],
 	},
 ];

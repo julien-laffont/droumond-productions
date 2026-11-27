@@ -3,29 +3,60 @@
 // Up to 520 px, YouTube and Contacto leave the header's bar for the end of the menu; Instagram
 // stays in the bar.
 import { expect, test, type Page } from '@playwright/test';
+import { PREFIXES } from '../src/config/site';
 import { languageOf, builtPages } from './pages';
 
 const PHONE = { width: 390, height: 844 };
 const YOUTUBE = 'https://www.youtube.com/@DroumondProductions';
 const TABLET = { width: 700, height: 900 };
 
+/** The phone menu's texts, Contacto's anchor and the filming page, in each language. */
+const MENUS = {
+	pt: {
+		button: 'Menu',
+		nav: 'Principal',
+		contact: 'Contacto',
+		anchor: 'contacto',
+		filming: '/filmagens/',
+	},
+	en: {
+		button: 'Menu',
+		nav: 'Main',
+		contact: 'Contact',
+		anchor: 'contact',
+		filming: '/en/filming/',
+	},
+	es: {
+		button: 'Menú',
+		nav: 'Principal',
+		contact: 'Contacto',
+		anchor: 'contacto',
+		filming: '/es/rodajes/',
+	},
+	fr: {
+		button: 'Menu',
+		nav: 'Principal',
+		contact: 'Contact',
+		anchor: 'contact',
+		filming: '/fr/tournages/',
+	},
+};
+
 /** Where the header's Contacto leads: the page's own block on the filming page (#7). */
 function contactHref(path: string) {
-	if (path === '/filmagens/' || path === '/en/filming/') return `${path}#${contactAnchor(path)}`;
-	return `${languageOf(path) === 'en' ? '/en/' : '/'}#${contactAnchor(path)}`;
+	const language = languageOf(path);
+	const { anchor, filming } = MENUS[language];
+	return path === filming ? `${path}#${anchor}` : `${PREFIXES[language]}#${anchor}`;
 }
-const contactAnchor = (path: string) => (languageOf(path) === 'en' ? 'contact' : 'contacto');
 
 /** The phone menu's button and its links, in the page's language. */
 function phoneMenu(page: Page, path: string) {
-	const english = languageOf(path) === 'en';
+	const texts = MENUS[languageOf(path)];
 	const header = page.getByRole('banner');
-	const contactName = english ? 'Contact' : 'Contacto';
+	const contactName = texts.contact;
 	return {
-		button: header.locator('summary', { hasText: 'Menu' }),
-		links: header
-			.getByRole('navigation', { name: english ? 'Main' : 'Principal' })
-			.getByRole('link'),
+		button: header.locator('summary', { hasText: texts.button }),
+		links: header.getByRole('navigation', { name: texts.nav }).getByRole('link'),
 		/** Every visible Contacto link of the header: the bar's, or the menu's when it is open. */
 		contact: header.getByRole('link', { name: contactName, exact: true }),
 		contactName,

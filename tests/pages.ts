@@ -17,9 +17,9 @@ export function builtPages(): string[] {
 	return pagesIn(DIST);
 }
 
-/** A page's language, from its address: English under /en/, Portuguese everywhere else. */
+/** A page's language, from its address: /en/, /es/, /fr/, and Portuguese everywhere else. */
 export function languageOf(path: string): Language {
-	return path.startsWith('/en/') ? 'en' : 'pt';
+	return (path.match(/^\/(en|es|fr)\//)?.[1] as Language | undefined) ?? 'pt';
 }
 
 /** Opens a page and fails if it does not exist: astro preview answers a missing one with its own 404 page. */

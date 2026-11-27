@@ -1,4 +1,4 @@
-// The interface texts in European Portuguese. The English dictionary has the same keys.
+// The interface texts in European Portuguese. The other dictionaries have the same keys.
 // The final menu texts are Julien's (#18).
 export const pt = {
 	header: {

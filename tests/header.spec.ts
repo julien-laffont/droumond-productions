@@ -20,7 +20,7 @@ async function scrollToEnd(page: Page) {
 		.toBe(true);
 }
 
-/** What the header holds in each language. The English texts are reviewed (#18). */
+/** What the header holds in each language. */
 const EXPECTED = {
 	pt: {
 		symbol: { name: 'Droumond Productions, início', href: '/' },
@@ -44,6 +44,28 @@ const EXPECTED = {
 		],
 		contact: { name: 'Contact', href: '/en/#contact' },
 	},
+	es: {
+		symbol: { name: 'Droumond Productions, inicio', href: '/es/' },
+		nav: 'Principal',
+		links: [
+			{ name: 'Proyectos', href: '/es/#proyectos' },
+			{ name: 'Nosotros', href: '/es/#nosotros' },
+			{ name: 'Reparto', href: '/es/#reparto' },
+			{ name: 'Rodajes', href: '/es/rodajes/' },
+		],
+		contact: { name: 'Contacto', href: '/es/#contacto' },
+	},
+	fr: {
+		symbol: { name: 'Droumond Productions, accueil', href: '/fr/' },
+		nav: 'Principal',
+		links: [
+			{ name: 'Projets', href: '/fr/#projets' },
+			{ name: 'À propos', href: '/fr/#a-propos' },
+			{ name: 'Distribution', href: '/fr/#distribution' },
+			{ name: 'Tournages', href: '/fr/tournages/' },
+		],
+		contact: { name: 'Contact', href: '/fr/#contact' },
+	},
 };
 
 /** The company's profiles, as icons between the language button and Contacto. */
@@ -59,6 +81,8 @@ const AMBER = 'rgb(232, 164, 58)';
 const OWN_CONTACT: Record<string, string> = {
 	'/filmagens/': '/filmagens/#contacto',
 	'/en/filming/': '/en/filming/#contact',
+	'/es/rodajes/': '/es/rodajes/#contacto',
+	'/fr/tournages/': '/fr/tournages/#contact',
 };
 
 for (const path of builtPages()) {
@@ -149,6 +173,7 @@ test('/: with less motion, the timecode stays still', async ({ page }) => {
 	await expect(timecode(page)).toHaveText('00:00:00:00');
 });
 
+for (const path of ['/', '/en/', '/es/', '/fr/']) {
 // The brands ask for their logo in one colour and unaltered: on hover only the amber line appears.
 test('/: on hover, an amber line appears under each profile icon, whose colour stays', async ({
 	page,

@@ -5,7 +5,7 @@ import { expect, test } from '@playwright/test';
 import { CONTACT_EMAIL } from '../src/config/site';
 import { languageOf, builtPages } from './pages';
 
-/** What the footer holds in each language. The English texts are reviewed (#18). */
+/** What the footer holds in each language. */
 const EXPECTED = {
 	pt: {
 		legal: ['Firma', 'Tipo de sociedade', 'Sede', 'Registo comercial', 'NIPC', 'Capital social'],
@@ -29,6 +29,36 @@ const EXPECTED = {
 		reelEnd: 'End of reel',
 		disputes:
 			'In the event of a consumer dispute, you can turn to CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (www.cniacc.pt). For more information, see the Portal do Consumidor (www.consumidor.gov.pt).',
+	},
+	es: {
+		legal: [
+			'Razón social',
+			'Forma jurídica',
+			'Domicilio social',
+			'Registro mercantil',
+			'Número fiscal (NIPC)',
+			'Capital social',
+		],
+		privacy: { name: 'Política de privacidad', href: '/es/politica-de-privacidad/' },
+		founded: 'Desde 2026',
+		reelEnd: 'Fin de la bobina',
+		disputes:
+			'En caso de litigio de consumo, puede acudir al CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (www.cniacc.pt). Más información en el Portal do Consumidor (www.consumidor.gov.pt).',
+	},
+	fr: {
+		legal: [
+			'Dénomination sociale',
+			'Forme juridique',
+			'Siège social',
+			'Registre du commerce',
+			'Numéro fiscal (NIPC)',
+			'Capital social',
+		],
+		privacy: { name: 'Politique de confidentialité', href: '/fr/politique-de-confidentialite/' },
+		founded: 'Depuis 2026',
+		reelEnd: 'Fin de la bobine',
+		disputes:
+			'En cas de litige de consommation, vous pouvez vous adresser au CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (www.cniacc.pt). Plus d’informations sur le Portal do Consumidor (www.consumidor.gov.pt).',
 	},
 };
 
@@ -78,8 +108,13 @@ for (const path of builtPages()) {
 		const name = footer.getByText('Droumond Productions', { exact: true });
 		const founded = footer.getByText(expected.founded, { exact: true });
 		await expect(founded).toBeVisible();
-		const [nameBox, foundedBox] = [await name.boundingBox(), await founded.boundingBox()];
-		expect(foundedBox!.y).toBeGreaterThan(nameBox!.y + nameBox!.height - 1);
+		// Both boxes in the same frame: under load the page can still move between two reads.
+		const gap = await founded.evaluate(
+			(year, nameElement) =>
+				year.getBoundingClientRect().top - nameElement!.getBoundingClientRect().bottom,
+			await name.elementHandle(),
+		);
+		expect(gap).toBeGreaterThan(-1);
 	});
 
 	test(`${path}: the footer names the consumer arbitration centre and its site, below the rest`, async ({

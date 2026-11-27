@@ -26,6 +26,24 @@ const BLOCK = {
 			href: '/en/privacy-policy/',
 		},
 	},
+	es: {
+		anchor: 'contacto',
+		title: 'Contacto',
+		privacy: {
+			line: 'Los datos que nos envíe se tratan conforme a la Política de privacidad.',
+			name: 'Política de privacidad',
+			href: '/es/politica-de-privacidad/',
+		},
+	},
+	fr: {
+		anchor: 'contact',
+		title: 'Contact',
+		privacy: {
+			line: 'Les données que vous nous envoyez sont traitées conformément à la Politique de confidentialité.',
+			name: 'Politique de confidentialité',
+			href: '/fr/politique-de-confidentialite/',
+		},
+	},
 };
 
 /** The pages with a Contacto block, and where its email link leads. */
@@ -34,6 +52,10 @@ const PAGES_WITH_BLOCK = [
 	{ path: '/en/', href: `mailto:${CONTACT_EMAIL}` },
 	{ path: '/filmagens/', href: `mailto:${CONTACT_EMAIL}?subject=Servi%C3%A7o%20de%20filmagens` },
 	{ path: '/en/filming/', href: `mailto:${CONTACT_EMAIL}?subject=Filming%20service` },
+	{ path: '/es/', href: `mailto:${CONTACT_EMAIL}` },
+	{ path: '/es/rodajes/', href: `mailto:${CONTACT_EMAIL}?subject=Servicio%20de%20rodaje` },
+	{ path: '/fr/', href: `mailto:${CONTACT_EMAIL}` },
+	{ path: '/fr/tournages/', href: `mailto:${CONTACT_EMAIL}?subject=Service%20de%20tournage` },
 ];
 
 const blocks = PAGES_WITH_BLOCK.map((page) => ({ ...page, ...BLOCK[languageOf(page.path)] }));

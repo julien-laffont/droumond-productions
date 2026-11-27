@@ -98,6 +98,80 @@ const RESIDENT_EVIL = [
 			    - paragraph: "Episode 5: coming soon, on Instagram."
 		`,
 	},
+	{
+		path: '/es/resident-evil/',
+		description:
+			'Miniserie de terror en cinco episodios, rodada en vertical y publicada en Instagram.',
+		snapshot: `
+			- main:
+			  - heading "Resident Evil" [level=1]
+			  - paragraph: Miniserie · Terror · 5 episodios · El 5.º, próximamente
+			  - region "Episodios":
+			    - heading "Episodios" [level=2]
+			    - list:
+			      - listitem:
+			        - link "Episodio 1":
+			          - /url: ${REELS[0]}
+			      - listitem:
+			        - link "Episodio 2":
+			          - /url: ${REELS[1]}
+			      - listitem:
+			        - link "Episodio 3":
+			          - /url: ${REELS[2]}
+			      - listitem:
+			        - link "Episodio 4":
+			          - /url: ${REELS[3]}
+			    - paragraph: Los episodios se abren en Instagram, en una pestaña nueva.
+			    - paragraph:
+			      - emphasis: Resident Evil
+			      - text: /^es una miniserie de terror/
+			    - paragraph: El primero empieza de noche, en una carretera de Marinha Grande.
+			    - term: Dirección
+			    - definition: Carlos Droumond
+			    - term: Producción
+			    - definition: Droumond Productions
+			    - link "Seguir en Instagram":
+			      - /url: ${INSTAGRAM_PROFILE}
+			    - paragraph: "Episodio 5: próximamente"
+		`,
+	},
+	{
+		path: '/fr/resident-evil/',
+		description:
+			'Mini-série d’horreur en cinq épisodes, tournée à la verticale et publiée sur Instagram.',
+		snapshot: `
+			- main:
+			  - heading "Resident Evil" [level=1]
+			  - paragraph: Mini-série · Horreur · 5 épisodes · Le 5e à venir
+			  - region "Épisodes":
+			    - heading "Épisodes" [level=2]
+			    - list:
+			      - listitem:
+			        - link "Épisode 1":
+			          - /url: ${REELS[0]}
+			      - listitem:
+			        - link "Épisode 2":
+			          - /url: ${REELS[1]}
+			      - listitem:
+			        - link "Épisode 3":
+			          - /url: ${REELS[2]}
+			      - listitem:
+			        - link "Épisode 4":
+			          - /url: ${REELS[3]}
+			    - paragraph: Les épisodes s’ouvrent sur Instagram, dans un nouvel onglet.
+			    - paragraph:
+			      - emphasis: Resident Evil
+			      - text: /^est une mini-série d’horreur/
+			    - paragraph: Le premier s’ouvre de nuit, sur une route de Marinha Grande.
+			    - term: Réalisation
+			    - definition: Carlos Droumond
+			    - term: Production
+			    - definition: Droumond Productions
+			    - link "Suivre sur Instagram":
+			      - /url: ${INSTAGRAM_PROFILE}
+			    - paragraph: "Épisode 5\u00a0: bientôt"
+		`,
+	},
 ];
 
 for (const expected of RESIDENT_EVIL) {

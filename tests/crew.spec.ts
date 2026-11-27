@@ -17,12 +17,12 @@ const NAMES = [
 const HOMES = [
 	{
 		path: '/',
-		english: false,
 		anchor: 'equipa',
+		cast: 'elenco',
 		heading: 'Equipa',
 		roles: [
 			'Realizador · Produtor · Ator',
-			'Gerente · Ator · Direção de atores',
+			'Ator · Gerente · Direção de atores',
 			'Ator · Guionista',
 			'Atriz · Figurinista',
 			'Atriz · Assistente de direção dos atores',
@@ -33,18 +33,50 @@ const HOMES = [
 	},
 	{
 		path: '/en/',
-		english: true,
 		anchor: 'crew',
+		cast: 'cast',
 		heading: 'Crew',
 		roles: [
 			'Director · Producer · Actor',
-			'Managing director · Actor · Director of actors',
+			'Actor · Managing director · Director of actors',
 			'Actor · Screenwriter',
 			'Actress · Costume designer',
 			'Actress · Assistant director of actors',
 			'Actress · Assistant director of actors',
 			'Assistant director',
 			'Assistant director',
+		],
+	},
+	{
+		path: '/es/',
+		anchor: 'equipo',
+		cast: 'reparto',
+		heading: 'Equipo',
+		roles: [
+			'Director · Productor · Actor',
+			'Actor · Gerente · Dirección de actores',
+			'Actor · Guionista',
+			'Actriz · Figurinista',
+			'Actriz · Ayudante de dirección de actores',
+			'Actriz · Ayudante de dirección de actores',
+			'Ayudante de dirección',
+			'Ayudante de dirección',
+		],
+	},
+	{
+		path: '/fr/',
+		anchor: 'equipe',
+		cast: 'distribution',
+		heading: 'Équipe',
+		roles: [
+			'Réalisateur · Producteur · Acteur',
+			'Acteur · Gérant · Direction d’acteurs',
+			'Acteur · Scénariste',
+			'Actrice · Costumière',
+			'Actrice · Assistante à la direction d’acteurs',
+			'Actrice · Assistante à la direction d’acteurs',
+			'Assistanat à la réalisation',
+			'Assistanat à la réalisation',
 		],
 	},
 ];
@@ -75,8 +107,7 @@ for (const home of HOMES) {
 		const sections = await page
 			.locator('main > section')
 			.evaluateAll((els) => els.map((e) => e.id));
-		const cast = home.english ? 'cast' : 'elenco';
-		expect(sections.indexOf(home.anchor)).toBe(sections.indexOf(cast) + 1);
+		expect(sections.indexOf(home.anchor)).toBe(sections.indexOf(home.cast) + 1);
 	});
 
 	test(`${home.path}: Equipa is a grid, never a carousel`, async ({ page }) => {

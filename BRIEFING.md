@@ -19,7 +19,7 @@ Documento de direção inicial. Última atualização: 2026-11-27. Tudo o que es
 - Levar visitantes ao Instagram (@droumond_productions), onde estão os episódios e os bastidores (#73): ícones no cabeçalho, uma faixa só de texto a seguir a Projetos, um convite no fim da página de _Resident Evil_ e links nas páginas de _Efecto Placebo_ e de Filmagens. O bloco Contacto não leva o Instagram.
 - Métrica de sucesso: contactos de clientes. Conta toda a mensagem real (não spam) que chega pelo site, venha de quem vier; quem recebe os emails conta-os à mão, fora do site (ver issue #7).
 - Público: adultos, sobretudo em Portugal, e também pessoas de outras nacionalidades.
-- Idiomas do site: português de Portugal (principal) e inglês (`/en/`), os dois publicados.
+- Idiomas do site: português de Portugal (principal), inglês (`/en/`), espanhol (`/es/`) e francês (`/fr/`).
 
 ## Âmbito
 

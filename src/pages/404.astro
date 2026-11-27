@@ -1,7 +1,7 @@
 ---
 // The 404 page (#17): one sentence in each language, each leading to the home page in its
-// language. Its texts live here, not in the dictionaries, because the page holds both languages
-// at once (English reviewed, #18).
+// language. Its texts live here, not in the dictionaries, because the page holds every language
+// at once.
 // `astro preview` serves it for any unknown address with the 404 status; on the host,
 // public/.htaccess does the same. No language button: the page has no other version.
 import Base from '../layouts/Base.astro';
@@ -26,6 +26,18 @@ const link = 'link-line mt-3 inline-block text-xs tracking-[0.14em] uppercase';
 			<p class="type-label">This page does not exist.</p>
 			<a href={PAGES.home.en} class={link}>
 				Go back to the home page
+			</a>
+		</div>
+		<div lang="es">
+			<p class="type-label">Esta página no existe.</p>
+			<a href={PAGES.home.es} class={link}>
+				Volver a la página de inicio
+			</a>
+		</div>
+		<div lang="fr">
+			<p class="type-label">Cette page n’existe pas.</p>
+			<a href={PAGES.home.fr} class={link}>
+				Revenir à la page d’accueil
 			</a>
 		</div>
 	</main>
