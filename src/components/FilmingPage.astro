@@ -1,5 +1,8 @@
 ---
 // The Filming service page in one language (/filmagens/, /en/filming/): a clapperboard with the
+// label, the title, a short text and a link to Instagram, then the Contacto block, whose email fills
+// in the subject.
+import { SOCIAL, type Language } from '../config/site';
 // label, the title and a short text, an example on film, and Contacto with the subject filled in.
 import { Image } from 'astro:assets';
 import cover from '../assets/filming/blanco-y-negro.jpg';
@@ -20,6 +23,7 @@ const EXAMPLE_TITLE = 'Blanco y Negro';
 
 const { language } = Astro.props;
 const t = dictionaries[language].filming;
+const instagramText = dictionaries[language].instagram.filming;
 ---
 
 <Base language={language} page="filming" title={t.pageTitle} description={t.description}>
@@ -29,6 +33,10 @@ const t = dictionaries[language].filming;
 				<p class="type-meta">{t.label}</p>
 				<h1 class="max-w-[16ch] text-[clamp(2rem,4.6vw,3.8rem)] type-name">{t.title}</h1>
 				<p class="max-w-[62ch] text-[clamp(1.02rem,1.25vw,1.15rem)] leading-[1.65]">{t.text}</p>
+				<a href={SOCIAL.instagram} target="_blank" rel="noopener" class="cta">
+					{instagramText}
+					<span aria-hidden="true"> ↗</span>
+				</a>
 			</Slate>
 		</div>
 		<section aria-labelledby="example-title" class="px-gutter pb-[clamp(56px,8vw,112px)]">

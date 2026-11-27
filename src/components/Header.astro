@@ -1,9 +1,12 @@
 ---
 // The header, the same on every page, as in Película (#36): the symbol (to the home page), a
 // timecode that runs with the scroll (decorative), the sections and the filming page, the language
-// button and Contacto. Over 880 px the links sit in a row; below, they move into a menu. Up to
-// 520 px Contacto leaves the bar for the end of the menu, to make room for the timecode.
-import type { Language } from '../config/site';
+// button, Instagram and YouTube, and Contacto. Over 880 px the links sit in a row; below, they move
+// into a menu. Up to 520 px YouTube and Contacto leave the bar for the end of the menu, to make
+// room for the timecode.
+import InstagramIcon from '../assets/icons/instagram.svg';
+import YouTubeIcon from '../assets/icons/youtube.svg';
+import { SOCIAL, type Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import { contactPath, PAGES, sectionPath, type PageId } from '../lib/paths';
 import LanguageSwitcher from './LanguageSwitcher.astro';
@@ -23,6 +26,12 @@ const links = [
 	{ text: t.filming, href: PAGES.filming[language] },
 ];
 const contact = { text: t.contact, href: contactPath(page, language) };
+// The brands' official glyphs, in one colour. Their rules ask for the logo unaltered, so on hover
+// only the amber line under it shows. On a phone, the ones not in the bar move into the menu.
+const profiles = [
+	{ name: 'Instagram', href: SOCIAL.instagram, Icon: InstagramIcon, inPhoneBar: true },
+	{ name: 'YouTube', href: SOCIAL.youtube, Icon: YouTubeIcon, inPhoneBar: false },
+];
 const menuLink = 'block border-b border-paper/14 py-3 font-name text-[26px] uppercase';
 ---
 
@@ -52,6 +61,24 @@ const menuLink = 'block border-b border-paper/14 py-3 font-name text-[26px] uppe
 		</nav>
 		<div class="flex items-center gap-[clamp(12px,2.2vw,30px)] max-[880px]:ml-auto">
 			{page && <LanguageSwitcher language={language} page={page} />}
+			<div class="flex flex-none">
+				{profiles.map(({ name, href, Icon, inPhoneBar }) => (
+					<a
+						href={href}
+						target="_blank"
+						rel="noopener"
+						aria-label={name}
+						class:list={[
+							'group grid size-10 place-items-center',
+							!inPhoneBar && 'max-[520px]:hidden',
+						]}
+					>
+						<span class="border-b border-transparent py-1.5 transition-[border-color] duration-200 ease-(--ease) group-hover:border-amber motion-reduce:transition-none">
+							<Icon fill="currentColor" aria-hidden="true" class="block size-5" />
+						</span>
+					</a>
+				))}
+			</div>
 			<a
 				href={contact.href}
 				class="flex-none bg-paper px-3.5 py-[9px] text-xs font-bold tracking-[0.14em] text-ink uppercase max-[520px]:hidden"
@@ -74,6 +101,16 @@ const menuLink = 'block border-b border-paper/14 py-3 font-name text-[26px] uppe
 								</a>
 							</li>
 						))}
+						{profiles
+							.filter(({ inPhoneBar }) => !inPhoneBar)
+							.map(({ name, href }) => (
+								<li class="min-[520px]:hidden">
+									<a href={href} target="_blank" rel="noopener" class={menuLink}>
+										{name}
+										<span aria-hidden="true"> ↗</span>
+									</a>
+								</li>
+							))}
 						<li class="min-[520px]:hidden">
 							<a href={contact.href} class={menuLink}>
 								{contact.text}

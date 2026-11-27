@@ -15,6 +15,7 @@ const FILMING = [
 		home: '/',
 		page: '/filmagens/',
 		contact: 'contacto',
+		instagram: 'Veja o nosso trabalho no Instagram',
 		label: 'Serviço de filmagens',
 		title: 'Quer a Droumond Productions para gravação?',
 		line: 'Vídeos para artistas e projetos de cinema, filmados com a equipa e o material das nossas séries.',
@@ -38,6 +39,7 @@ const FILMING = [
 		home: '/en/',
 		page: '/en/filming/',
 		contact: 'contact',
+		instagram: 'See our work on Instagram',
 		label: 'Filming service',
 		title: 'Want Droumond Productions on your shoot?',
 		line: 'Videos for artists and film projects, shot with the same crew and equipment as our series.',
@@ -181,14 +183,20 @@ for (const expected of FILMING) {
 		await expect(main.locator(':scope > :last-child')).toHaveAttribute('id', expected.contact);
 	});
 
-	test(`${expected.page}: a clapperboard opens the page, with the label, the title, the text and its fields`, async ({
+	test(`${expected.page}: a clapperboard opens the page, with the label, the title, the text, the Instagram link and its fields`, async ({
 		page,
 	}) => {
 		await openExisting(page, expected.page);
 		const top = pageTop(page);
 		await expect(top.getByRole('heading', { level: 1 })).toHaveText(expected.title);
 		expect(await readText(top)).toContain(
-			[expected.label, expected.title, expected.text, ...expected.fields.flat()]
+			[
+				expected.label,
+				expected.title,
+				expected.text,
+				`${expected.instagram} ↗`,
+				...expected.fields.flat(),
+			]
 				.join(' ')
 				.replace(/\s+/g, ' ')
 				.toLowerCase(),
