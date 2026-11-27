@@ -68,14 +68,18 @@ export const fr: Dictionary = {
 	filming: {
 		label: 'Service de tournage',
 		title: 'Vous voulez Droumond Productions sur votre tournage ?',
-		line: 'Publicités, vidéos de marque et clips musicaux, tournés avec l’équipe et le matériel de nos séries.',
+		line: 'Vidéos pour artistes et projets de cinéma, tournés avec l’équipe et le matériel de nos séries.',
 		button: 'Voir le service',
-		text: 'Nous tournons des publicités, des vidéos de marque et des clips musicaux dans la région de Leiria, avec l’équipe et le matériel de nos séries. Dites-nous ce que vous voulez filmer, où et quand, et nous vous dirons ce que nous pouvons faire.',
+		text: 'Nous tournons des clips musicaux et d’autres vidéos pour des artistes, ainsi que des projets de cinéma, dans la région de Leiria, avec l’équipe et le matériel de nos séries. Dites-nous ce que vous voulez filmer, où et quand, et nous vous dirons ce que nous pouvons faire.',
 		slate: { production: 'Prod.', scene: 'Scène', take: 'Prise', date: 'Date' },
 		subject: 'Service de tournage',
 		pageTitle: 'Service de tournage · Droumond Productions',
 		description:
-			'Le service de tournage de Droumond Productions à Leiria : publicités, vidéos de marque et clips musicaux.',
+			'Le service de tournage de Droumond Productions à Leiria : vidéos pour artistes et projets de cinéma.',
+		example: {
+			title: 'Exemple',
+			note: 'Clip musical de Carlos Droumond. S’ouvre sur YouTube, dans un nouvel onglet.',
+		},
 	},
 	efectoPlacebo: {
 		code: '35 mm · Efecto Placebo · Leiria',
@@ -96,6 +100,6 @@ export const fr: Dictionary = {
 	home: {
 		title: 'Droumond Productions',
 		description:
-			'Droumond Productions, société de production audiovisuelle basée à Leiria : séries de fiction, publicités, vidéos de marque et clips musicaux.',
+			'Droumond Productions, société de production audiovisuelle basée à Leiria : séries de fiction, vidéos pour artistes et projets de cinéma.',
 	},
 };

@@ -67,14 +67,18 @@ export const es: Dictionary = {
 	filming: {
 		label: 'Servicio de rodaje',
 		title: '¿Quiere a Droumond Productions en su rodaje?',
-		line: 'Publicidad, vídeos de marca y videoclips, rodados con el equipo y el material de nuestras series.',
+		line: 'Vídeos para artistas y proyectos de cine, rodados con el equipo y el material de nuestras series.',
 		button: 'Ver el servicio',
-		text: 'Rodamos publicidad, vídeos de marca y videoclips en la región de Leiria, con el mismo equipo y el mismo material con que hacemos nuestras series. Díganos qué quiere grabar, dónde y cuándo, y le contestaremos con lo que podemos hacer.',
+		text: 'Rodamos videoclips y otros vídeos para artistas, y proyectos de cine, en la región de Leiria, con el mismo equipo y el mismo material con que hacemos nuestras series. Díganos qué quiere grabar, dónde y cuándo, y le contestaremos con lo que podemos hacer.',
 		slate: { production: 'Prod.', scene: 'Escena', take: 'Toma', date: 'Fecha' },
 		subject: 'Servicio de rodaje',
 		pageTitle: 'Servicio de rodaje · Droumond Productions',
 		description:
-			'Servicio de rodaje de Droumond Productions en Leiria: publicidad, vídeos de marca y videoclips.',
+			'Servicio de rodaje de Droumond Productions en Leiria: vídeos para artistas y proyectos de cine.',
+		example: {
+			title: 'Ejemplo',
+			note: 'Videoclip de Carlos Droumond. Se abre en YouTube, en una pestaña nueva.',
+		},
 	},
 	efectoPlacebo: {
 		code: '35 mm · Efecto Placebo · Leiria',
@@ -95,6 +99,6 @@ export const es: Dictionary = {
 	home: {
 		title: 'Droumond Productions',
 		description:
-			'Droumond Productions, productora audiovisual de Leiria: series de ficción, publicidad, vídeos de marca y videoclips.',
+			'Droumond Productions, productora audiovisual de Leiria: series de ficción, vídeos para artistas y proyectos de cine.',
 	},
 };

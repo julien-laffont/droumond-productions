@@ -40,6 +40,8 @@ const HOMES = [
 		heading: 'Nosotros',
 		founders: 'Cofundadores',
 		text: 'Droumond Productions es una productora audiovisual de Leiria, fundada en 2026.',
+		forOthers:
+			'Con el mismo equipo y el mismo material, también rodamos para otros: vídeos para artistas y proyectos de cine, en la región de Leiria.',
 		roles: ['Director · Productor · Actor', 'Actor · Gerente · Dirección de actores'],
 		alts: [
 			'Carlos Droumond, con chaqueta marrón y jersey negro, apoyado en un cristal que lo refleja, en una calle empedrada.',
@@ -52,6 +54,8 @@ const HOMES = [
 		heading: 'À propos',
 		founders: 'Cofondateurs',
 		text: 'Droumond Productions est une société de production audiovisuelle basée à Leiria, fondée en 2026.',
+		forOthers:
+			'Avec la même équipe et le même matériel, nous tournons aussi pour d’autres\u00a0: vidéos pour artistes et projets de cinéma, dans la région de Leiria.',
 		roles: ['Réalisateur · Producteur · Acteur', 'Acteur · Gérant · Direction d’acteurs'],
 		alts: [
 			'Carlos Droumond, en veste marron et haut noir, appuyé contre une vitre qui le reflète, dans une rue pavée.',
