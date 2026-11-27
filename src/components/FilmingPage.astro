@@ -1,15 +1,22 @@
 ---
 // The Filming service page in one language (/filmagens/, /en/filming/): a clapperboard with the
-// label, the title and a short text, then the Contacto block, whose email fills in the subject.
-import type { Language } from '../config/site';
+// label, the title and a short text, an example on film, and Contacto with the subject filled in.
+import { Image } from 'astro:assets';
+import cover from '../assets/filming/blanco-y-negro.jpg';
+import { IMAGE_FILES } from '../config/image-files';
+import { BLANCO_Y_NEGRO_VIDEO, type Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import Base from '../layouts/Base.astro';
 import Contact from './Contact.astro';
+import Film from './Film.astro';
 import Slate from './Slate.astro';
 
 interface Props {
 	language: Language;
 }
+
+/** Titles of works are never translated. */
+const EXAMPLE_TITLE = 'Blanco y Negro';
 
 const { language } = Astro.props;
 const t = dictionaries[language].filming;
@@ -24,6 +31,48 @@ const t = dictionaries[language].filming;
 				<p class="max-w-[62ch] text-[clamp(1.02rem,1.25vw,1.15rem)] leading-[1.65]">{t.text}</p>
 			</Slate>
 		</div>
+		<section aria-labelledby="example-title" class="px-gutter pb-[clamp(56px,8vw,112px)]">
+			<div class="reveal mx-auto grid max-w-[880px] gap-4">
+				<h2 id="example-title" class="type-label">
+					{t.example.title}
+				</h2>
+				<a
+					href={BLANCO_Y_NEGRO_VIDEO}
+					target="_blank"
+					rel="noopener"
+					aria-describedby="example-note"
+					class="example grid gap-3"
+				>
+					<Film top={`▸ 01 · ${EXAMPLE_TITLE}`} bottom="01A">
+						{/* The link's text names the video; the cover only repeats the title. */}
+						<Image
+							src={cover}
+							alt=""
+							{...IMAGE_FILES.videoCover}
+							sizes="(min-width: 960px) 868px, calc(100vw - 44px)"
+							class="block w-full bg-ink"
+						/>
+					</Film>
+					<span class="justify-self-start cta">
+						<span aria-hidden="true">▶ </span>
+						{EXAMPLE_TITLE}
+						<span aria-hidden="true"> ↗</span>
+					</span>
+				</a>
+				<p id="example-note" class="type-meta">
+					{t.example.note}
+				</p>
+			</div>
+		</section>
 		<Contact language={language} subject={t.subject} />
 	</main>
 </Base>
+
+<style>
+	.example :global(img) {
+		transition: filter 0.4s var(--ease);
+	}
+	.example:hover :global(img) {
+		filter: brightness(1.08);
+	}
+</style>
