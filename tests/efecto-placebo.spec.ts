@@ -132,6 +132,130 @@ const EFECTO_PLACEBO = [
 			        - paragraph
 		`,
 	},
+	{
+		path: '/es/efecto-placebo/',
+		pageTitle: 'Efecto Placebo · Droumond Productions',
+		description:
+			'Cuando el músico Carlos Droumond desaparece, su mejor amigo, Julien, miente a la policía sobre el cuaderno que le dejó: partituras que nunca debieron tocarse.',
+		snapshot: `
+			- main:
+			  - heading "Efecto Placebo" [level=1]
+			  - paragraph: Miniserie · Suspense · 7 episodios · En rodaje
+			  - 'img "Efecto Placebo: una cinta policial sobre un suelo de tierra y raíces, donde una mano agarra una rama."'
+			  - button "Pausar vídeo"
+			  - link "Ver el teaser completo"
+			  - region "Sinopsis":
+			    - heading "Sinopsis" [level=2]
+			    - img /^Cartel de Efecto Placebo/
+			    - paragraph: /^Leiria se despierta con la noticia/
+			    - paragraph: /aquello en lo que elegimos creer\\.$/
+			    - term: Dirección
+			    - definition: Carlos Droumond
+			    - term: Producción
+			    - definition: Droumond Productions
+			  - region "Personajes":
+			    - heading "Personajes" [level=2]
+			    - list:
+			      - listitem:
+			        - heading "Carlos Droumond" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Julien Laffont" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Inara Pereira" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Miguel Figueiredo" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Ana Simões" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Marta Ferreira" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Rita Santos" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Sara Ribeiro" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Sónia Costa" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Filipa Gonçalves" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Raul de Valverde" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Bruno Moreira" [level=3]
+			        - paragraph
+		`,
+	},
+	{
+		path: '/fr/efecto-placebo/',
+		pageTitle: 'Efecto Placebo · Droumond Productions',
+		description:
+			'Quand le musicien Carlos Droumond disparaît, son meilleur ami, Julien, ment à la police au sujet du carnet qu’il lui a laissé\u00a0: des partitions qui n’auraient jamais dû être jouées.',
+		snapshot: `
+			- main:
+			  - heading "Efecto Placebo" [level=1]
+			  - paragraph: Mini-série · Thriller · 7 épisodes · En tournage
+			  - 'img "Efecto Placebo\u00a0: un ruban de police sur un sol de terre et de racines, où une main agrippe une branche."'
+			  - button "Mettre la vidéo en pause"
+			  - link "Voir le teaser complet"
+			  - region "Synopsis":
+			    - heading "Synopsis" [level=2]
+			    - img /^Affiche d’Efecto Placebo/
+			    - paragraph: /^Leiria se réveille avec la nouvelle/
+			    - paragraph: /ce que nous choisissons de croire\\.$/
+			    - term: Réalisation
+			    - definition: Carlos Droumond
+			    - term: Production
+			    - definition: Droumond Productions
+			  - region "Personnages":
+			    - heading "Personnages" [level=2]
+			    - list:
+			      - listitem:
+			        - heading "Carlos Droumond" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Julien Laffont" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Inara Pereira" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Miguel Figueiredo" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Ana Simões" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Marta Ferreira" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Rita Santos" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Sara Ribeiro" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Sónia Costa" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Filipa Gonçalves" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Raul de Valverde" [level=3]
+			        - paragraph
+			      - listitem:
+			        - heading "Bruno Moreira" [level=3]
+			        - paragraph
+		`,
+	},
 ];
 
 for (const expected of EFECTO_PLACEBO) {

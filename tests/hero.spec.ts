@@ -6,7 +6,6 @@ import { builtPages } from './pages';
 const HOMES = [
 	{
 		path: '/',
-		english: false,
 		code: '35 mm · Droumond 2026 · Leiria · Rolo 01',
 		words: 'Séries · Suspense · Terror · Filmagens',
 		cue: { name: 'Projetos', href: '#projetos' },
@@ -23,7 +22,6 @@ const HOMES = [
 	},
 	{
 		path: '/en/',
-		english: true,
 		code: '35 mm · Droumond 2026 · Leiria · Reel 01',
 		words: 'Series · Thriller · Horror · Filming',
 		cue: { name: 'Projects', href: '#projects' },
@@ -36,6 +34,38 @@ const HOMES = [
 			  - paragraph: Audiovisual production company
 			  - button "Pause film"
 			  - link "Projects"
+		`,
+	},
+	{
+		path: '/es/',
+		code: '35 mm · Droumond 2026 · Leiria · Rollo 01',
+		words: 'Series · Suspense · Terror · Rodajes',
+		cue: { name: 'Proyectos', href: '#proyectos' },
+		toggle: { pause: 'Pausar cinta', resume: 'Reanudar cinta' },
+		description:
+			'Droumond Productions, productora audiovisual de Leiria: series de ficción, publicidad, vídeos de marca y videoclips.',
+		snapshot: `
+			- region "Droumond Productions":
+			  - heading "Droumond Productions" [level=1]
+			  - paragraph: Productora audiovisual
+			  - button "Pausar cinta"
+			  - link "Proyectos"
+		`,
+	},
+	{
+		path: '/fr/',
+		code: '35 mm · Droumond 2026 · Leiria · Bobine 01',
+		words: 'Séries · Thriller · Horreur · Tournages',
+		cue: { name: 'Projets', href: '#projets' },
+		toggle: { pause: 'Mettre la pellicule en pause', resume: 'Reprendre la pellicule' },
+		description:
+			'Droumond Productions, société de production audiovisuelle basée à Leiria\u00a0: séries de fiction, publicités, vidéos de marque et clips musicaux.',
+		snapshot: `
+			- region "Droumond Productions":
+			  - heading "Droumond Productions" [level=1]
+			  - paragraph: Société de production audiovisuelle
+			  - button "Mettre la pellicule en pause"
+			  - link "Projets"
 		`,
 	},
 ];
@@ -269,7 +299,7 @@ for (const home of HOMES) {
 }
 
 test('the first screen only exists on the home page', async ({ page }) => {
-	for (const path of builtPages().filter((p) => p !== '/' && p !== '/en/')) {
+	for (const path of builtPages().filter((p) => !['/', '/en/', '/es/', '/fr/'].includes(p))) {
 		await page.goto(path);
 		await expect(firstScreen(page), path).toHaveCount(0);
 	}

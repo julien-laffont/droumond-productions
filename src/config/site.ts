@@ -56,14 +56,19 @@ export const RESIDENT_EVIL_EPISODES = [
  */
 export const SITE = 'https://droumondproductions.com';
 
-export const LANGUAGES = ['pt', 'en'] as const;
+export const LANGUAGES = ['pt', 'en', 'es', 'fr'] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 /** The start of each language's addresses. Portuguese, the default language, sits at `/`. */
-export const PREFIXES: Record<Language, string> = { pt: '/', en: '/en/' };
+export const PREFIXES: Record<Language, string> = { pt: '/', en: '/en/', es: '/es/', fr: '/fr/' };
 
 /** The value of `<html lang>` in each language. */
-export const HTML_CODES: Record<Language, string> = { pt: 'pt-PT', en: 'en' };
+export const HTML_CODES: Record<Language, string> = { pt: 'pt-PT', en: 'en', es: 'es', fr: 'fr' };
 
 /** Each language's name, written in that language, as the language button shows it. */
-export const LANGUAGE_NAMES: Record<Language, string> = { pt: 'Português', en: 'English' };
+export const LANGUAGE_NAMES: Record<Language, string> = {
+	pt: 'Português',
+	en: 'English',
+	es: 'Español',
+	fr: 'Français',
+};

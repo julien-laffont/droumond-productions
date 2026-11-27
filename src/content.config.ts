@@ -1,5 +1,5 @@
 // The Privacy Policy (#17), in Markdown, one file per language: src/content/privacy/<language>.md
-// (id `pt`, `en`), so Julien can edit the text without touching code. The email and the company's
+// (id `pt`, `en`, `es`, `fr`), so Julien can edit the text without touching code. The email and the company's
 // legal data come from src/config/site.ts through placeholders such as {email} (see src/lib/privacy.ts).
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';

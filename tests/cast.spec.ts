@@ -6,7 +6,6 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 const HOMES = [
 	{
 		path: '/',
-		english: false,
 		anchor: 'elenco',
 		heading: 'Elenco',
 		sheet: 'Folha de contactos · Rolo 02',
@@ -14,11 +13,24 @@ const HOMES = [
 	},
 	{
 		path: '/en/',
-		english: true,
 		anchor: 'cast',
 		heading: 'Cast',
 		sheet: 'Contact sheet · Reel 02',
 		toggle: { pause: 'Pause cast', resume: 'Resume cast' },
+	},
+	{
+		path: '/es/',
+		anchor: 'reparto',
+		heading: 'Reparto',
+		sheet: 'Hoja de contactos · Rollo 02',
+		toggle: { pause: 'Pausar reparto', resume: 'Reanudar reparto' },
+	},
+	{
+		path: '/fr/',
+		anchor: 'distribution',
+		heading: 'Distribution',
+		sheet: 'Planche contact · Bobine 02',
+		toggle: { pause: 'Mettre la distribution en pause', resume: 'Reprendre la distribution' },
 	},
 ];
 

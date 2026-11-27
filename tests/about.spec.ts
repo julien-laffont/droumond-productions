@@ -8,7 +8,6 @@ const NAMES = ['Carlos Droumond', 'Julien Laffont'];
 const HOMES = [
 	{
 		path: '/',
-		english: false,
 		anchor: 'sobre',
 		heading: 'Sobre',
 		founders: 'Cofundadores',
@@ -21,7 +20,6 @@ const HOMES = [
 	},
 	{
 		path: '/en/',
-		english: true,
 		anchor: 'about',
 		heading: 'About',
 		founders: 'Co-founders',
@@ -30,6 +28,30 @@ const HOMES = [
 		alts: [
 			'Carlos Droumond, in a brown jacket and a black top, leaning on a glass wall that reflects him, on a cobbled street.',
 			'Julien Laffont, in sunglasses and a leather jacket.',
+		],
+	},
+	{
+		path: '/es/',
+		anchor: 'nosotros',
+		heading: 'Nosotros',
+		founders: 'Cofundadores',
+		text: 'Droumond Productions es una productora audiovisual de Leiria, fundada en 2026.',
+		roles: ['Director · Productor · Actor', 'Actor · Gerente · Dirección de actores'],
+		alts: [
+			'Carlos Droumond, con chaqueta marrón y jersey negro, apoyado en un cristal que lo refleja, en una calle empedrada.',
+			'Julien Laffont, con gafas de sol y chaqueta de cuero.',
+		],
+	},
+	{
+		path: '/fr/',
+		anchor: 'a-propos',
+		heading: 'À propos',
+		founders: 'Cofondateurs',
+		text: 'Droumond Productions est une société de production audiovisuelle basée à Leiria, fondée en 2026.',
+		roles: ['Réalisateur · Producteur · Acteur', 'Acteur · Gérant · Direction d’acteurs'],
+		alts: [
+			'Carlos Droumond, en veste marron et haut noir, appuyé contre une vitre qui le reflète, dans une rue pavée.',
+			'Julien Laffont, en lunettes de soleil et blouson de cuir.',
 		],
 	},
 ];

@@ -1,6 +1,6 @@
 // The Projects shown on the home page, in order, on the reel between its leader and tail.
 // To add or change one, edit this list; its excerpt and poster go in src/assets/projects/.
-// Every text has both languages; the English lines and links are reviewed (#18).
+// Every text is in each language.
 import type { ImageMetadata } from 'astro';
 import efectoPlaceboPoster from '../assets/projects/efecto-placebo.jpg';
 import efectoPlacebo from '../assets/projects/efecto-placebo.mp4';
@@ -37,34 +37,59 @@ export interface Project {
 export const PROJECTS: Project[] = [
 	{
 		// Spelt as on the teaser's thumbnail, and a mini-series like it says (Julien, #18).
-		title: { pt: 'Efecto Placebo', en: 'Efecto Placebo' },
-		type: { pt: 'Minissérie', en: 'Mini-series' },
-		genre: { pt: 'Suspense', en: 'Thriller' },
-		status: { pt: 'Em gravação', en: 'In production' },
+		title: {
+			pt: 'Efecto Placebo',
+			en: 'Efecto Placebo',
+			es: 'Efecto Placebo',
+			fr: 'Efecto Placebo',
+		},
+		type: { pt: 'Minissérie', en: 'Mini-series', es: 'Miniserie', fr: 'Mini-série' },
+		genre: { pt: 'Suspense', en: 'Thriller', es: 'Suspense', fr: 'Thriller' },
+		status: { pt: 'Em gravação', en: 'In production', es: 'En rodaje', fr: 'En tournage' },
 		// From the teaser, without its letterbox.
 		video: efectoPlacebo,
 		poster: efectoPlaceboPoster,
 		alt: {
 			pt: 'Efecto Placebo: um homem de óculos escuros atrás de uma fita da polícia, num jardim.',
 			en: 'Efecto Placebo: a man in sunglasses behind police tape, in a park.',
+			es: 'Efecto Placebo: un hombre con gafas de sol detrás de una cinta policial, en un jardín.',
+			fr: 'Efecto Placebo : un homme en lunettes de soleil derrière un ruban de police, dans un jardin.',
 		},
 		shape: 'wide',
-		link: { page: 'efectoPlacebo', label: { pt: 'Ver o projeto', en: 'View the project' } },
+		link: {
+			page: 'efectoPlacebo',
+			label: {
+				pt: 'Ver o projeto',
+				en: 'View the project',
+				es: 'Ver el proyecto',
+				fr: 'Voir le projet',
+			},
+		},
 	},
 	{
-		title: { pt: 'Resident Evil', en: 'Resident Evil' },
-		type: { pt: 'Minissérie', en: 'Mini-series' },
-		genre: { pt: 'Terror', en: 'Horror' },
+		title: { pt: 'Resident Evil', en: 'Resident Evil', es: 'Resident Evil', fr: 'Resident Evil' },
+		type: { pt: 'Minissérie', en: 'Mini-series', es: 'Miniserie', fr: 'Mini-série' },
+		genre: { pt: 'Terror', en: 'Horror', es: 'Terror', fr: 'Horreur' },
 		// Five episodes, the last one filmed but not released yet (Julien, #18).
-		status: { pt: '5 episódios', en: '5 episodes' },
+		status: { pt: '5 episódios', en: '5 episodes', es: '5 episodios', fr: '5 épisodes' },
 		// From the first episode.
 		video: residentEvil,
 		poster: residentEvilPoster,
 		alt: {
 			pt: 'Resident Evil: dois olhos brancos a brilhar no escuro, atrás de uma figura agachada na estrada.',
 			en: 'Resident Evil: two white eyes glowing in the dark, behind a figure crouching on the road.',
+			es: 'Resident Evil: dos ojos blancos que brillan en la oscuridad, detrás de una figura agachada en la carretera.',
+			fr: 'Resident Evil : deux yeux blancs qui brillent dans le noir, derrière une silhouette accroupie sur la route.',
 		},
 		shape: 'tall',
-		link: { page: 'residentEvil', label: { pt: 'Ver o projeto', en: 'View the project' } },
+		link: {
+			page: 'residentEvil',
+			label: {
+				pt: 'Ver o projeto',
+				en: 'View the project',
+				es: 'Ver el proyecto',
+				fr: 'Voir le projet',
+			},
+		},
 	},
 ];

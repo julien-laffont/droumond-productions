@@ -20,7 +20,7 @@ async function scrollToEnd(page: Page) {
 		.toBe(true);
 }
 
-/** What the header holds in each language. The English texts are reviewed (#18). */
+/** What the header holds in each language. */
 const EXPECTED = {
 	pt: {
 		symbol: { name: 'Droumond Productions, início', href: '/' },
@@ -44,12 +44,36 @@ const EXPECTED = {
 		],
 		contact: { name: 'Contact', href: '/en/#contact' },
 	},
+	es: {
+		symbol: { name: 'Droumond Productions, inicio', href: '/es/' },
+		nav: 'Principal',
+		links: [
+			{ name: 'Proyectos', href: '/es/#proyectos' },
+			{ name: 'Nosotros', href: '/es/#nosotros' },
+			{ name: 'Reparto', href: '/es/#reparto' },
+			{ name: 'Rodajes', href: '/es/rodajes/' },
+		],
+		contact: { name: 'Contacto', href: '/es/#contacto' },
+	},
+	fr: {
+		symbol: { name: 'Droumond Productions, accueil', href: '/fr/' },
+		nav: 'Principal',
+		links: [
+			{ name: 'Projets', href: '/fr/#projets' },
+			{ name: 'À propos', href: '/fr/#a-propos' },
+			{ name: 'Distribution', href: '/fr/#distribution' },
+			{ name: 'Tournages', href: '/fr/tournages/' },
+		],
+		contact: { name: 'Contact', href: '/fr/#contact' },
+	},
 };
 
 /** On the filming page, Contacto leads to the page's own block (#7). */
 const OWN_CONTACT: Record<string, string> = {
 	'/filmagens/': '/filmagens/#contacto',
 	'/en/filming/': '/en/filming/#contact',
+	'/es/rodajes/': '/es/rodajes/#contacto',
+	'/fr/tournages/': '/fr/tournages/#contact',
 };
 
 for (const path of builtPages()) {
@@ -111,7 +135,7 @@ test('/: with less motion, the timecode stays still', async ({ page }) => {
 	await expect(timecode(page)).toHaveText('00:00:00:00');
 });
 
-for (const path of builtPages().filter((p) => p === '/' || p === '/en/')) {
+for (const path of ['/', '/en/', '/es/', '/fr/']) {
 	const expected = EXPECTED[languageOf(path)];
 
 	test(`${path}: each section link of the header scrolls to its section`, async ({ page }) => {

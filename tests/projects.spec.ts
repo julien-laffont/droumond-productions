@@ -9,7 +9,6 @@ import { DIST } from './pages';
 const HOMES = [
 	{
 		path: '/',
-		english: false,
 		anchor: 'projetos',
 		pause: 'Pausar vídeos',
 		resume: 'Retomar vídeos',
@@ -37,7 +36,6 @@ const HOMES = [
 	},
 	{
 		path: '/en/',
-		english: true,
 		anchor: 'projects',
 		pause: 'Pause videos',
 		resume: 'Resume videos',
@@ -61,6 +59,60 @@ const HOMES = [
 			      - heading "Resident Evil" [level=3]
 			      - paragraph: Mini-series · Horror · 5 episodes
 			      - link "View the project"
+		`,
+	},
+	{
+		path: '/es/',
+		anchor: 'proyectos',
+		pause: 'Pausar vídeos',
+		resume: 'Reanudar vídeos',
+		links: [
+			{ name: 'Ver el proyecto', href: '/es/efecto-placebo/' },
+			{ name: 'Ver el proyecto', href: '/es/resident-evil/' },
+		],
+		snapshot: `
+			- region "Proyectos":
+			  - heading "Proyectos" [level=2]
+			  - button "Pausar vídeos"
+			  - list:
+			    - /children: equal
+			    - listitem:
+			      - 'img "Efecto Placebo: un hombre con gafas de sol detrás de una cinta policial, en un jardín."'
+			      - heading "Efecto Placebo" [level=3]
+			      - paragraph: Miniserie · Suspense · En rodaje
+			      - link "Ver el proyecto"
+			    - listitem:
+			      - 'img "Resident Evil: dos ojos blancos que brillan en la oscuridad, detrás de una figura agachada en la carretera."'
+			      - heading "Resident Evil" [level=3]
+			      - paragraph: Miniserie · Terror · 5 episodios
+			      - link "Ver el proyecto"
+		`,
+	},
+	{
+		path: '/fr/',
+		anchor: 'projets',
+		pause: 'Mettre les vidéos en pause',
+		resume: 'Reprendre les vidéos',
+		links: [
+			{ name: 'Voir le projet', href: '/fr/efecto-placebo/' },
+			{ name: 'Voir le projet', href: '/fr/resident-evil/' },
+		],
+		snapshot: `
+			- region "Projets":
+			  - heading "Projets" [level=2]
+			  - button "Mettre les vidéos en pause"
+			  - list:
+			    - /children: equal
+			    - listitem:
+			      - 'img "Efecto Placebo\u00a0: un homme en lunettes de soleil derrière un ruban de police, dans un jardin."'
+			      - heading "Efecto Placebo" [level=3]
+			      - paragraph: Mini-série · Thriller · En tournage
+			      - link "Voir le projet"
+			    - listitem:
+			      - 'img "Resident Evil\u00a0: deux yeux blancs qui brillent dans le noir, derrière une silhouette accroupie sur la route."'
+			      - heading "Resident Evil" [level=3]
+			      - paragraph: Mini-série · Horreur · 5 épisodes
+			      - link "Voir le projet"
 		`,
 	},
 ];

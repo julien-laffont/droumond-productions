@@ -1,7 +1,7 @@
 // The placeholders of the Privacy Policy's Markdown (src/content/privacy/), filled from
 // src/config/site.ts so the email and the legal data live in one place: {email} becomes a mailto
 // link, and {legal.<key>} the value of that key of LEGAL ({legal.nipc}, {legal.firm}…), marked as
-// Portuguese in both languages, as in the footer, so screen readers say it as Portuguese.
+// Portuguese in every language, as in the footer, so screen readers say it as Portuguese.
 import { CONTACT_EMAIL, LEGAL } from '../config/site';
 
 const PLACEHOLDER = /\{([a-z]+(?:\.[a-z]+)?)\}/gi;
