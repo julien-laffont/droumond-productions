@@ -130,9 +130,14 @@ const RESIDENT_EVIL = [
 			    - definition: Carlos Droumond
 			    - term: Producción
 			    - definition: Droumond Productions
-			    - link "Seguir en Instagram":
+			    - paragraph:
+			      - strong: ¿Quiere ver más?
+			      - text: Las imágenes entre bastidores de
+			      - emphasis: Resident Evil
+			      - text: están en nuestro Instagram.
+			    - link "Ver en Instagram":
 			      - /url: ${INSTAGRAM_PROFILE}
-			    - paragraph: "Episodio 5: próximamente"
+			    - paragraph: "Episodio 5: próximamente, en Instagram."
 		`,
 	},
 	{
@@ -167,9 +172,14 @@ const RESIDENT_EVIL = [
 			    - definition: Carlos Droumond
 			    - term: Production
 			    - definition: Droumond Productions
-			    - link "Suivre sur Instagram":
+			    - paragraph:
+			      - strong: Envie d’en voir plus\u00a0?
+			      - text: Les coulisses de
+			      - emphasis: Resident Evil
+			      - text: sont sur notre Instagram.
+			    - link "Voir sur Instagram":
 			      - /url: ${INSTAGRAM_PROFILE}
-			    - paragraph: "Épisode 5\u00a0: bientôt"
+			    - paragraph: "Épisode 5\u00a0: bientôt, sur Instagram."
 		`,
 	},
 ];

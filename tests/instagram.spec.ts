@@ -32,11 +32,37 @@ const BAND = [
 			    - /url: ${PROFILE}
 		`,
 	},
+	{
+		path: '/es/',
+		projects: 'proyectos',
+		snapshot: `
+			- region "${HANDLE}":
+			  - paragraph: Instagram
+			  - heading "${HANDLE}" [level=2]
+			  - paragraph: Episodios, bastidores y lo que estamos grabando ahora.
+			  - link "Seguir en Instagram":
+			    - /url: ${PROFILE}
+		`,
+	},
+	{
+		path: '/fr/',
+		projects: 'projets',
+		snapshot: `
+			- region "${HANDLE}":
+			  - paragraph: Instagram
+			  - heading "${HANDLE}" [level=2]
+			  - paragraph: Épisodes, coulisses et ce que nous tournons en ce moment.
+			  - link "Suivre sur Instagram":
+			    - /url: ${PROFILE}
+		`,
+	},
 ];
 
 const FILMING = [
 	{ path: '/filmagens/', link: 'Veja o nosso trabalho no Instagram' },
 	{ path: '/en/filming/', link: 'See our work on Instagram' },
+	{ path: '/es/rodajes/', link: 'Vea nuestro trabajo en Instagram' },
+	{ path: '/fr/tournages/', link: 'Découvrez notre travail sur Instagram' },
 ];
 
 const band = (page: Page) => page.getByRole('region', { name: HANDLE, exact: true });
