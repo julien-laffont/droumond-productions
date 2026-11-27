@@ -173,7 +173,6 @@ test('/: with less motion, the timecode stays still', async ({ page }) => {
 	await expect(timecode(page)).toHaveText('00:00:00:00');
 });
 
-for (const path of ['/', '/en/', '/es/', '/fr/']) {
 // The brands ask for their logo in one colour and unaltered: on hover only the amber line appears.
 test('/: on hover, an amber line appears under each profile icon, whose colour stays', async ({
 	page,
@@ -221,7 +220,7 @@ test.describe('on a small phone (360 px)', () => {
 	}
 });
 
-for (const path of builtPages().filter((p) => p === '/' || p === '/en/')) {
+for (const path of ['/', '/en/', '/es/', '/fr/']) {
 	const expected = EXPECTED[languageOf(path)];
 
 	test(`${path}: each section link of the header scrolls to its section`, async ({ page }) => {

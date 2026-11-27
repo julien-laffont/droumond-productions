@@ -1,13 +1,11 @@
 ---
 // The Filming service page in one language (/filmagens/, /en/filming/): a clapperboard with the
-// label, the title, a short text and a link to Instagram, then the Contacto block, whose email fills
-// in the subject.
-import { SOCIAL, type Language } from '../config/site';
-// label, the title and a short text, an example on film, and Contacto with the subject filled in.
+// label, the title, a short text and a link to Instagram, an example on film, and Contacto with the
+// subject filled in.
 import { Image } from 'astro:assets';
 import cover from '../assets/filming/blanco-y-negro.jpg';
 import { IMAGE_FILES } from '../config/image-files';
-import { BLANCO_Y_NEGRO_VIDEO, type Language } from '../config/site';
+import { BLANCO_Y_NEGRO_VIDEO, SOCIAL, type Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import Base from '../layouts/Base.astro';
 import Contact from './Contact.astro';

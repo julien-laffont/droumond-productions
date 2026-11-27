@@ -148,6 +148,7 @@ const EFECTO_PLACEBO = [
 			  - 'img "Efecto Placebo: una cinta policial sobre un suelo de tierra y raíces, donde una mano agarra una rama."'
 			  - button "Pausar vídeo"
 			  - link "Ver el teaser completo"
+			  - link "Siga el rodaje en Instagram"
 			  - region "Sinopsis":
 			    - heading "Sinopsis" [level=2]
 			    - img /^Cartel de Efecto Placebo/
@@ -210,6 +211,7 @@ const EFECTO_PLACEBO = [
 			  - 'img "Efecto Placebo\u00a0: un ruban de police sur un sol de terre et de racines, où une main agrippe une branche."'
 			  - button "Mettre la vidéo en pause"
 			  - link "Voir le teaser complet"
+			  - link "Suivez le tournage sur Instagram"
 			  - region "Synopsis":
 			    - heading "Synopsis" [level=2]
 			    - img /^Affiche d’Efecto Placebo/
