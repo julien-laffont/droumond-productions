@@ -11,7 +11,7 @@ const HOMES = [
 		cue: { name: 'Projetos', href: '#projetos' },
 		toggle: { pause: 'Pausar fita', resume: 'Retomar fita' },
 		description:
-			'Droumond Productions, produtora audiovisual de Leiria: séries de ficção, publicidade, vídeos para marcas e videoclipes.',
+			'Droumond Productions, produtora audiovisual de Leiria: séries de ficção, vídeos para artistas e projetos de cinema.',
 		snapshot: `
 			- region "Droumond Productions":
 			  - heading "Droumond Productions" [level=1]
@@ -27,7 +27,7 @@ const HOMES = [
 		cue: { name: 'Projects', href: '#projects' },
 		toggle: { pause: 'Pause film', resume: 'Resume film' },
 		description:
-			'Droumond Productions, an audiovisual production company based in Leiria: fiction series, commercials, brand videos and music videos.',
+			'Droumond Productions, an audiovisual production company based in Leiria: fiction series, videos for artists and film projects.',
 		snapshot: `
 			- region "Droumond Productions":
 			  - heading "Droumond Productions" [level=1]

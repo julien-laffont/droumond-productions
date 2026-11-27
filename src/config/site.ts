@@ -42,6 +42,9 @@ export const SOCIAL = {
 /** Efecto Placebo's full teaser on YouTube: only ever a link, never a player. */
 export const EFECTO_PLACEBO_TEASER = 'https://www.youtube.com/watch?v=Y785Re6Cyvk';
 
+/** Blanco y Negro, Carlos Droumond's music video: the filming page's example, only ever a link. */
+export const BLANCO_Y_NEGRO_VIDEO = 'https://www.youtube.com/watch?v=7VFBRzF9ni8';
+
 /** Resident Evil's episodes on Instagram, in order: links only, never embeds. */
 export const RESIDENT_EVIL_EPISODES = [
 	'https://www.instagram.com/reel/DeXEyA6saok/',

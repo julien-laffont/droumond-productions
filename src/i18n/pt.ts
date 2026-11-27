@@ -93,11 +93,11 @@ export const pt = {
 		/** Julien's sentence: the band's title and the filming page's heading. */
 		title: 'Quer a Droumond Productions para gravação?',
 		/** The band's sentence. */
-		line: 'Publicidade, vídeos para marcas e videoclipes, filmados com a equipa e o material das nossas séries.',
+		line: 'Vídeos para artistas e projetos de cinema, filmados com a equipa e o material das nossas séries.',
 		/** The band's button, to the filming page. */
 		button: 'Ver o serviço',
 		/** The filming page's short text: what the service is and who it is for. */
-		text: 'Filmamos publicidade, vídeos para marcas e videoclipes na região de Leiria, com a equipa e o material com que fazemos as nossas séries. Diga-nos o que quer gravar, onde e quando, e respondemos com o que podemos fazer.',
+		text: 'Filmamos videoclipes e outros vídeos para artistas, e projetos de cinema, na região de Leiria, com a equipa e o material com que fazemos as nossas séries. Diga-nos o que quer gravar, onde e quando, e respondemos com o que podemos fazer.',
 		/** The labels of the clapperboard's fields: decorative, hidden from screen readers. */
 		slate: { production: 'Prod.', scene: 'Cena', take: 'Take', date: 'Data' },
 		/** The subject of the email written from the filming page (#7). */
@@ -105,7 +105,12 @@ export const pt = {
 		/** The filming page's <title> and description. */
 		pageTitle: 'Serviço de filmagens · Droumond Productions',
 		description:
-			'Serviço de filmagens da Droumond Productions em Leiria: publicidade, vídeos para marcas e videoclipes.',
+			'Serviço de filmagens da Droumond Productions em Leiria: vídeos para artistas e projetos de cinema.',
+		/** The example under the filming page's clapperboard: its title, and the line under its link. */
+		example: {
+			title: 'Exemplo',
+			note: 'Videoclipe do Carlos Droumond. Abre no YouTube, num separador novo.',
+		},
 	},
 	/** The page of Efecto Placebo; its texts are in src/content/efecto-placebo/. */
 	efectoPlacebo: {
@@ -131,7 +136,7 @@ export const pt = {
 	home: {
 		title: 'Droumond Productions',
 		description:
-			'Droumond Productions, produtora audiovisual de Leiria: séries de ficção, publicidade, vídeos para marcas e videoclipes.',
+			'Droumond Productions, produtora audiovisual de Leiria: séries de ficção, vídeos para artistas e projetos de cinema.',
 	},
 };
 

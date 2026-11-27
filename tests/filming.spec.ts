@@ -3,6 +3,13 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { openExisting } from './pages';
 
+/** The example on the filming page: Blanco y Negro, Carlos Droumond's music video. */
+const EXAMPLE = {
+	link: 'Blanco y Negro',
+	url: 'https://www.youtube.com/watch?v=7VFBRzF9ni8',
+	codes: ['▸ 01 · Blanco y Negro', '01A'],
+};
+
 const FILMING = [
 	{
 		home: '/',
@@ -10,18 +17,22 @@ const FILMING = [
 		contact: 'contacto',
 		label: 'Serviço de filmagens',
 		title: 'Quer a Droumond Productions para gravação?',
-		line: 'Publicidade, vídeos para marcas e videoclipes, filmados com a equipa e o material das nossas séries.',
+		line: 'Vídeos para artistas e projetos de cinema, filmados com a equipa e o material das nossas séries.',
 		button: 'Ver o serviço',
-		text: 'Filmamos publicidade, vídeos para marcas e videoclipes na região de Leiria, com a equipa e o material com que fazemos as nossas séries. Diga-nos o que quer gravar, onde e quando, e respondemos com o que podemos fazer.',
+		text: 'Filmamos videoclipes e outros vídeos para artistas, e projetos de cinema, na região de Leiria, com a equipa e o material com que fazemos as nossas séries. Diga-nos o que quer gravar, onde e quando, e respondemos com o que podemos fazer.',
 		pageTitle: 'Serviço de filmagens · Droumond Productions',
 		description:
-			'Serviço de filmagens da Droumond Productions em Leiria: publicidade, vídeos para marcas e videoclipes.',
+			'Serviço de filmagens da Droumond Productions em Leiria: vídeos para artistas e projetos de cinema.',
 		fields: [
 			['Prod.', 'Droumond Productions'],
 			['Cena', '01'],
 			['Take', '01'],
 			['Data', '26.02.2026'],
 		],
+		example: {
+			title: 'Exemplo',
+			note: 'Videoclipe do Carlos Droumond. Abre no YouTube, num separador novo.',
+		},
 	},
 	{
 		home: '/en/',
@@ -29,18 +40,22 @@ const FILMING = [
 		contact: 'contact',
 		label: 'Filming service',
 		title: 'Want Droumond Productions on your shoot?',
-		line: 'Commercials, brand videos and music videos, shot with the same crew and equipment as our series.',
+		line: 'Videos for artists and film projects, shot with the same crew and equipment as our series.',
 		button: 'About the service',
-		text: 'We shoot commercials, brand videos and music videos in the Leiria region, with the same crew and equipment we use for our series. Tell us what you want to film, where and when, and we will tell you what we can do.',
+		text: 'We shoot music videos and other videos for artists, and film projects, in the Leiria region, with the same crew and equipment we use for our series. Tell us what you want to film, where and when, and we will tell you what we can do.',
 		pageTitle: 'Filming service · Droumond Productions',
 		description:
-			"Droumond Productions' filming service in Leiria: commercials, brand videos and music videos.",
+			"Droumond Productions' filming service in Leiria: videos for artists and film projects.",
 		fields: [
 			['Prod.', 'Droumond Productions'],
 			['Scene', '01'],
 			['Take', '01'],
 			['Date', '26.02.2026'],
 		],
+		example: {
+			title: 'Example',
+			note: 'Music video by Carlos Droumond. Opens on YouTube, in a new tab.',
+		},
 	},
 	{
 		home: '/es/',
@@ -92,6 +107,10 @@ const filmingBand = (page: Page) =>
 
 /** The top of the filming page: the clapperboard. */
 const pageTop = (page: Page) => page.getByRole('main').locator(':scope > :first-child');
+
+/** The example under the filming page's clapperboard, by its title. */
+const exampleSection = (page: Page, title: string) =>
+	page.getByRole('main').getByRole('region', { name: title, exact: true });
 
 /** The length, in milliseconds, of each animation running on the clapperboard's arm. */
 const armAnimationDurations = (block: Locator) =>
@@ -168,6 +187,66 @@ for (const expected of FILMING) {
 		);
 		await expectSlateFields(top, expected.fields);
 	});
+
+	test(`${expected.page}: under the clapperboard, an example opens Blanco y Negro on YouTube in a new tab, and says so`, async ({
+		page,
+	}) => {
+		await openExisting(page, expected.page);
+		const example = exampleSection(page, expected.example.title);
+		await expect(example).toMatchAriaSnapshot(`
+			- region "${expected.example.title}":
+			  - heading "${expected.example.title}" [level=2]
+			  - link "${EXAMPLE.link}":
+			    - /url: ${EXAMPLE.url}
+			  - paragraph: ${expected.example.note}
+		`);
+		const link = example.getByRole('link', { name: EXAMPLE.link, exact: true });
+		await expect(link).toHaveAttribute('target', '_blank');
+		await expect(link).toHaveAttribute('rel', 'noopener');
+		await expect(link).toHaveAccessibleDescription(expected.example.note);
+		// Between the clapperboard and Contacto.
+		expect(
+			await example.evaluate((section) => [
+				section.previousElementSibling?.querySelector('h1') != null,
+				section.nextElementSibling?.id,
+			]),
+		).toEqual([true, expected.contact]);
+	});
+
+	test(`${expected.page}: the example's cover is on film, with its edge codes hidden from screen readers`, async ({
+		page,
+	}) => {
+		await openExisting(page, expected.page);
+		const example = exampleSection(page, expected.example.title);
+		await expect(example.locator('img')).toHaveAttribute('alt', '');
+		for (const text of EXAMPLE.codes) {
+			const code = example.getByText(text, { exact: true });
+			await expect(code).toBeVisible();
+			expect(await code.evaluate((el) => el.closest('[aria-hidden="true"]') !== null)).toBe(true);
+		}
+	});
+
+	test(`${expected.page}: the cover comes from the site, and nothing from another site`, async ({
+		page,
+		baseURL,
+	}) => {
+		const otherSites: string[] = [];
+		page.on('request', (request) => {
+			if (new URL(request.url()).origin !== baseURL) otherSites.push(request.url());
+		});
+		await openExisting(page, expected.page);
+		const cover = exampleSection(page, expected.example.title).locator('img');
+		await cover.scrollIntoViewIfNeeded();
+		await expect
+			.poll(() => cover.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0))
+			.toBe(true);
+		const source = await cover.evaluate((img: HTMLImageElement) => img.currentSrc);
+		expect(new URL(source).origin).toBe(baseURL);
+		expect(((await cover.getAttribute('srcset')) ?? '').split(',').length).toBeGreaterThan(1);
+		await page.getByRole('contentinfo').scrollIntoViewIfNeeded();
+		await page.waitForLoadState('networkidle');
+		expect(otherSites).toEqual([]);
+	});
 }
 
 test('/: the clapperboard claps in 0.5 s on hover, and when its button gets the focus', async ({
@@ -218,6 +297,25 @@ for (const width of [390, 768, 1024, 1440]) {
 			const line = (await band.boundingBox())!.y;
 			const arm = (await band.locator('.arm').boundingBox())!.y;
 			expect(arm - line).toBeGreaterThanOrEqual(4);
+		});
+
+		test('/filmagens/: the example is as wide as the clapperboard, its cover whole', async ({
+			page,
+		}) => {
+			await openExisting(page, '/filmagens/');
+			const slate = (await pageTop(page).locator('.slate').boundingBox())!;
+			const section = exampleSection(page, FILMING[0].example.title);
+			const box = (await section.getByRole('link').boundingBox())!;
+			expect(Math.abs(box.x - slate.x)).toBeLessThan(1);
+			expect(Math.abs(box.width - slate.width)).toBeLessThan(1);
+			// The frame keeps the picture's shape: nothing is cut off.
+			const shapes = await section
+				.locator('img')
+				.evaluate((img: HTMLImageElement) => [
+					img.naturalWidth / img.naturalHeight,
+					img.clientWidth / img.clientHeight,
+				]);
+			expect(shapes[1]).toBeCloseTo(shapes[0], 1);
 		});
 
 		test('/filmagens/: the open arm stays under the header', async ({ page }) => {
