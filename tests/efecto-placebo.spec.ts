@@ -1,7 +1,7 @@
 // The page of Efecto Placebo: a hosted excerpt of the teaser, muted and looping, the link to the
 // full teaser on YouTube, the synopsis next to the poster, the credits and the Characters.
 import { expect, test, type Page } from '@playwright/test';
-import { inEachBuild, languageOf, openExisting } from './pages';
+import { openExisting } from './pages';
 
 const PAGE = '/efecto-placebo/';
 const TEASER_ON_YOUTUBE = 'https://www.youtube.com/watch?v=Y785Re6Cyvk';
@@ -134,23 +134,19 @@ const EFECTO_PLACEBO = [
 	},
 ];
 
-inEachBuild((build) => {
-	for (const expected of EFECTO_PLACEBO.filter(
-		({ path }) => build.english || languageOf(path) === 'pt',
-	)) {
-		test(`${expected.path}: the title, the small line, the excerpt, the synopsis with the poster and credits, the Characters`, async ({
-			page,
-		}) => {
-			await openExisting(page, expected.path);
-			await expect(page).toHaveTitle(expected.pageTitle);
-			await expect(page.locator('meta[name="description"]')).toHaveAttribute(
-				'content',
-				expected.description,
-			);
-			await expect(page.getByRole('main')).toMatchAriaSnapshot(expected.snapshot);
-		});
-	}
-});
+for (const expected of EFECTO_PLACEBO) {
+	test(`${expected.path}: the title, the small line, the excerpt, the synopsis with the poster and credits, the Characters`, async ({
+		page,
+	}) => {
+		await openExisting(page, expected.path);
+		await expect(page).toHaveTitle(expected.pageTitle);
+		await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+			'content',
+			expected.description,
+		);
+		await expect(page.getByRole('main')).toMatchAriaSnapshot(expected.snapshot);
+	});
+}
 
 const excerpt = (page: Page) => page.locator('main video');
 const firstFrame = (page: Page) => page.getByRole('main').getByRole('img').first();
@@ -171,123 +167,121 @@ function recordVideos(page: Page) {
 }
 
 // The behaviour, checked on the Portuguese page.
-inEachBuild(() => {
-	test.describe('the excerpt', () => {
-		test(`${PAGE}: waits for the page to load, then plays muted, looping and inline, from the site, over its first frame`, async ({
-			page,
-			baseURL,
-			browserName,
-		}) => {
-			// Notes the page's state when a script gives the video its source.
-			await page.addInitScript(() => {
-				const states: string[] = [];
-				Object.assign(window, { sourceStates: states });
-				new MutationObserver(() => states.push(document.readyState)).observe(document, {
-					subtree: true,
-					attributeFilter: ['src'],
-				});
-			});
-			await page.goto(PAGE);
-			await expect.poll(() => playing(page)).toBe(true);
-			const states = await page.evaluate(
-				() => (window as unknown as { sourceStates: string[] }).sourceStates,
-			);
-			expect(states).toEqual(['complete']);
-
-			await expect(excerpt(page)).toBeVisible();
-			const video = await excerpt(page).evaluate((video: HTMLVideoElement) => ({
-				origin: new URL(video.currentSrc).origin,
-				muted: video.muted,
-				loop: video.loop,
-				inline: video.playsInline,
-				hidden: video.getAttribute('aria-hidden'),
-			}));
-			expect(video).toEqual({
-				origin: baseURL,
-				muted: true,
-				loop: true,
-				inline: true,
-				hidden: 'true',
-			});
-			expect(await excerpt(page).boundingBox()).toEqual(await firstFrame(page).boundingBox());
-			// Its frames pass. Not checked in WebKit: on Linux its player sometimes stalls under load.
-			if (browserName === 'chromium') {
-				const time = () => excerpt(page).evaluate((video: HTMLVideoElement) => video.currentTime);
-				const start = await time();
-				await expect.poll(time).toBeGreaterThan(start + 0.5);
-			}
-		});
-
-		test(`${PAGE}: the first frame comes from the site itself, in several sizes`, async ({
-			page,
-			baseURL,
-		}) => {
-			await page.goto(PAGE);
-			const src = await firstFrame(page).evaluate((img: HTMLImageElement) => img.currentSrc);
-			expect(new URL(src).origin).toBe(baseURL);
-			const srcset = (await firstFrame(page).getAttribute('srcset')) ?? '';
-			expect(srcset.split(',').length, srcset).toBeGreaterThan(1);
-		});
-
-		test(`${PAGE}: "Pausar vídeo" stops the excerpt until "Retomar vídeo"`, async ({ page }) => {
-			await page.goto(PAGE);
-			await expect.poll(() => playing(page)).toBe(true);
-
-			await pauseButton(page).click();
-			await expect.poll(() => playing(page)).toBe(false);
-			await page.waitForTimeout(300);
-			expect(await playing(page)).toBe(false);
-
-			await page.getByRole('button', { name: 'Retomar vídeo' }).click();
-			await expect.poll(() => playing(page)).toBe(true);
-		});
-
-		test.describe('with less motion', () => {
-			test(`${PAGE}: only the first frame: no excerpt loads, no button`, async ({ page }) => {
-				await page.emulateMedia({ reducedMotion: 'reduce' });
-				const videos = recordVideos(page);
-				await page.goto(PAGE);
-				await expect(firstFrame(page)).toBeVisible();
-				await expect(page.getByRole('main').getByRole('button')).toBeHidden();
-				await page.waitForLoadState('networkidle');
-				expect(videos).toEqual([]);
-				await expect(excerpt(page)).toBeHidden();
-			});
-
-			test(`${PAGE}: asked with the page open, the excerpt stops and its first frame returns`, async ({
-				page,
-			}) => {
-				await page.goto(PAGE);
-				await expect.poll(() => playing(page)).toBe(true);
-				await page.emulateMedia({ reducedMotion: 'reduce' });
-				await expect.poll(() => playing(page)).toBe(false);
-				await expect(excerpt(page)).toBeHidden();
-				await expect(firstFrame(page)).toBeVisible();
-				await expect(page.getByRole('main').getByRole('button')).toBeHidden();
-			});
-		});
-	});
-
-	test(`${PAGE}: asks nothing of another site, excerpt included`, async ({ page, baseURL }) => {
-		const otherSites: string[] = [];
-		page.on('request', (request) => {
-			if (new URL(request.url()).origin !== baseURL) otherSites.push(request.url());
-		});
-		const videos = recordVideos(page);
-		await page.goto(PAGE);
-		await expect.poll(() => videos.length).toBe(1);
-		await page.getByRole('contentinfo').scrollIntoViewIfNeeded();
-		await page.waitForLoadState('networkidle');
-		expect(otherSites).toEqual([]);
-	});
-
-	test(`${PAGE}: "Ver o teaser completo" opens the teaser on YouTube in a new tab`, async ({
+test.describe('the excerpt', () => {
+	test(`${PAGE}: waits for the page to load, then plays muted, looping and inline, from the site, over its first frame`, async ({
 		page,
+		baseURL,
+		browserName,
+	}) => {
+		// Notes the page's state when a script gives the video its source.
+		await page.addInitScript(() => {
+			const states: string[] = [];
+			Object.assign(window, { sourceStates: states });
+			new MutationObserver(() => states.push(document.readyState)).observe(document, {
+				subtree: true,
+				attributeFilter: ['src'],
+			});
+		});
+		await page.goto(PAGE);
+		await expect.poll(() => playing(page)).toBe(true);
+		const states = await page.evaluate(
+			() => (window as unknown as { sourceStates: string[] }).sourceStates,
+		);
+		expect(states).toEqual(['complete']);
+
+		await expect(excerpt(page)).toBeVisible();
+		const video = await excerpt(page).evaluate((video: HTMLVideoElement) => ({
+			origin: new URL(video.currentSrc).origin,
+			muted: video.muted,
+			loop: video.loop,
+			inline: video.playsInline,
+			hidden: video.getAttribute('aria-hidden'),
+		}));
+		expect(video).toEqual({
+			origin: baseURL,
+			muted: true,
+			loop: true,
+			inline: true,
+			hidden: 'true',
+		});
+		expect(await excerpt(page).boundingBox()).toEqual(await firstFrame(page).boundingBox());
+		// Its frames pass. Not checked in WebKit: on Linux its player sometimes stalls under load.
+		if (browserName === 'chromium') {
+			const time = () => excerpt(page).evaluate((video: HTMLVideoElement) => video.currentTime);
+			const start = await time();
+			await expect.poll(time).toBeGreaterThan(start + 0.5);
+		}
+	});
+
+	test(`${PAGE}: the first frame comes from the site itself, in several sizes`, async ({
+		page,
+		baseURL,
 	}) => {
 		await page.goto(PAGE);
-		const link = page.getByRole('link', { name: 'Ver o teaser completo', exact: true });
-		await expect(link).toHaveAttribute('href', TEASER_ON_YOUTUBE);
-		await expect(link).toHaveAttribute('target', '_blank');
-		await expect(link).toHaveAttribute('rel', 'noopener');
+		const src = await firstFrame(page).evaluate((img: HTMLImageElement) => img.currentSrc);
+		expect(new URL(src).origin).toBe(baseURL);
+		const srcset = (await firstFrame(page).getAttribute('srcset')) ?? '';
+		expect(srcset.split(',').length, srcset).toBeGreaterThan(1);
 	});
+
+	test(`${PAGE}: "Pausar vídeo" stops the excerpt until "Retomar vídeo"`, async ({ page }) => {
+		await page.goto(PAGE);
+		await expect.poll(() => playing(page)).toBe(true);
+
+		await pauseButton(page).click();
+		await expect.poll(() => playing(page)).toBe(false);
+		await page.waitForTimeout(300);
+		expect(await playing(page)).toBe(false);
+
+		await page.getByRole('button', { name: 'Retomar vídeo' }).click();
+		await expect.poll(() => playing(page)).toBe(true);
+	});
+
+	test.describe('with less motion', () => {
+		test(`${PAGE}: only the first frame: no excerpt loads, no button`, async ({ page }) => {
+			await page.emulateMedia({ reducedMotion: 'reduce' });
+			const videos = recordVideos(page);
+			await page.goto(PAGE);
+			await expect(firstFrame(page)).toBeVisible();
+			await expect(page.getByRole('main').getByRole('button')).toBeHidden();
+			await page.waitForLoadState('networkidle');
+			expect(videos).toEqual([]);
+			await expect(excerpt(page)).toBeHidden();
+		});
+
+		test(`${PAGE}: asked with the page open, the excerpt stops and its first frame returns`, async ({
+			page,
+		}) => {
+			await page.goto(PAGE);
+			await expect.poll(() => playing(page)).toBe(true);
+			await page.emulateMedia({ reducedMotion: 'reduce' });
+			await expect.poll(() => playing(page)).toBe(false);
+			await expect(excerpt(page)).toBeHidden();
+			await expect(firstFrame(page)).toBeVisible();
+			await expect(page.getByRole('main').getByRole('button')).toBeHidden();
+		});
+	});
+});
+
+test(`${PAGE}: asks nothing of another site, excerpt included`, async ({ page, baseURL }) => {
+	const otherSites: string[] = [];
+	page.on('request', (request) => {
+		if (new URL(request.url()).origin !== baseURL) otherSites.push(request.url());
+	});
+	const videos = recordVideos(page);
+	await page.goto(PAGE);
+	await expect.poll(() => videos.length).toBe(1);
+	await page.getByRole('contentinfo').scrollIntoViewIfNeeded();
+	await page.waitForLoadState('networkidle');
+	expect(otherSites).toEqual([]);
+});
+
+test(`${PAGE}: "Ver o teaser completo" opens the teaser on YouTube in a new tab`, async ({
+	page,
+}) => {
+	await page.goto(PAGE);
+	const link = page.getByRole('link', { name: 'Ver o teaser completo', exact: true });
+	await expect(link).toHaveAttribute('href', TEASER_ON_YOUTUBE);
+	await expect(link).toHaveAttribute('target', '_blank');
+	await expect(link).toHaveAttribute('rel', 'noopener');
 });

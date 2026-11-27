@@ -1,5 +1,5 @@
 // The site's settings in one place: the contact email, the company's legal data and social
-// profiles, the address, the languages and which of them this build publishes.
+// profiles, the address and the languages.
 
 /**
  * The contact email: the footer, the Contacto block and the Privacy Policy all read it here, so
@@ -51,8 +51,8 @@ export const RESIDENT_EVIL_EPISODES = [
 ];
 
 /**
- * The site's address, without a final slash. The hreflang links use it (only when English is
- * published), and the Publishing confirmation (`npm run confirm`) checks the site there.
+ * The site's address, without a final slash. The hreflang links use it, and the Publishing
+ * confirmation (`npm run confirm`) checks the site there.
  */
 export const SITE = 'https://droumondproductions.com';
 
@@ -67,13 +67,3 @@ export const HTML_CODES: Record<Language, string> = { pt: 'pt-PT', en: 'en' };
 
 /** Each language's name, written in that language, as the language button shows it. */
 export const LANGUAGE_NAMES: Record<Language, string> = { pt: 'Português', en: 'English' };
-
-/** English is only published once its texts are translated (#18): then this becomes `true`. */
-const ENGLISH_PUBLISHED = false;
-
-/**
- * The languages this build generates: only they get pages. The test build (`ENGLISH=1`, see
- * `npm run build:english`) adds English, to check now what only exists with both languages.
- */
-export const PUBLISHED_LANGUAGES: readonly Language[] =
-	ENGLISH_PUBLISHED || process.env.ENGLISH === '1' ? LANGUAGES : ['pt'];

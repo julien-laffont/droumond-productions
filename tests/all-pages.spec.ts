@@ -2,7 +2,7 @@
 // A new page is included automatically, because the list comes from the build folder.
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
-import { inEachBuild, pagesOf } from './pages';
+import { builtPages } from './pages';
 
 const WCAG_LEVELS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag22aa'];
 
@@ -23,25 +23,20 @@ async function atRest(page: Page) {
 	});
 }
 
-inEachBuild((build) => {
-	for (const path of pagesOf(build)) {
-		test(`${path}: axe finds no A or AA violations`, async ({ page }) => {
-			await page.goto(path);
-			await atRest(page);
-			const { violations } = await new AxeBuilder({ page }).withTags(WCAG_LEVELS).analyze();
-			const failures = violations.map(
-				(v) => `${v.id}: ${v.nodes.map((node) => node.target.join(' ')).join(' | ')}`,
-			);
-			expect(failures).toEqual([]);
-		});
+for (const path of builtPages()) {
+	test(`${path}: axe finds no A or AA violations`, async ({ page }) => {
+		await page.goto(path);
+		await atRest(page);
+		const { violations } = await new AxeBuilder({ page }).withTags(WCAG_LEVELS).analyze();
+		const failures = violations.map(
+			(v) => `${v.id}: ${v.nodes.map((node) => node.target.join(' ')).join(' | ')}`,
+		);
+		expect(failures).toEqual([]);
+	});
 
-		// The Publishing confirmation (tests/publish/) compares it with the commit it published.
-		test(`${path}: names the commit it was built from`, async ({ page }) => {
-			await page.goto(path);
-			await expect(page.locator('meta[name="commit"]')).toHaveAttribute(
-				'content',
-				/^[0-9a-f]{40}$/,
-			);
-		});
-	}
-});
+	// The Publishing confirmation (tests/publish/) compares it with the commit it published.
+	test(`${path}: names the commit it was built from`, async ({ page }) => {
+		await page.goto(path);
+		await expect(page.locator('meta[name="commit"]')).toHaveAttribute('content', /^[0-9a-f]{40}$/);
+	});
+}

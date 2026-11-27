@@ -18,7 +18,7 @@ Documento de direção inicial. Última atualização: 2026-11-25. Tudo o que es
 - Mostrar o trabalho da empresa e ganhar audiência.
 - Métrica de sucesso: contactos de clientes. Conta toda a mensagem real (não spam) que chega pelo site, venha de quem vier; quem recebe os emails conta-os à mão, fora do site (ver issue #7).
 - Público: adultos, sobretudo em Portugal, e também pessoas de outras nacionalidades.
-- Idiomas do site: português de Portugal (principal) e inglês. As páginas em inglês só são publicadas quando os textos estiverem traduzidos. A confirmar com o Julien (ver issue #6).
+- Idiomas do site: português de Portugal (principal) e inglês (`/en/`), os dois publicados.
 
 ## Âmbito
 

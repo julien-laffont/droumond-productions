@@ -1,7 +1,7 @@
 // The page of Resident Evil: the four episodes as covers that open each reel on Instagram, the
 // text beside them, the credits, and the link to follow the profile.
 import { expect, test, type Page } from '@playwright/test';
-import { inEachBuild, languageOf, openExisting } from './pages';
+import { openExisting } from './pages';
 
 const PAGE = '/resident-evil/';
 const INSTAGRAM_PROFILE = 'https://www.instagram.com/droumond_productions';
@@ -90,102 +90,94 @@ const RESIDENT_EVIL = [
 	},
 ];
 
-inEachBuild((build) => {
-	for (const expected of RESIDENT_EVIL.filter(
-		({ path }) => build.english || languageOf(path) === 'pt',
-	)) {
-		test(`${expected.path}: the title, the small line, the four episodes, the text, the credits, the links`, async ({
-			page,
-		}) => {
-			await openExisting(page, expected.path);
-			await expect(page).toHaveTitle('Resident Evil · Droumond Productions');
-			await expect(page.locator('meta[name="description"]')).toHaveAttribute(
-				'content',
-				expected.description,
-			);
-			await expect(page.getByRole('main')).toMatchAriaSnapshot(expected.snapshot);
-		});
-	}
-});
+for (const expected of RESIDENT_EVIL) {
+	test(`${expected.path}: the title, the small line, the four episodes, the text, the credits, the links`, async ({
+		page,
+	}) => {
+		await openExisting(page, expected.path);
+		await expect(page).toHaveTitle('Resident Evil · Droumond Productions');
+		await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+			'content',
+			expected.description,
+		);
+		await expect(page.getByRole('main')).toMatchAriaSnapshot(expected.snapshot);
+	});
+}
 
 const episodes = (page: Page) => page.getByRole('main').getByRole('listitem').getByRole('link');
 const covers = (page: Page) => page.getByRole('main').getByRole('listitem').locator('img');
 
 // The behaviour, checked on the Portuguese page.
-inEachBuild(() => {
-	test(`${PAGE}: each episode opens its reel on Instagram in a new tab, and says so`, async ({
-		page,
-	}) => {
-		await page.goto(PAGE);
-		await expect(episodes(page)).toHaveCount(REELS.length);
-		for (const [index, reel] of REELS.entries()) {
-			const episode = episodes(page).nth(index);
-			await expect(episode).toHaveAttribute('href', reel);
-			await expect(episode).toHaveAttribute('target', '_blank');
-			await expect(episode).toHaveAttribute('rel', 'noopener');
-			await expect(episode).toHaveAccessibleDescription(NOTICE);
-		}
+test(`${PAGE}: each episode opens its reel on Instagram in a new tab, and says so`, async ({
+	page,
+}) => {
+	await page.goto(PAGE);
+	await expect(episodes(page)).toHaveCount(REELS.length);
+	for (const [index, reel] of REELS.entries()) {
+		const episode = episodes(page).nth(index);
+		await expect(episode).toHaveAttribute('href', reel);
+		await expect(episode).toHaveAttribute('target', '_blank');
+		await expect(episode).toHaveAttribute('rel', 'noopener');
+		await expect(episode).toHaveAccessibleDescription(NOTICE);
+	}
+});
+
+test(`${PAGE}: the covers come from the site, and nothing from another site and no video is asked`, async ({
+	page,
+	baseURL,
+}) => {
+	const otherSites: string[] = [];
+	const videos: string[] = [];
+	page.on('request', (request) => {
+		const url = new URL(request.url());
+		if (url.origin !== baseURL) otherSites.push(request.url());
+		if (url.pathname.endsWith('.mp4')) videos.push(request.url());
 	});
+	await page.goto(PAGE);
+	await page.getByRole('contentinfo').scrollIntoViewIfNeeded();
+	await page.waitForLoadState('networkidle');
+	await expect(covers(page)).toHaveCount(REELS.length);
+	for (const cover of await covers(page).all()) {
+		await expect(cover).toHaveAttribute('alt', '');
+		const { origin, ratio } = await cover.evaluate((image: HTMLImageElement) => ({
+			origin: image.complete && image.naturalWidth > 0 ? new URL(image.currentSrc).origin : '',
+			ratio: image.getBoundingClientRect().width / image.getBoundingClientRect().height,
+		}));
+		expect(origin).toBe(baseURL);
+		expect(ratio).toBeCloseTo(9 / 16, 1);
+	}
+	await expect(page.locator('main video')).toHaveCount(0);
+	expect(videos).toEqual([]);
+	expect(otherSites).toEqual([]);
+});
 
-	test(`${PAGE}: the covers come from the site, and nothing from another site and no video is asked`, async ({
-		page,
-		baseURL,
-	}) => {
-		const otherSites: string[] = [];
-		const videos: string[] = [];
-		page.on('request', (request) => {
-			const url = new URL(request.url());
-			if (url.origin !== baseURL) otherSites.push(request.url());
-			if (url.pathname.endsWith('.mp4')) videos.push(request.url());
-		});
-		await page.goto(PAGE);
-		await page.getByRole('contentinfo').scrollIntoViewIfNeeded();
-		await page.waitForLoadState('networkidle');
-		await expect(covers(page)).toHaveCount(REELS.length);
-		for (const cover of await covers(page).all()) {
-			await expect(cover).toHaveAttribute('alt', '');
-			const { origin, ratio } = await cover.evaluate((image: HTMLImageElement) => ({
-				origin: image.complete && image.naturalWidth > 0 ? new URL(image.currentSrc).origin : '',
-				ratio: image.getBoundingClientRect().width / image.getBoundingClientRect().height,
-			}));
-			expect(origin).toBe(baseURL);
-			expect(ratio).toBeCloseTo(9 / 16, 1);
-		}
-		await expect(page.locator('main video')).toHaveCount(0);
-		expect(videos).toEqual([]);
-		expect(otherSites).toEqual([]);
+test(`${PAGE}: "Seguir no Instagram" opens the profile in a new tab`, async ({ page }) => {
+	await page.goto(PAGE);
+	const link = page.getByRole('link', { name: 'Seguir no Instagram', exact: true });
+	await expect(link).toHaveAttribute('href', INSTAGRAM_PROFILE);
+	await expect(link).toHaveAttribute('target', '_blank');
+	await expect(link).toHaveAttribute('rel', 'noopener');
+});
+
+test.describe('on a desktop (1440 px)', () => {
+	test.use({ viewport: { width: 1440, height: 900 } });
+
+	test(`${PAGE}: the episodes two by two on the left, the text on the right`, async ({ page }) => {
+		const { coverBoxes, credits, overflow } = await openBoxes(page);
+		expectTwoByTwo(coverBoxes);
+		expect(credits.x).toBeGreaterThan(coverBoxes[1].x + coverBoxes[1].width);
+		expect(overflow).toBe(0);
 	});
+});
 
-	test(`${PAGE}: "Seguir no Instagram" opens the profile in a new tab`, async ({ page }) => {
-		await page.goto(PAGE);
-		const link = page.getByRole('link', { name: 'Seguir no Instagram', exact: true });
-		await expect(link).toHaveAttribute('href', INSTAGRAM_PROFILE);
-		await expect(link).toHaveAttribute('target', '_blank');
-		await expect(link).toHaveAttribute('rel', 'noopener');
-	});
+test.describe('on a phone (390 px)', () => {
+	test.use({ viewport: { width: 390, height: 844 } });
 
-	test.describe('on a desktop (1440 px)', () => {
-		test.use({ viewport: { width: 1440, height: 900 } });
-
-		test(`${PAGE}: the episodes two by two on the left, the text on the right`, async ({
-			page,
-		}) => {
-			const { coverBoxes, credits, overflow } = await openBoxes(page);
-			expectTwoByTwo(coverBoxes);
-			expect(credits.x).toBeGreaterThan(coverBoxes[1].x + coverBoxes[1].width);
-			expect(overflow).toBe(0);
-		});
-	});
-
-	test.describe('on a phone (390 px)', () => {
-		test.use({ viewport: { width: 390, height: 844 } });
-
-		test(`${PAGE}: the episodes two by two, the text below`, async ({ page }) => {
-			const { coverBoxes, credits, overflow } = await openBoxes(page);
-			expectTwoByTwo(coverBoxes);
-			expect(credits.y).toBeGreaterThan(coverBoxes[3].y + coverBoxes[3].height);
-			expect(overflow).toBe(0);
-		});
+	test(`${PAGE}: the episodes two by two, the text below`, async ({ page }) => {
+		const { coverBoxes, credits, overflow } = await openBoxes(page);
+		expectTwoByTwo(coverBoxes);
+		expect(credits.y).toBeGreaterThan(coverBoxes[3].y + coverBoxes[3].height);
+		expect(overflow).toBe(0);
 	});
 });
 

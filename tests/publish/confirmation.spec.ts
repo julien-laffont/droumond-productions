@@ -1,7 +1,6 @@
 // The confirmation after each Publishing: the published site is this build.
 // Runs with `npm run confirm`, after `npm run build`, against SITE (or PUBLISHED_URL).
 import { expect, test } from '@playwright/test';
-import { LANGUAGES, PREFIXES, PUBLISHED_LANGUAGES } from '../../src/config/site';
 import { commit } from '../../src/lib/commit';
 import { builtPages, openExisting } from '../pages';
 
@@ -12,13 +11,9 @@ for (const path of builtPages()) {
 	});
 }
 
-// A language that is not published has no folder on the host: .htaccess answers with the 404 page.
-test('unpublished languages answer 404', async ({ request }) => {
-	for (const language of LANGUAGES) {
-		if (PUBLISHED_LANGUAGES.includes(language)) continue;
-		const prefix = PREFIXES[language];
-		expect((await request.get(prefix, { maxRedirects: 0 })).status(), prefix).toBe(404);
-	}
+// An address with no page: .htaccess answers with the 404 page.
+test('a missing address answers 404', async ({ request }) => {
+	expect((await request.get('/nao-existe/', { maxRedirects: 0 })).status()).toBe(404);
 });
 
 test('HTTP redirects to HTTPS with a 301', async ({ request, baseURL }) => {
