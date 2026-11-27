@@ -1,5 +1,5 @@
 // The page of Resident Evil: the four episodes as covers that open each reel on Instagram, the
-// text beside them, the credits, and the link to follow the profile.
+// text beside them, the credits, and the invitation to the profile's behind the scenes.
 import { expect, test, type Page } from '@playwright/test';
 import { openExisting } from './pages';
 
@@ -47,9 +47,14 @@ const RESIDENT_EVIL = [
 			    - definition: Carlos Droumond
 			    - term: Produção
 			    - definition: Droumond Productions
-			    - link "Seguir no Instagram":
+			    - paragraph:
+			      - strong: Quer ver mais?
+			      - text: Os bastidores de
+			      - emphasis: Resident Evil
+			      - text: estão no nosso Instagram.
+			    - link "Ver no Instagram":
 			      - /url: ${INSTAGRAM_PROFILE}
-			    - paragraph: "5.º episódio: em breve"
+			    - paragraph: "5.º episódio: em breve, no Instagram."
 		`,
 	},
 	{
@@ -83,9 +88,14 @@ const RESIDENT_EVIL = [
 			    - definition: Carlos Droumond
 			    - term: Production
 			    - definition: Droumond Productions
-			    - link "Follow on Instagram":
+			    - paragraph:
+			      - strong: Want to see more?
+			      - text: Behind-the-scenes footage of
+			      - emphasis: Resident Evil
+			      - text: is on our Instagram.
+			    - link "View on Instagram":
 			      - /url: ${INSTAGRAM_PROFILE}
-			    - paragraph: "Episode 5: coming soon"
+			    - paragraph: "Episode 5: coming soon, on Instagram."
 		`,
 	},
 ];
@@ -151,9 +161,9 @@ test(`${PAGE}: the covers come from the site, and nothing from another site and 
 	expect(otherSites).toEqual([]);
 });
 
-test(`${PAGE}: "Seguir no Instagram" opens the profile in a new tab`, async ({ page }) => {
+test(`${PAGE}: "Ver no Instagram" opens the profile in a new tab`, async ({ page }) => {
 	await page.goto(PAGE);
-	const link = page.getByRole('link', { name: 'Seguir no Instagram', exact: true });
+	const link = page.getByRole('link', { name: 'Ver no Instagram', exact: true });
 	await expect(link).toHaveAttribute('href', INSTAGRAM_PROFILE);
 	await expect(link).toHaveAttribute('target', '_blank');
 	await expect(link).toHaveAttribute('rel', 'noopener');

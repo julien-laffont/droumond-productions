@@ -1,10 +1,12 @@
 // The page of Efecto Placebo: a hosted excerpt of the teaser, muted and looping, the link to the
-// full teaser on YouTube, the synopsis next to the poster, the credits and the Characters.
+// full teaser on YouTube and the one to Instagram, the synopsis next to the poster, the credits and
+// the Characters.
 import { expect, test, type Page } from '@playwright/test';
 import { openExisting } from './pages';
 
 const PAGE = '/efecto-placebo/';
 const TEASER_ON_YOUTUBE = 'https://www.youtube.com/watch?v=Y785Re6Cyvk';
+const INSTAGRAM_PROFILE = 'https://www.instagram.com/droumond_productions';
 
 /** What the page shows in each language. The English texts are provisional. */
 const EFECTO_PLACEBO = [
@@ -20,6 +22,7 @@ const EFECTO_PLACEBO = [
 			  - 'img "Efecto Placebo: uma fita da polícia sobre um chão de terra e raízes, onde uma mão agarra um ramo."'
 			  - button "Pausar vídeo"
 			  - link "Ver o teaser completo"
+			  - link "Acompanhe a gravação no Instagram"
 			  - region "Sinopse":
 			    - heading "Sinopse" [level=2]
 			    - img /^Cartaz de Efecto Placebo/
@@ -82,6 +85,7 @@ const EFECTO_PLACEBO = [
 			  - 'img "Efecto Placebo: police tape over a floor of earth and roots, where a hand grips a branch."'
 			  - button "Pause video"
 			  - link "Watch the full teaser"
+			  - link "Follow the shoot on Instagram"
 			  - region "Synopsis":
 			    - heading "Synopsis" [level=2]
 			    - img /^Efecto Placebo poster/
@@ -284,4 +288,18 @@ test(`${PAGE}: "Ver o teaser completo" opens the teaser on YouTube in a new tab`
 	await expect(link).toHaveAttribute('href', TEASER_ON_YOUTUBE);
 	await expect(link).toHaveAttribute('target', '_blank');
 	await expect(link).toHaveAttribute('rel', 'noopener');
+});
+
+test(`${PAGE}: "Acompanhe a gravação no Instagram" opens the profile in a new tab, right after the teaser's link`, async ({
+	page,
+}) => {
+	await page.goto(PAGE);
+	const teaser = page.getByRole('link', { name: 'Ver o teaser completo', exact: true });
+	const link = page.getByRole('link', { name: 'Acompanhe a gravação no Instagram', exact: true });
+	await expect(link).toHaveAttribute('href', INSTAGRAM_PROFILE);
+	await expect(link).toHaveAttribute('target', '_blank');
+	await expect(link).toHaveAttribute('rel', 'noopener');
+	const [teaserBox, linkBox] = [await teaser.boundingBox(), await link.boundingBox()];
+	expect(linkBox!.y).toBeCloseTo(teaserBox!.y, 0);
+	expect(linkBox!.x).toBeGreaterThan(teaserBox!.x + teaserBox!.width);
 });

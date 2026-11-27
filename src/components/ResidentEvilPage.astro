@@ -8,10 +8,11 @@ import cover2 from '../assets/resident-evil/episode-2.jpg';
 import cover3 from '../assets/resident-evil/episode-3.jpg';
 import cover4 from '../assets/resident-evil/episode-4.jpg';
 import { IMAGE_FILES } from '../config/image-files';
-import { RESIDENT_EVIL_EPISODES, SOCIAL, type Language } from '../config/site';
+import { RESIDENT_EVIL_EPISODES, type Language } from '../config/site';
 import { dictionaries } from '../i18n';
 import Base from '../layouts/Base.astro';
 import Film from './Film.astro';
+import InstagramInvite from './InstagramInvite.astro';
 
 interface Props {
 	language: Language;
@@ -24,6 +25,7 @@ const COVERS = [cover1, cover2, cover3, cover4];
 
 const { language } = Astro.props;
 const t = dictionaries[language].residentEvil;
+const invite = dictionaries[language].instagram.residentEvil;
 const entry = await getEntry('residentEvil', language);
 if (!entry) {
 	throw new Error(
@@ -104,11 +106,11 @@ const { Content } = await render(entry);
 						</>
 					))}
 				</dl>
-				<div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-					<a href={SOCIAL.instagram} target="_blank" rel="noopener" class="cta">
-						{t.follow}
-						<span aria-hidden="true"> ↗</span>
-					</a>
+				<div class="grid gap-4">
+					<InstagramInvite button={invite.button}>
+						<strong class="text-paper">{invite.lead}</strong> {invite.before}{' '}
+						<em class="text-amber not-italic">{TITLE}</em> {invite.after}
+					</InstagramInvite>
 					<p class="type-meta">{t.comingSoon}</p>
 				</div>
 			</div>

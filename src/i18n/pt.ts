@@ -125,8 +125,25 @@ export const pt = {
 		/** Followed by the episode's number. */
 		episode: 'Episódio',
 		opensOnInstagram: 'Os episódios abrem no Instagram, num separador novo.',
+		/** Under the invitation to Instagram, at the end of the page. */
+		comingSoon: '5.º episódio: em breve, no Instagram.',
+	},
+	/** The invitations to the Instagram profile, on the home page and three other pages. */
+	instagram: {
+		/** The home page's band, under the profile's name: the sentence and the button. */
+		line: 'Episódios, bastidores e o que estamos a gravar agora.',
 		follow: 'Seguir no Instagram',
-		comingSoon: '5.º episódio: em breve',
+		/** At the end of Resident Evil's page. The title goes between `before` and `after`. */
+		residentEvil: {
+			lead: 'Quer ver mais?',
+			before: 'Os bastidores de',
+			after: 'estão no nosso Instagram.',
+			button: 'Ver no Instagram',
+		},
+		/** Beside Efecto Placebo's full teaser. */
+		efectoPlacebo: 'Acompanhe a gravação no Instagram',
+		/** On the filming page's clapperboard. */
+		filming: 'Veja o nosso trabalho no Instagram',
 	},
 	home: {
 		title: 'Droumond Productions',

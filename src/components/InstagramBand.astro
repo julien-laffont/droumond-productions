@@ -1,0 +1,34 @@
+---
+// The Instagram band of the home page, right after Projects: the profile's name in large type, then
+// the invitation. Text only, for the page's weight.
+import { SOCIAL, type Language } from '../config/site';
+import { dictionaries } from '../i18n';
+import InstagramInvite from './InstagramInvite.astro';
+
+interface Props {
+	language: Language;
+}
+
+const { language } = Astro.props;
+const t = dictionaries[language].instagram;
+/** The profile's name, from its address: `@droumond_productions`. */
+const handle = `@${new URL(SOCIAL.instagram).pathname.slice(1)}`;
+---
+
+<section
+	aria-labelledby="instagram-title"
+	class="grid grid-cols-2 items-center gap-x-[clamp(28px,5vw,80px)] gap-y-5 border-t border-paper/14 px-gutter py-[clamp(40px,5vw,72px)] max-[760px]:grid-cols-1"
+>
+	<div class="reveal grid min-w-0 gap-3">
+		<p class="type-meta">Instagram</p>
+		<h2
+			id="instagram-title"
+			class="text-[clamp(2rem,4.6vw,3.8rem)] type-name [overflow-wrap:anywhere]"
+		>
+			{handle}
+		</h2>
+	</div>
+	<div class="reveal min-w-0">
+		<InstagramInvite button={t.follow}>{t.line}</InstagramInvite>
+	</div>
+</section>
